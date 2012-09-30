@@ -19,7 +19,7 @@
 
 package aurora.engine.V1.UI;
 
-import aurora.engine.V1.Logic.aResourceManager;
+import aurora.engine.V1.Logic.aSurface;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.logging.Level;
@@ -46,7 +46,7 @@ public class aButton extends JButton {
     //////////////////////
     ///  Constructor    //
     //////////////////////
-    private aResourceManager ressource;
+    private aSurface ressource;
 
     /**
      * Sets up the imageIcons to be painted on button and allows a string to be
@@ -63,7 +63,7 @@ public class aButton extends JButton {
         this.urlNormal = ImgUp;
         this.urlOver = ImgOvr;
         this.urlDown = ImgDwn;
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         try {
             btnNormal = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgUp));
             btnOver = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgOvr));
@@ -94,7 +94,7 @@ public class aButton extends JButton {
      *
      */
     public aButton(String ImgUp, String ImgDwn, String ImgOvr) {
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         this.urlNormal = ImgUp;
         this.urlOver = ImgOvr;
         this.urlDown = ImgDwn;
@@ -130,7 +130,7 @@ public class aButton extends JButton {
         this.w = width;
         this.h = height;
 
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
 
         this.urlNormal = ImgUp;
         this.urlOver = ImgOvr;
@@ -191,7 +191,7 @@ public class aButton extends JButton {
 
         //Resource Manager
 
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
 
         //set image states
 

@@ -18,7 +18,7 @@
 
 package aurora.engine.V1.UI;
 
-import aurora.engine.V1.Logic.aResourceManager;
+import aurora.engine.V1.Logic.aSurface;
 import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.net.MalformedURLException;
@@ -40,14 +40,14 @@ public class aImagePane extends JPanel {
     private ImageIcon image;
     private int imageHeight = 0;
     private int imageWidth = 0;
-    private aResourceManager ressource;
+    private aSurface ressource;
 
     //////////////
     //Constructors
     //////////////
     public aImagePane(String path, int W, int H) {
 
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         ImageURL = path;
         imageHeight = H;
         imageWidth = W;
@@ -67,11 +67,11 @@ public class aImagePane extends JPanel {
     }
 
     public aImagePane() {
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
     }
 
     public aImagePane(String path) {
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         ImageURL = path;
         imageHeight = 0;
         imageWidth = 0;
@@ -91,7 +91,7 @@ public class aImagePane extends JPanel {
     public aImagePane(String path, LayoutManager layout) {
 
         super(layout, true);
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         ImageURL = path;
         imageHeight = 0;
         imageWidth = 0;
@@ -109,7 +109,7 @@ public class aImagePane extends JPanel {
 
     public aImagePane(String path, int W, int H, LayoutManager layout) {
         super(layout, true);
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         ImageURL = path;
         imageHeight = H;
         imageWidth = W;
@@ -127,7 +127,7 @@ public class aImagePane extends JPanel {
 
     public aImagePane(String path, int W, int H, LayoutManager layout, boolean DoubleBuffered) {
         super(layout, DoubleBuffered);
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         ImageURL = path;
         imageHeight = H;
         imageWidth = W;
@@ -145,7 +145,7 @@ public class aImagePane extends JPanel {
 
     public aImagePane(String path, int W, int H, boolean DoubleBuffered) {
         super(DoubleBuffered);
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         ImageURL = path;
         imageHeight = H;
         imageWidth = W;

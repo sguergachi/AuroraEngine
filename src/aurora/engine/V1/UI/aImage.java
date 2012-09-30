@@ -17,7 +17,7 @@
  */
 package aurora.engine.V1.UI;
 
-import aurora.engine.V1.Logic.aResourceManager;
+import aurora.engine.V1.Logic.aSurface;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.MalformedURLException;
@@ -37,7 +37,7 @@ public class aImage extends JLabel {
     private ImageIcon image;
     private int w = 0;
     private int h = 0;
-    private final aResourceManager ressource;
+    private final aSurface ressource;
 
     public String getImgURl() {
         return ImageURl;
@@ -84,7 +84,7 @@ public class aImage extends JLabel {
     }
 
     public aImage(String ImgURL) {
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         //System.out.println(ressource.getSurfacePath());
         this.ImageURl = ImgURL;
         this.setOpaque(false);
@@ -93,7 +93,7 @@ public class aImage extends JLabel {
     }
 
     public aImage(String ImgURL, int Width, int Height) {
-        ressource = new aResourceManager("");
+        ressource = new aSurface("");
         //System.out.println(ressource.getSurfacePath());
         this.ImageURl = ImgURL;
         this.w = Width;
