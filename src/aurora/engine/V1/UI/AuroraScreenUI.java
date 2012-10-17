@@ -60,20 +60,7 @@ public interface AuroraScreenUI {
 
      void buildUI();
 
-    /**
-    * .------------------------------------------------------------------------.
-    * |    surface{}
-    * .------------------------------------------------------------------------.
-    * |
-    * | This is an enumeration containing constants with regards to the specific
-    * | file name of UI assets from the Surface currently being used
-    * |
-    * |
-    * |
-    * |
-    * ..........................................................................
-    *
-    */
+
 
 
 }
