@@ -12,6 +12,7 @@ package aurora.engine.V1.UI;
 public interface AuroraScreenUI {
 
 
+
     /**
       .------------------------------------------------------------------------.
       |     loadUI() Method
@@ -74,21 +75,5 @@ public interface AuroraScreenUI {
     *
     */
 
-    enum surface {
-
-        /** A Large Hex Panel. */
-        HexPanel ("HexPane.png");
-
-        /** the file name of the asset found in the surface. */
-        private String fileName;
-
-        /**
-         * set the name of the surface asset to be re-used.
-         * @param assetName name of asset
-         */
-        private surface(final String assetName) {
-            this.fileName = assetName;
-        }
-    }
 
 }
