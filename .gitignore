@@ -188,7 +188,6 @@ pip-log.txt
 *.rar
 *.tar
 *.zip
-
 *.class
 
 # Package Files #
