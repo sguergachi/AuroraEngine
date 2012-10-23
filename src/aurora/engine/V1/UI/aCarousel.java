@@ -1,13 +1,13 @@
 /*
  * Copyright 2012 Sardonix Creative.
  *
- * This work is licensed under the 
+ * This work is licensed under the
  * Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
- * To view a copy of this license, visit 
+ * To view a copy of this license, visit
  *
  *      http://creativecommons.org/licenses/by-nc-nd/3.0/
  *
- * or send a letter to Creative Commons, 444 Castro Street, Suite 900, 
+ * or send a letter to Creative Commons, 444 Castro Street, Suite 900,
  * Mountain View, California, 94041, USA.
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -25,8 +25,8 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 
 /**
- * 
- * @author Sammy, Carlos 
+ *
+ * @author Sammy, Carlos
  * @version 0.4
  */
 public class aCarousel extends JPanel implements Runnable {
@@ -50,11 +50,11 @@ public class aCarousel extends JPanel implements Runnable {
     private boolean DEBUG = false;
     private int counter;
     private aDialog err;
-    
+
     //carlos
-    
+
     private int numberOfPanes;
-    
+
     private ArrayList<Point.Double> leftOffsets;
     private ArrayList<Point.Double> rightOffsets;
     private boolean isRunningLeft;
@@ -62,14 +62,13 @@ public class aCarousel extends JPanel implements Runnable {
     private aCarouselPane originalLeftPane;
     private aCarouselPane originalCenterPane;
     private aCarouselPane originalRightPane;
-    
+
     private final double MAX_INCREMENT = 5.0;
     private final double MIN_INCREMENT = -5.0;
    	private final static double MAX_Y_POINT = 200;	// maximum y-point for any pane
    	private final static double MIN_Y_POINT = 0;	// minimum y-point for any pane
 
-    public aCarousel(String ImgURL, double panelWidth, int panelHeight, int totalWidth) {
-        URL = ImgURL;
+    public aCarousel(double panelWidth, int panelHeight, int totalWidth) {
         this.setLayout(null);
         this.setOpaque(false);
         this.setDoubleBuffered(true);
@@ -82,18 +81,18 @@ public class aCarousel extends JPanel implements Runnable {
         isRunningLeft = false;
         isRunningRight = false;
     }
-    
+
     /**
-     * 
+     *
      * @param p
      */
-    public void addPane(aCarouselPane p) {  	
+    public void addPane(aCarouselPane p) {
     	aCarouselPane pane = p;
     	Point.Double point = calculatePosition();
     	pane.setPoint(point.x, point.y);
     	pane.setBounds((int) point.x, (int) point.y, (int) panelWidth, panelHeight);
     	numberOfPanes++;
-    	
+
     	if (numberOfPanes == 1) {
     		pane.setAsLeftPane();
     		originalLeftPane = pane;
@@ -104,18 +103,18 @@ public class aCarousel extends JPanel implements Runnable {
     		pane.setAsRightPane();
     		originalRightPane = pane;
     	}
-    	
+
     	this.add(pane);
     }
-    
+
     /**
-     * 
+     *
      * @return
      */
     private Point.Double calculatePosition() {
-    	
+
     	Point.Double point = new Point.Double(0,0);
-    	
+
     	if (numberOfPanes == 0) {
     		point.x = ((totalWidth - ((int) panelWidth * 3 + 25)) / 2) + 2;
     		point.y = MAX_Y_POINT;
@@ -142,18 +141,18 @@ public class aCarousel extends JPanel implements Runnable {
     		rightOffsets.add(rightOffsetPoint);
     	} else if (numberOfPanes >= 4) {
     		double prevPointX = ((aCarouselPane) this.getComponent(numberOfPanes - 1)).getPointX();
-    		Point.Double lastRightOffsetPoint = rightOffsets.get((rightOffsets.size() - 1)); 	
+    		Point.Double lastRightOffsetPoint = rightOffsets.get((rightOffsets.size() - 1));
     		point.x = prevPointX - panelWidth;
-    		
+
     		if (isOdd(numberOfPanes)) {
     			point.y = MIN_Y_POINT;
     		} else {
     			point.y = MAX_Y_POINT;
     		}
-    		
+
     		Point.Double rightOffsetPoint = new Point.Double(lastRightOffsetPoint.x + panelWidth, point.y);
     		leftOffsets.add(point);
-    		rightOffsets.add(rightOffsetPoint); 		
+    		rightOffsets.add(rightOffsetPoint);
     	}
     	return point;
     }
@@ -161,13 +160,13 @@ public class aCarousel extends JPanel implements Runnable {
 
     //CREATE AND SET OFF PANE
     /**
-     * 
+     *
      * @param p
      * @param x
      * @param i
      */
     private void setOffPane(aCarouselPane p, double x, double i) {
-    	
+
     	aCarouselPane pane = p;
     	double pointX = x;
     	double pointY = i;
@@ -178,10 +177,10 @@ public class aCarousel extends JPanel implements Runnable {
     }
 
     private void paint() {
-    	
+
         aCarouselPane cp = null;
         Point.Double p = null;
-        
+
         for (int i = 0; i < this.getComponentCount(); i++) {
         	cp = (aCarouselPane) this.getComponent(i);
         	p = cp.getPoint();
@@ -194,7 +193,7 @@ public class aCarousel extends JPanel implements Runnable {
     public void MoveRight() {
 
         if (runLeft == null && runRight == null) {
-        	
+
             if (runRight == null) {
                 runRight = new Thread(this);
             }
@@ -204,7 +203,7 @@ public class aCarousel extends JPanel implements Runnable {
             try {
                 System.out.println("RUNNING RIGHT");
                 isRunningLeft = false;
-                isRunningRight = true;              
+                isRunningRight = true;
                 runRight.start();
             } catch (IllegalThreadStateException e) {
                 aDialog err = new aDialog(aDialog.aDIALOG_ERROR, "Animation Error!");
@@ -232,18 +231,18 @@ public class aCarousel extends JPanel implements Runnable {
             }
         }
     }
-    
+
     private void resetPanePositions() {
-    	
+
     	 aCarouselPane cp = null;
          Point.Double p = null;
-         
+
     	for (int i = 0; i < this.getComponentCount(); i++) {
         	cp = (aCarouselPane) this.getComponent(i);
         	p = cp.getPoint();
         	cp.setBounds((int) p.x, (int) p.y, (int) panelWidth, panelHeight);
         	System.out.println(p.toString());
-        	
+
         	if (p.x == leftX) {
         		cp.setAsLeftPane();
         	} else if (p.x == centX) {
@@ -253,17 +252,17 @@ public class aCarousel extends JPanel implements Runnable {
         	}
         }
     }
-    
+
     double Incr1;
     double Incr2;
- 		 	
+
  	@Override
     public void run() {
- 			
+
         counter = 0;
-        
+
         aCarouselPane centerPane = getCenterPane();
-        
+
         if (centerPane.equals(originalCenterPane)) {
         	Incr1 = MAX_INCREMENT;
         	Incr2 = MIN_INCREMENT;
@@ -274,12 +273,12 @@ public class aCarousel extends JPanel implements Runnable {
         	Incr1 = MAX_INCREMENT;
         	Incr2 = MIN_INCREMENT;
         }
-        
+
         if (isRunningLeft) {
         	int index = rightOffsets.size() - 1; //getting last index in the rightOffsets array list
-        	
+
         	aCarouselPane pane;
-        	
+
         	for (int i = 0; i < numberOfPanes; i++) {
         		pane = (aCarouselPane) this.getComponent(i);
         		if (pane.getPointX() < leftX) { //check to see if there are any panes to the left of the left pane
@@ -289,12 +288,12 @@ public class aCarousel extends JPanel implements Runnable {
         		}
         	}
         }
-        
+
         if (isRunningRight) {
         	int index = leftOffsets.size() - 1; //getting last index in the leftOffsets array list
-        	
+
         	aCarouselPane pane;
-        	
+
         	for (int i = 0; i < numberOfPanes; i++) {
         		pane = (aCarouselPane) this.getComponent(i);
         		if (pane.getPointX() > rightX) { //check to see if there are any panes to the left of the left pane
@@ -309,11 +308,11 @@ public class aCarousel extends JPanel implements Runnable {
 
         ///////.....LEFT
         boolean isCarouselMoving = false;
-        
+
         while (runLeft == Thread.currentThread()) {
         	centerPane = getCenterPane();
         	centerPane.changeTitle(Title.NORMAL);
-        	
+
             try {
                 Thread.sleep(10);
             } catch (InterruptedException ex) {
@@ -324,36 +323,36 @@ public class aCarousel extends JPanel implements Runnable {
 
 
             DEBUG();
-            
+
             if (isCenterPointReached(0, isCarouselMoving)) {
             	break;
             }
-            
+
             // go through and set the new points for each pane
             for (int i = 0; i < this.getComponentCount(); i++) {
             	aCarouselPane cPane = (aCarouselPane) this.getComponent(i);
             	Point.Double point = cPane.getPoint();
             	double increment = 0.0;
-            	
+
             	//use increment of 14.5 for low resolutions else increment by 16 for high resolutions
             	if ((panelWidth % 14.5) == 0) {
             		increment = 14.5;
             	} else if ((panelWidth % 16.0) == 0) {
             		increment = 16.0;
             	}
-            	
+
             	if (isOdd(i)) {
             		cPane.setPoint(point.x - increment, point.y + Incr1);
             	} else {
             		cPane.setPoint(point.x - increment, point.y + Incr2);
             	}
-            }           
-            
+            }
+
             isCarouselMoving = true;
             paint();
 
-        }  
-        
+        }
+
         ///....Done
         //
 
@@ -370,30 +369,30 @@ public class aCarousel extends JPanel implements Runnable {
                 err.setVisible(true);
                 break;
             }
-            
+
             if (isCenterPointReached(1, isCarouselMoving)) {
             	break;
             }
-                        
+
             for (int i = 0; i < this.getComponentCount(); i++) {
             	aCarouselPane cPane = (aCarouselPane) this.getComponent(i);
             	Point.Double p = cPane.getPoint();
             	double increment = 0.0;
-            	
+
             	//use increment of 14.5 for low resolutions else increment by 16 for high resolutions
             	if ((panelWidth % 14.5) == 0) {
             		increment = 14.5;
             	} else if ((panelWidth % 16.0) == 0) {
             		increment = 16.0;
             	}
-            	
+
             	if (isOdd(i)) {
             		cPane.setPoint(p.x + increment, p.y + Incr1);
             	} else {
             		cPane.setPoint(p.x + increment, p.y + Incr2);
             	}
             }
-            
+
             isCarouselMoving = true;
             paint();
         }
@@ -402,54 +401,54 @@ public class aCarousel extends JPanel implements Runnable {
         resetPanePositions();
         centerPane = getCenterPane();
         centerPane.changeTitle(Title.GLOW);
-    
+
     }
-    
+
     /**
-     * 
+     *
      * @param n
      * @return
      */
     private boolean isOdd(int n) {
-    	
-    	boolean isOdd = false; 
-    	
+
+    	boolean isOdd = false;
+
     	if (n % 2 != 0) {
     		isOdd = true;
     	}
     	return isOdd;
     }
-    
+
     /**
-     * 
+     *
      * @return
      */
     public aCarouselPane getCenterPane() {
-    	
+
     	boolean found = false;
     	aCarouselPane pane = null;
-    	
+
     	for (int i = 0; i < numberOfPanes && !found; i++) {
     		pane = (aCarouselPane) this.getComponent(i);
     		if (pane.getPointX() == centX) {
     			found = true;
-    		}	
+    		}
     	}
     	return pane;
     }
-    
+
     /**
-     * 
+     *
      * @param runDirection
      * @param increment1
      * @param increment2
      * @return
      */
     private boolean isCenterPointReached(int runDirection, boolean b) {
-    	
+
     	boolean centerPointReached = false;
     	boolean isCarouselMoving = b;
-    	
+
     	if (isCarouselMoving) {
     		for (int i = 0; i < numberOfPanes; i++) {
     			aCarouselPane pane = (aCarouselPane) this.getComponent(i);
@@ -466,7 +465,7 @@ public class aCarousel extends JPanel implements Runnable {
     			}
     		}
     	}
-    	
+
     	return centerPointReached;
     }
 
@@ -533,12 +532,12 @@ public class aCarousel extends JPanel implements Runnable {
     public void setErr(aDialog err) {
         this.err = err;
     }
-    
+
     public aCarouselPane getLeftPane() {
-    	
+
     	aCarouselPane pane = null;
     	boolean found = false;
-    	
+
     	for (int i = 0; i < numberOfPanes && !found; i++) {
     		pane = (aCarouselPane) this.getComponent(i);
     		if (pane.isLeftPane()) {

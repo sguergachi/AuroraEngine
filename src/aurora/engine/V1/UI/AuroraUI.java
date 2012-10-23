@@ -9,7 +9,7 @@ package aurora.engine.V1.UI;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public interface AuroraScreenUI {
+public interface AuroraUI {
 
 
 
