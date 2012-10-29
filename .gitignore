@@ -20,13 +20,6 @@
 *.tar
 *.zip
 
-*.class
-
-# Package Files #
-*.jar
-*.war
-*.ear
-
 # Logs and databases #
 ######################
 *.log
@@ -46,13 +39,10 @@ Thumbs.db
 /build/
 /dist/
 
-
-
 # Java Generated Files #
 #######################
 
 *.class
-
 # Package Files #
 *.jar
 *.war
