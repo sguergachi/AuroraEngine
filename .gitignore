@@ -195,6 +195,7 @@ pip-log.txt
 *.war
 *.ear
 *.properties
+*.xml
 
 # Logs and databases #
 ######################
