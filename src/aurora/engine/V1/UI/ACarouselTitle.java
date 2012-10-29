@@ -15,44 +15,51 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.UI;
+
+import aurora.engine.V1.UI.*;
 
 /**
  * A class that represents a title
+ * <p/>
  * @author cmachado
  *
  */
 public class ACarouselTitle {
 
-	private AImage normalImage;
-	private AImage glowImage;
-	public enum Title { NORMAL, GLOW }
 
-	/**
-	 * Creates a title object that stores the 2 states of images for the title
-         * To Be Used With aCarousel
-	 * @param normalImage
-	 * @param glowImage
-	 */
-	public ACarouselTitle(AImage normalImage, AImage glowImage) {
-		this.normalImage = normalImage;
-		this.glowImage = glowImage;
-	}
+    public enum TitleType {
+        NORMAL, GLOW
+    }
+    private AImage normalImage;
 
-	public void setNormalImage(AImage normalImage) {
-		this.normalImage = normalImage;
-	}
+    private AImage glowImage;
 
-	public void setGlowImage(AImage glowImage) {
-		this.glowImage = glowImage;
-	}
+    /**
+     * Creates a title object that stores the 2 states of images for the title
+     * To Be Used With aCarousel
+     * <p/>
+     * @param normalImage
+     * @param glowImage
+     */
+    public ACarouselTitle(AImage normalImage, AImage glowImage) {
+        this.normalImage = normalImage;
+        this.glowImage = glowImage;
+    }
 
-	public AImage getNormalImage() {
-		return normalImage;
-	}
+    public void setNormalImage(AImage normalImage) {
+        this.normalImage = normalImage;
+    }
 
-	public AImage getGlowImage() {
-		return glowImage;
-	}
+    public void setGlowImage(AImage glowImage) {
+        this.glowImage = glowImage;
+    }
+
+    public AImage getNormalImage() {
+        return normalImage;
+    }
+
+    public AImage getGlowImage() {
+        return glowImage;
+    }
 }

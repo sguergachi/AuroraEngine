@@ -18,7 +18,7 @@
 
 package aurora.engine.V1.UI;
 
-import aurora.engine.V1.UI.ACarouselTitle.Title;
+import aurora.engine.V1.UI.ACarouselTitle.TitleType;
 import java.awt.Point;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
@@ -311,7 +311,7 @@ public class ACarousel extends JPanel implements Runnable {
 
         while (runLeft == Thread.currentThread()) {
         	centerPane = getCenterPane();
-        	centerPane.changeTitle(Title.NORMAL);
+        	centerPane.changeTitle(TitleType.NORMAL);
 
             try {
                 Thread.sleep(10);
@@ -360,7 +360,7 @@ public class ACarousel extends JPanel implements Runnable {
         ///////.....RIGHT
         while (runRight == Thread.currentThread()) {
         	centerPane = getCenterPane();
-        	centerPane.changeTitle(Title.NORMAL);
+        	centerPane.changeTitle(TitleType.NORMAL);
 
             try {
 
@@ -400,7 +400,7 @@ public class ACarousel extends JPanel implements Runnable {
         ///....Done
         resetPanePositions();
         centerPane = getCenterPane();
-        centerPane.changeTitle(Title.GLOW);
+        centerPane.changeTitle(TitleType.GLOW);
 
     }
 
