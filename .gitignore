@@ -48,7 +48,5 @@ Thumbs.db
 *.war
 *.ear
 /build/
-build\
 /dist/
-dist\
 /lib/
