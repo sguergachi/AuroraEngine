@@ -27,13 +27,15 @@ import aurora.engine.V1.UI.*;
  */
 public class ACarouselTitle {
 
-
-    public enum TitleType {
-        NORMAL, GLOW
-    }
     private AImage normalImage;
 
     private AImage glowImage;
+
+    public enum TitleType {
+
+        NORMAL, GLOW
+
+    }
 
     /**
      * Creates a title object that stores the 2 states of images for the title
