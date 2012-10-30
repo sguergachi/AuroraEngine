@@ -41,7 +41,7 @@ Thumbs.db
 
 # Java Generated Files #
 #######################
-
+*.properties
 *.class
 # Package Files #
 *.jar
