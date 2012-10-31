@@ -15,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package aurora.engine.V1.Logic;
 
 import java.awt.AlphaComposite;
@@ -36,21 +34,37 @@ import javax.swing.JFrame;
 public class AAnimate implements Runnable {
 
     private Thread runner;
+
     private float Alpha;
+
     private int AnimationID;
+
     private Graphics2D g2d;
+
     private JComponent component;
+
     private JComponent container;
+
     private JFrame frame;
+
     private Graphics g;
+
     private APostHandler e;
+
     private int x = 0;
+
     private int y = 0;
+
     private int XPos;
+
     private int speed;
+
     private int YPos;
+
     private int YSpeed;
+
     private int XSpeed;
+
     private boolean Animating = false;
 
     public AAnimate(JComponent component) {
@@ -73,10 +87,12 @@ public class AAnimate implements Runnable {
 
         this.x = x;
         this.y = y;
-        this.component.setBounds(x, y, component.getWidth(), component.getHeight());
+        this.component.setBounds(x, y, component.getWidth(), component
+                .getHeight());
 
     }
-    public void addPostAnimationListener(APostHandler e){
+
+    public void addPostAnimationListener(APostHandler e) {
         this.e = e;
     }
 
@@ -107,8 +123,10 @@ public class AAnimate implements Runnable {
         g2d = (Graphics2D) g;
 
         //Enable Anti-Alias
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
 
 
         //start fade effect
@@ -131,8 +149,10 @@ public class AAnimate implements Runnable {
 
 
         //Enable Anti-Alias and quality
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
 
 
         //start fade effect
@@ -159,8 +179,10 @@ public class AAnimate implements Runnable {
         Alpha = 1.0f;
 
         //Enable Anti-Alias
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
 
         AnimationID = 1;
         start();
@@ -192,7 +214,8 @@ public class AAnimate implements Runnable {
         start();
     }
 
-    public void moveDiagonal(int XPosition, int YPosition, int XMoveSpeed, int YMoveSpeed) {
+    public void moveDiagonal(int XPosition, int YPosition, int XMoveSpeed,
+                             int YMoveSpeed) {
         this.YPos = YPosition;
         this.XPos = XPosition;
         this.YSpeed = YMoveSpeed;
@@ -259,7 +282,8 @@ public class AAnimate implements Runnable {
 
                 x = x + (speed);
 
-                component.setBounds(x, component.getLocation().y, component.getWidth(), component.getHeight());
+                component.setBounds(x, component.getLocation().y, component
+                        .getWidth(), component.getHeight());
 
                 if (speed > 0) {
 
@@ -283,18 +307,21 @@ public class AAnimate implements Runnable {
                     if (YPos <= y) {
                         break;
                     }
-                    component.setBounds(component.getLocation().x, y, component.getWidth(), component.getHeight());
+                    component.setBounds(component.getLocation().x, y, component
+                            .getWidth(), component.getHeight());
                 } else {
                     y = y - speed;
                     if (YPos >= y) {
                         break;
                     }
-                    component.setBounds(component.getLocation().x, y, component.getWidth(), component.getHeight());
+                    component.setBounds(component.getLocation().x, y, component
+                            .getWidth(), component.getHeight());
                 }
 
 
                 component.repaint();
-                System.out.println("bool : " + (YPos <= component.getLocation().y));
+                System.out.println("bool : " + (YPos
+                                                <= component.getLocation().y));
 
 
 
@@ -318,11 +345,13 @@ public class AAnimate implements Runnable {
                     x = XPos;
                 }
 
-                if (component.getLocation().x >= YPos && component.getLocation().y >= YPos) {
+                if (component.getLocation().x >= YPos
+                    && component.getLocation().y >= YPos) {
                     break;
                 }
 
-                component.setBounds(x, y, component.getWidth(), component.getHeight());
+                component.setBounds(x, y, component.getWidth(), component
+                        .getHeight());
 
 
             }
@@ -331,7 +360,8 @@ public class AAnimate implements Runnable {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AAnimate.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AAnimate.class.getName()).log(Level.SEVERE,
+                        null, ex);
             }
 
             System.out.println("X Val: " + x);

@@ -36,6 +36,7 @@ public final class ATimeLabel extends ASlickLabel implements Runnable {
     public static final String FULL_DATE = "EEEEE, MMMMM dd \n hh:mm a";
     public static final String TIME = "hh:mm a";
     public static final String TIME_PLUS = "HH:mm:ss a";
+    public static final String DATE_NUM = "MMddyy";
     public static final String YEAR = "yyyy";
     public static final String TIME_24HOUR = "kk:mm a";
     public static final String MONTH = "MM-dd";
