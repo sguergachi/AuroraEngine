@@ -8,20 +8,20 @@ package aurora.engine.V1.Logic;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public interface AuroraHandler {
+public interface AuroraScreenLogic {
 
     /**
      * .-----------------------------------------------------------------------.
-     * | setLogic(DashboardLogic)
+     * | setHandler(DashboardHandler)
      * .-----------------------------------------------------------------------.
      * |
-     * | Pass the Logic Instanced in the AuroraUI component of this Screen
-     * | For the Handler to work the Logic *MUST* be passed using this method
+     * | Pass the Handler Instanced in the AuroraUI component of this Screen
+     * | For the Logic to work the Handler *MUST* be passed using this method
      * |
      * |
      * .........................................................................
      * <p/>
-     * @param logic AuroraLogic
+     * @param handler AuroraScreenHandler
      */
-    void setLogic(final AuroraLogic logic);
+    void setHandler(final AuroraScreenHandler handler);
 }
