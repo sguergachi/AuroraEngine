@@ -46,6 +46,7 @@ public class AHoverButton extends AImage implements Runnable {
     public AHoverButton(MouseListener handler, int miliseconds, String imgNorm, String imgOver) {
         super(imgNorm);
         super.addMouseListener(handler);
+        System.out.println("Added Listener");
         this.handler = handler;
         this.time = miliseconds;
         this.imgNorm = imgNorm;
@@ -63,12 +64,19 @@ public class AHoverButton extends AImage implements Runnable {
 
     }
 
+    public void setMouseListener(MouseListener handler){
+        super.addMouseListener(handler);
+        this.handler = handler;
+    }
+
     /**
      * Button Activates on hover over certain amount of time
      *
      * Call This method in MouseEnter actionPerformed Method
      **/
     public void mouseHover(MouseEvent e) {
+
+
         this.e = e;
 
         runner = null;

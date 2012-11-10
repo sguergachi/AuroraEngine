@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -36,22 +37,40 @@ import javax.swing.JPanel;
 public class AScrollingImage extends JPanel implements Runnable {
 
     private String imgURL;
+
     private AImage loopImage1;
+
     private AImage loopImage2;
+
     private AImage loopImage3;
+
     private int imageHeight;
+
     private int imageWidth;
+
     private Thread runner;
+
     private int Xpos;
+
     private int Xpos2;
+
     private int Xpos3;
+
     private int Ypos;
+
     private boolean isCentered;
+
     private boolean stop = false;
+
     private Graphics g;
+
     private int border = 25;
+
     private int block = 65;
+
     private boolean pause;
+
+    private boolean lock;
 
     public AScrollingImage(String URL, int ImageWidth, int ImageHeight) {
 
@@ -68,9 +87,12 @@ public class AScrollingImage extends JPanel implements Runnable {
 //        loopImage3 = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + imgURL));
 
         if (ImageWidth != 0 && ImageHeight != 0) {
-            loopImage1.setImg(new ImageIcon(AImage.resizeImage(loopImage1.getImgIcon().getImage(), ImageWidth, ImageHeight)));
-            loopImage2.setImg(new ImageIcon(AImage.resizeImage(loopImage1.getImgIcon().getImage(), ImageWidth, ImageHeight)));
-            loopImage3.setImg(new ImageIcon(AImage.resizeImage(loopImage3.getImgIcon().getImage(), ImageWidth, ImageHeight)));
+            loopImage1.setImg(new ImageIcon(AImage.resizeImage(loopImage1
+                    .getImgIcon().getImage(), ImageWidth, ImageHeight)));
+            loopImage2.setImg(new ImageIcon(AImage.resizeImage(loopImage1
+                    .getImgIcon().getImage(), ImageWidth, ImageHeight)));
+            loopImage3.setImg(new ImageIcon(AImage.resizeImage(loopImage3
+                    .getImgIcon().getImage(), ImageWidth, ImageHeight)));
         }
         imageHeight = loopImage1.getImgIcon().getIconHeight();
         imageWidth = loopImage1.getImgIcon().getIconWidth();
@@ -80,7 +102,6 @@ public class AScrollingImage extends JPanel implements Runnable {
         Xpos2 = 0 - loopImage2.getImgIcon().getIconWidth();
         Xpos3 = 0 + loopImage3.getImgIcon().getIconWidth();
         Xpos = 0;
-
         setOpaque(false);
 
     }
@@ -97,13 +118,21 @@ public class AScrollingImage extends JPanel implements Runnable {
     public void run() {
         while (runner == Thread.currentThread()) {
             if (!stop) {
-                this.repaint();
+
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        repaint();
+                    }
+                });
 
                 try {
 
                     Thread.sleep(16);
+
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(AScrollingImage.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AScrollingImage.class.getName()).log(
+                            Level.SEVERE, null, ex);
                 }
 
             } else {
@@ -113,7 +142,8 @@ public class AScrollingImage extends JPanel implements Runnable {
     }
 
     public boolean isCentered() {
-        if (Xpos == 0 || Xpos2 == 0 - loopImage2.getImgIcon().getIconWidth() || Xpos3 == 0 + loopImage3.getImgIcon().getIconWidth()) {
+        if (Xpos == 0 || Xpos2 == 0 - loopImage2.getImgIcon().getIconWidth()
+            || Xpos3 == 0 + loopImage3.getImgIcon().getIconWidth()) {
             isCentered = true;
         } else {
             isCentered = false;
@@ -152,7 +182,7 @@ public class AScrollingImage extends JPanel implements Runnable {
 
     public void Center(JFrame frame) {
 
-        Xpos = frame.getSize().width/9;
+        Xpos = frame.getSize().width / 9;
         loopImage2.setVisible(false);
         loopImage3.setVisible(false);
 
@@ -163,7 +193,7 @@ public class AScrollingImage extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
 
-        update(g);
+            update(g);
     }
 
     /*
@@ -175,17 +205,24 @@ public class AScrollingImage extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
-        if ((loopImage1.getImgIcon().getImage().getWidth(this) > 0) && (loopImage1.getImgIcon().getImage().getHeight(this) > 0)) {
+        if ((loopImage1.getImgIcon().getImage().getWidth(this) > 0)
+            && (loopImage1.getImgIcon().getImage().getHeight(this) > 0)) {
             //Draw Left Image
-            g2d.drawImage(loopImage2.getImgIcon().getImage(), Xpos2 + border, Ypos, imageWidth, imageHeight, this);
+            g2d.drawImage(loopImage2.getImgIcon().getImage(), Xpos2 + border,
+                    Ypos, imageWidth, imageHeight, this);
             //Draw Center Image
-            g2d.drawImage(loopImage1.getImgIcon().getImage(), Xpos, Ypos, imageWidth, imageHeight, this);
+            g2d.drawImage(loopImage1.getImgIcon().getImage(), Xpos, Ypos,
+                    imageWidth, imageHeight, this);
             //Draw Right Image
-            g2d.drawImage(loopImage3.getImgIcon().getImage(), Xpos3 - border, Ypos, imageWidth, imageHeight, this);
+            g2d.drawImage(loopImage3.getImgIcon().getImage(), Xpos3 - border,
+                    Ypos, imageWidth, imageHeight, this);
         }
 
 
