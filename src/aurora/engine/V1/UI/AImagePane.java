@@ -56,7 +56,7 @@ public class AImagePane extends JPanel {
         imageWidth = W;
         this.setOpaque(false);
 
-       setUpImage(ImageURL);
+        setUpImage(ImageURL);
 
     }
 
@@ -92,7 +92,7 @@ public class AImagePane extends JPanel {
         imageHeight = H;
         imageWidth = W;
         this.setOpaque(false);
-       setUpImage(ImageURL);
+        setUpImage(ImageURL);
     }
 
     public AImagePane(String path, int W, int H, LayoutManager layout,
@@ -120,16 +120,16 @@ public class AImagePane extends JPanel {
 
     }
 
-    protected final void setUpImage(String URL){
+    protected final void setUpImage(String URL) {
         try {
             image = new ImageIcon(new URL(ressource.getSurfacePath()
                                           + "/aurora/V1/resources/" + ImageURL));
         } catch (MalformedURLException ex) {
             try {
                 image = new ImageIcon(getClass()
-                                                             .getResource(
-                                                             "/aurora/V1/resources/"
-                                                             + ImageURL));
+                        .getResource(
+                        "/aurora/V1/resources/"
+                        + ImageURL));
             } catch (Exception exx) {
                 Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
                         null, exx);
@@ -160,18 +160,9 @@ public class AImagePane extends JPanel {
         imageWidth = 0;
         imageHeight = 0;
         try {
-            image = new ImageIcon(new URL(ressource.getSurfacePath()
-                                          + "/aurora/V1/resources/" + ImageURL));
+            image = new ImageIcon(new URL(ImageURL));
         } catch (MalformedURLException ex) {
-            try {
-                image = new ImageIcon(getClass()
-                                                             .getResource(
-                                                             "/aurora/V1/resources/"
-                                                             + ImageURL));
-            } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
-            }
+            
         }
         this.revalidate();
         this.repaint();
@@ -211,9 +202,9 @@ public class AImagePane extends JPanel {
         } catch (MalformedURLException ex) {
             try {
                 image = new ImageIcon(getClass()
-                                                             .getResource(
-                                                             "/aurora/V1/resources/"
-                                                             + ImageURL));
+                        .getResource(
+                        "/aurora/V1/resources/"
+                        + ImageURL));
             } catch (Exception exx) {
                 Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
                         null, exx);
@@ -235,9 +226,9 @@ public class AImagePane extends JPanel {
         } catch (MalformedURLException ex) {
             try {
                 image = new ImageIcon(getClass()
-                                                             .getResource(
-                                                             "/aurora/V1/resources/"
-                                                             + ImageURL));
+                        .getResource(
+                        "/aurora/V1/resources/"
+                        + ImageURL));
             } catch (Exception exx) {
                 Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
                         null, exx);
@@ -271,7 +262,7 @@ public class AImagePane extends JPanel {
 
         System.out.println("URL " + ImageURL);
         this.ImageURL = ImageURL;
-        setURL(ImageURL);
+        setImage(ImageURL);
 
         imageWidth = image.getIconWidth();
         imageHeight = image.getIconHeight();
