@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.UI;
 
 import java.awt.Graphics;
@@ -33,19 +32,41 @@ import javax.swing.JLabel;
 public final class ATimeLabel extends ASlickLabel implements Runnable {
 
     private Thread runner;
+
     public static final String FULL_DATE = "EEEEE, MMMMM dd \n hh:mm a";
+
     public static final String TIME = "hh:mm a";
+
     public static final String TIME_PLUS = "HH:mm:ss a";
+
     public static final String DATE_NUM = "MMddyy";
+
+     public static final String DATE_LETTERS = "EEEEE, MMMMM dd";
+
     public static final String YEAR = "yyyy";
+
     public static final String TIME_24HOUR = "kk:mm a";
+
     public static final String MONTH = "MM-dd";
-    private static String[] WEEK_DATE = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-    public static final String[] MONTH_DATE = {" January", " February", " March", " April", " May", " June", " July", " August", " September", " October", " November", " December"};
+
+    private static String[] WEEK_DATE = {"Sunday", "Monday", "Tuesday",
+        "Wednesday", "Thursday", "Friday", "Saturday"};
+
+    public static final String[] MONTH_DATE = {" January", " February", " March",
+        " April", " May", " June", " July", " August", " September", " October",
+        " November", " December"};
+
     public String DATE;
 
-    public ATimeLabel() {
+    private final String timeType;
 
+    public ATimeLabel() {
+        timeType = ATimeLabel.FULL_DATE;
+        start();
+    }
+
+    public ATimeLabel(String format) {
+        timeType = format;
         start();
     }
 
@@ -67,35 +88,21 @@ public final class ATimeLabel extends ASlickLabel implements Runnable {
 
     }
 
-
-
-
-
-
-
-
-
-
     @Override
     public void run() {
         while (runner == Thread.currentThread()) {
 
 
 
-                setText(current(ATimeLabel.FULL_DATE) + "      ");
+            setText(current(timeType) + "   ");
 
 
-                try {
-                    Thread.sleep(600);
-                } catch (InterruptedException e) {
-                    System.out.println("Time Thread failed");
-                }
-
+            try {
+                Thread.sleep(600);
+            } catch (InterruptedException e) {
+                System.out.println("Time Thread failed");
             }
+
         }
-
-
-
     }
-
-
+}
