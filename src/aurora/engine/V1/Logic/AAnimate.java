@@ -196,9 +196,9 @@ public class AAnimate implements Runnable {
      */
     public void moveHorizontal(int XPosition, int MoveSpeed) {
         this.XPos = XPosition;
-        this.speed = MoveSpeed - 20;
+        this.speed = MoveSpeed;
         if (XPos < 0) {
-            speed = (-1 * speed) - 30;
+            speed = (-1 * speed);
 
         }
         AnimationID = 2;
