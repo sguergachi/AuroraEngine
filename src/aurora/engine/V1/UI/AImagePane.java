@@ -30,8 +30,8 @@ import javax.swing.JPanel;
 /**
  * Image on a panel
  *
- * @author Sammy
- * @version 1.0
+ * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Carlos Machado <camachado@gmail.com>
  */
 public class AImagePane extends JPanel {
 
@@ -44,6 +44,8 @@ public class AImagePane extends JPanel {
     private int imageWidth = 0;
 
     private ASurface ressource;
+
+    private String SurfaceName;
 
     //////////////
     //Constructors
@@ -162,7 +164,6 @@ public class AImagePane extends JPanel {
         try {
             image = new ImageIcon(new URL(ImageURL));
         } catch (MalformedURLException ex) {
-            
         }
         this.revalidate();
         this.repaint();
@@ -304,5 +305,13 @@ public class AImagePane extends JPanel {
 
     public int getImageWidth() {
         return imageWidth;
+    }
+
+    public void setSurface(String SurfaceName) {
+
+        this.SurfaceName = SurfaceName;
+
+        ressource.setSurfaceName(this.SurfaceName);
+        this.repaint();
     }
 }

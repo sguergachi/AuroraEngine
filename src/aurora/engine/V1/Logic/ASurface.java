@@ -15,8 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package aurora.engine.V1.Logic;
 
 import java.io.File;
@@ -26,16 +24,21 @@ import java.util.logging.Logger;
 
 /**
  * Aurora Surface Implementation through the Engine
- * @author Sammy
+ * <p/>
+ * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Carlos Machado <camachado@gmail.com>
  */
 public class ASurface {
 
     private String toLookFor;
-    private String locationPath;
-    private String SurfaceLocation;
-    private File[] list;
-    private StringBuffer s;
 
+    private String locationPath;
+
+    private String SurfaceLocation;
+
+    private File[] list;
+
+    private StringBuffer s;
 
     /**
      * Used as part of the Aurora Surface technology the Resource SMnager finds
@@ -79,17 +82,17 @@ public class ASurface {
      */
     private void findSurface() {
         try {
-            s = new StringBuffer(this.getClass().getProtectionDomain().getCodeSource().getLocation().toURI().getPath().toString());
+            s = new StringBuffer(this.getClass().getProtectionDomain()
+                    .getCodeSource().getLocation().toURI().getPath().toString());
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ASurface.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ASurface.class.getName()).log(Level.SEVERE, null,
+                    ex);
         }
 
-        //System.out.println("pre parssed path " + s.toString());
-        s.delete(0,1);
+        s.delete(0, 1);
         s.delete(s.length() - "/AuroraEngine.jar".length(), s.length());
         s.append(locationPath);
 
-        //System.out.println("path " + s.toString());
 
         AFileManager mngr = new AFileManager(s.toString(), true);
 
@@ -99,8 +102,7 @@ public class ASurface {
         if (toLookFor == null) {
             list = mngr.finder("_Surface");
             //If not then look for first Surface and use it
-            if ( list != null && list.length > 0) {
-                //System.out.println(" Files" + getClass().getResource(locationPath).getPath().toString());
+            if (list != null && list.length > 0) {
                 SurfaceLocation = list[0].toString();
             } else {
                 SurfaceLocation = null;
@@ -131,12 +133,16 @@ public class ASurface {
 
         }
 
-        if(SurfaceLocation != null){
-        SurfaceLocation = "jar:file:/" + SurfaceLocation.replace("\\", "/")+"!";
+        if (SurfaceLocation != null) {
+            SurfaceLocation = "jar:file:/" + SurfaceLocation.replace("\\", "/")
+                              + "!";
 
         }
 
-        //System.out.println("surface location " + SurfaceLocation);
     }
 
+    public void setSurfaceName(String SurfaceName) {
+        toLookFor = SurfaceName;
+        findSurface();
+    }
 }
