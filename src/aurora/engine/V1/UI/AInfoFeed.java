@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.UI;
 
 import java.awt.Color;
@@ -33,15 +32,24 @@ import javax.swing.JLabel;
 public class AInfoFeed extends AImagePane implements Runnable {
 
     private Thread runner;
+
     private int Xpos;
+
     private int defaultXpos = 0;
+
     private int defaultYpos = 0;
+
     private ArrayList<JLabel> DisplayLabels;
+
     int counter = 0;
+
     private boolean isRunning;
+
     private ArrayList<String> DisplayArray;
+
     private Font dFont;
 
+    private String spereratorURl;
 
     public AInfoFeed(ArrayList TextArray) {
         this.setLayout(null);
@@ -51,19 +59,22 @@ public class AInfoFeed extends AImagePane implements Runnable {
         defaultYpos = this.getHeight();
     }
 
-    public AInfoFeed(String BGImg, ArrayList TextArray) {
+    public AInfoFeed(String BGImg, String SeperatorURL, ArrayList TextArray) {
         super(BGImg);
         this.setLayout(null);
         this.DisplayArray = TextArray;
+        spereratorURl = SeperatorURL;
         isRunning = true;
         defaultXpos = this.getWidth();
         defaultYpos = this.getHeight();
     }
 
-    public AInfoFeed(String BGImg, int Width, int Height, ArrayList TextArray) {
+    public AInfoFeed(String BGImg, String SeperatorURL, int Width, int Height,
+                     ArrayList TextArray) {
         super(BGImg, Width, Height);
         this.setLayout(null);
         this.DisplayArray = TextArray;
+        spereratorURl = SeperatorURL;
         isRunning = true;
         defaultXpos = Width;
         defaultYpos = Height / 2 - 22;
@@ -98,31 +109,23 @@ public class AInfoFeed extends AImagePane implements Runnable {
                 DisplayLabels.add(a, new JLabel());
                 DisplayLabels.get(a).setText(DisplayArray.get(counter));
                 DisplayLabels.get(a).setFont(dFont);
-                DisplayLabels.get(a).setForeground(Color.green);
-                DisplayLabels.get(a).setBounds(defaultXpos + 10, defaultYpos, 20 * DisplayLabels.get(a).getText().length(), 50);
+                DisplayLabels.get(a).setForeground(Color.white);
+                DisplayLabels.get(a).setBounds(defaultXpos + 10, defaultYpos, 20
+                                                                              * DisplayLabels
+                        .get(a).getText().length(), 50);
                 this.add(DisplayLabels.get(a));
                 counter++;
-            }
-            //add Spacer
+            } //add Spacer
             else {
 
-                DisplayLabels.add(a, new AImage("infoSeperator.png"));
-                DisplayLabels.get(a).setBounds(defaultXpos + 25, defaultYpos + 10, 40, 40);
+                DisplayLabels.add(a, new AImage(spereratorURl));
+                DisplayLabels.get(a).setBounds(defaultXpos + 25, defaultYpos
+                                                                 + 10, 40, 40);
                 this.add(DisplayLabels.get(a));
 
             }
         }
-        // System.out.println(DisplayLabels);
-//        testLabel = new JLabel();
-//        testLabel.setFont(dFont);
-//        testLabel.setOpaque(false);
-//        testLabel.setText("Hello World!");
-//        testLabel.setBounds(50, 10, 20*testLabel.getText().length(),50);
-//
-//        this.add( testLabel);
 
-        //System.out.println(testLabel.getBounds());
-        // System.out.println(testLabel.getSize());
     }
 
     private boolean canAnimate() {
@@ -130,7 +133,7 @@ public class AInfoFeed extends AImagePane implements Runnable {
 
         if (!DisplayLabels.isEmpty()) {
             canAnimate = true;
-        }else{
+        } else {
             canAnimate = false;
         }
         return canAnimate;
@@ -144,40 +147,50 @@ public class AInfoFeed extends AImagePane implements Runnable {
                 if (i % 2 == 0) {
                     //check if new lablel can be created, by seeing if previous lable has endered frame
                     if (i - 1 >= 0) {
-//                        System.out.println("Lable: " + (i - 1));
-//                        System.out.println(this.getWidth() - DisplayLabels.get(i - 1).getLocation().x);
-//                        System.out.println(DisplayLabels.get(i - 1).getWidth());
-                        if (this.getWidth() - DisplayLabels.get(i - 1).getLocation().x >= (10 * (DisplayLabels.get(i - 1).getText().length())) + 60) {
+                        if (this.getWidth() - DisplayLabels.get(i - 1)
+                                .getLocation().x >= (10 * (DisplayLabels
+                                .get(i
+                                     - 1)
+                                .getText().length())) + 60) {
 
-                            DisplayLabels.get(i).setBounds(DisplayLabels.get(i).getX() - 10, defaultYpos, 20 * DisplayLabels.get(i).getText().length(), 50);
+                            DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
+                                    .getX() - 10, defaultYpos, 20
+                                                               * DisplayLabels
+                                    .get(i).getText().length(), 50);
                         }
 
                     } else {
-                        DisplayLabels.get(i).setBounds(DisplayLabels.get(i).getX() - 10, defaultYpos, 20 * DisplayLabels.get(i).getText().length(), 50);
+                        DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
+                                .getX() - 10, defaultYpos, 20 * DisplayLabels
+                                .get(i).getText().length(), 50);
 
                     }
                     //Check if lable is out of frame
-                    if (DisplayLabels.get(i).getLocation().x <= -(20 * DisplayLabels.get(i).getText().length())) {
+                    if (DisplayLabels.get(i).getLocation().x <= -(20
+                                                                  * DisplayLabels
+                            .get(i).getText().length())) {
 
                         DisplayLabels.remove(i);
 
                     }
 
                 } else {
-                     if (DisplayLabels.get(i).getLocation().x <= -50) {
+                    if (DisplayLabels.get(i).getLocation().x <= -50) {
 
                         //DisplayLabels.remove(i);
-                         DisplayLabels.get(i).setBounds(DisplayLabels.get(i).getX() - 10, defaultYpos + 5, 40, 40);
+                        DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
+                                .getX() - 10, defaultYpos + 5, 40, 40);
 
-                    }
-                     else if (this.getWidth() - DisplayLabels.get(i - 1).getLocation().x >= (10 * (DisplayLabels.get(i - 1).getText().length())) + 40) {
+                    } else if (this.getWidth() - DisplayLabels.get(i - 1)
+                            .getLocation().x >= (10 * (DisplayLabels.get(i - 1)
+                            .getText().length())) + 40) {
 
-                        DisplayLabels.get(i).setBounds(DisplayLabels.get(i).getX() - 10, defaultYpos, 50, 50);
+                        DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
+                                .getX() - 10, defaultYpos, 50, 50);
                     }
 
                 }
             }
-            // System.out.println("Lable: " + i);
 
         }
 
@@ -187,7 +200,6 @@ public class AInfoFeed extends AImagePane implements Runnable {
 
     @Override
     public void run() {
-       // System.out.println("Running");
         Xpos = defaultXpos;
         while (runner == Thread.currentThread() && isRunning) {
 
@@ -198,10 +210,11 @@ public class AInfoFeed extends AImagePane implements Runnable {
                 break;
 
             }
-             try {
+            try {
                 Thread.sleep(90);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AInfoFeed.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AInfoFeed.class.getName()).log(Level.SEVERE,
+                        null, ex);
             }
         }
 

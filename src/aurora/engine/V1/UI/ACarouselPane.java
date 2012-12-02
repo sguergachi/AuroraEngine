@@ -20,6 +20,7 @@ package aurora.engine.V1.UI;
 import aurora.engine.V1.UI.ACarouselTitle.TitleType;
 import java.awt.BorderLayout;
 import java.awt.ComponentOrientation;
+import java.awt.FlowLayout;
 import java.awt.Point;
 
 /**
@@ -55,7 +56,9 @@ public class ACarouselPane extends AImagePane {
         isCenterPane = false;
         isLeftPane = false;
         isRightPane = false;
-        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -15));
+//        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
     }
 
     public ACarouselPane(String path, int W, int H, ACarouselTitle title,
@@ -72,7 +75,9 @@ public class ACarouselPane extends AImagePane {
         isCenterPane = false;
         isLeftPane = false;
         isRightPane = false;
-        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -15));
+//        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
     }
 
     /**
@@ -91,8 +96,8 @@ public class ACarouselPane extends AImagePane {
             titleImage = title.getGlowImage();
         }
 
-        this.add(BorderLayout.PAGE_START, new AImage(titleImage.getImgURl()));
-        this.add(BorderLayout.CENTER, image);
+        this.add( new AImage(titleImage.getImgURl()));
+        this.add( image);
 
     }
 
@@ -106,16 +111,16 @@ public class ACarouselPane extends AImagePane {
             titleImage = title.getGlowImage();
         }
 
-        this.add(BorderLayout.PAGE_START, new AImage(titleImage.getImgURl()));
-        this.add(BorderLayout.CENTER, image);
+        this.add( new AImage(titleImage.getImgURl()));
+        this.add( image);
     }
 
     public void setDisplayedImage(AImage image) {
-        this.add(BorderLayout.CENTER, image);
+        this.add( image);
     }
 
     public void setDisplayedImage(AImagePane image) {
-        this.add(BorderLayout.CENTER, image);
+        this.add( image);
     }
 
     public void setDisplayedTitle(ACarouselTitle.TitleType titleType) {
@@ -127,7 +132,7 @@ public class ACarouselPane extends AImagePane {
         } else if (titleType == TitleType.GLOW) {
             titleImage = title.getGlowImage();
         }
-        this.add(BorderLayout.PAGE_START, new AImage(titleImage.getImgURl()));
+        this.add( new AImage(titleImage.getImgURl()));
     }
 
     public void setTitle(ACarouselTitle title) {
@@ -157,7 +162,7 @@ public class ACarouselPane extends AImagePane {
      * @param image image to display
      */
     public void setImage(AImage image) {
-        this.add(BorderLayout.CENTER, image);
+        this.add( image);
     }
 
     /**

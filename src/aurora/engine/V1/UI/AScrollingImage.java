@@ -180,7 +180,7 @@ public class AScrollingImage extends JPanel implements Runnable {
 
     }
 
-    public void Center(JFrame frame) {
+    public void setCenterToFrame(JFrame frame) {
 
         Xpos = frame.getSize().width / 9;
         loopImage2.setVisible(false);
@@ -217,7 +217,7 @@ public class AScrollingImage extends JPanel implements Runnable {
             //Draw Left Image
             g2d.drawImage(loopImage2.getImgIcon().getImage(), Xpos2 + border,
                     Ypos, imageWidth, imageHeight, this);
-            //Draw Center Image
+            //Draw setCenterToFrame Image
             g2d.drawImage(loopImage1.getImgIcon().getImage(), Xpos, Ypos,
                     imageWidth, imageHeight, this);
             //Draw Right Image
@@ -242,10 +242,10 @@ public class AScrollingImage extends JPanel implements Runnable {
         //If Right image is off screen place it behind Left Image
         if (Xpos3 >= this.getWidth()) {
             Xpos3 = Xpos2 - loopImage3.getImgIcon().getIconWidth() + block;
-        } //iF Center Image off screen place behind
+        } //iF setCenterToFrame Image off screen place behind
         else if (Xpos >= this.getWidth()) {
             Xpos = Xpos3 - loopImage3.getImgIcon().getIconWidth();
-        } //if Left Image off screen place behind Center Image
+        } //if Left Image off screen place behind setCenterToFrame Image
         else if (Xpos2 >= this.getWidth()) {
             Xpos2 = Xpos - loopImage3.getImgIcon().getIconWidth();
         }
