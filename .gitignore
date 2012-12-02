@@ -60,3 +60,7 @@ Thumbs.db
 /build/
 /dist/
 /lib/
+
+*.class
+
+*.class
