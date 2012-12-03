@@ -13,7 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
 
-	public class AConextMenuListener extends MouseAdapter {
+	public class AContextMenuListener extends MouseAdapter {
 	    private JPopupMenu popup = new JPopupMenu();
 
 	    private AbstractAction cutAction;
@@ -28,7 +28,7 @@ import javax.swing.text.JTextComponent;
 
 	    private enum Actions { UNDO, CUT, COPY, PASTE, SELECT_ALL };
 
-	    public AConextMenuListener() {
+	    public AContextMenuListener() {
 	        undoAction = new AbstractAction("Undo") {
 
 	            @Override

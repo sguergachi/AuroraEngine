@@ -61,7 +61,7 @@ public class ATextField extends AImagePane {
 		textBox.setBorder(BorderFactory.createEmptyBorder());
 		textBox.setBackground(new Color(0, 0, 0, 0));
 		textBox.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 10));
-		textBox.addMouseListener(new AConextMenuListener());
+		textBox.addMouseListener(new AContextMenuListener());
 		textBox.addFocusListener(new textFocusListener());
 
 		this.add(textBox, BorderLayout.CENTER);

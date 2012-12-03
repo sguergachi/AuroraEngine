@@ -83,7 +83,7 @@ public class ATextArea extends AImagePane {
 		textArea.setBorder(BorderFactory.createEmptyBorder());
 		textArea.setBackground(new Color(0, 0, 0, 0));
 		textArea.setBorder(BorderFactory.createEmptyBorder(0, 15, 0, 15));
-		textArea.addMouseListener(new AConextMenuListener());
+		textArea.addMouseListener(new AContextMenuListener());
 		textArea.addFocusListener(new textFocusListener());
 
 		JScrollPane areaScrollPane = new JScrollPane(textArea);
