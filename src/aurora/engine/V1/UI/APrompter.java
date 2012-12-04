@@ -206,6 +206,7 @@ public class APrompter extends JPanel implements Runnable {
                 //Animation Complete!
                 if (done) {
                     running = false;
+
                     //Execute what ever is in postHandler Method
                     if (postHandler != null) {
                         postHandler.actionPerformed();
