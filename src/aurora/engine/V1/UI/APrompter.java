@@ -68,6 +68,8 @@ public class APrompter extends JPanel implements Runnable {
 
     private ArrayList<Color> listUpdateColor;
 
+    private boolean done;
+
     public APrompter(Font font) {
         super(true);
         this.font = font;
@@ -158,6 +160,10 @@ public class APrompter extends JPanel implements Runnable {
 
     }
 
+    public void done() {
+        done = true;
+    }
+
     @Override
     public void run() {
 
@@ -194,7 +200,22 @@ public class APrompter extends JPanel implements Runnable {
 
             } else {
 
-                break;
+
+                updateList();
+
+                //Animation Complete!
+                if (done) {
+                    running = false;
+                    //Execute what ever is in postHandler Method
+                    if (postHandler != null) {
+                        postHandler.actionPerformed();
+                        break;
+                    } else {
+                        break;
+                    }
+                }
+
+
             }
 
             while (updateList.size() == toDisplayList.size()) {
@@ -212,12 +233,7 @@ public class APrompter extends JPanel implements Runnable {
             }
         }
 
-        //Animation Complete!
-        running = false;
-        //Execute what ever is in postHandler Method
-        if (postHandler != null) {
-            postHandler.actionPerformed();
-        }
+
     }
 
     @Override

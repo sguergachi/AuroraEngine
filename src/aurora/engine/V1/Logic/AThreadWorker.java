@@ -49,7 +49,7 @@ public class AThreadWorker implements Runnable {
 		return !canRun;
 	}
 
-	public void once() {
+	public void startOnce() {
 		once = true;
 		start();
 	}
