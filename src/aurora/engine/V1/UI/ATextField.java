@@ -71,7 +71,15 @@ public class ATextField extends AImagePane {
 		this.setBackground(new Color(0, 0, 0, 0));
 
 	}
-
+	
+	public void setText(String text){
+		textBox.setText(text);
+	}
+	
+	public String getText(){
+		return textBox.getText();
+	}
+	
 	public JTextField getTextBox() {
 		return textBox;
 	}
