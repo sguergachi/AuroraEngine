@@ -19,11 +19,17 @@ package aurora.engine.V1.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Desktop.Action;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import javax.swing.AbstractButton;
+import javax.swing.JMenu;
 import javax.swing.JPanel;
 
 /**
@@ -43,11 +49,69 @@ public final class ADialog extends ADragFrame {
     private ASlickLabel lblText;
     private JPanel Top;
     private AButton btnOk;
+    private AButton btnCancel;
     private JPanel Bottom;
     private ActionListener a;
     //private aSound snd;
     private Font font;
+    
+    public ADialog(int Type, String Text, Font font, Object obj){
+    	if(obj instanceof ActionListener){
+    		setButtonListener((ActionListener) obj);
+    		this.Type = Type;
+            this.Text = Text;
+            this.font = font;
 
+            if (Type == aDIALOG_WARNING) {
+
+                img = new AImagePane("Aurora_Dialog2.png");
+                img.setLayout(new BorderLayout());
+                add(BorderLayout.CENTER, img);
+
+                title = new ASlickLabel("  Warning    ");
+
+
+            } else if (Type == aDIALOG_ERROR) {
+
+                img = new AImagePane("Aurora_Dialog1.png");
+                img.setLayout(new BorderLayout());
+                add(BorderLayout.CENTER, img);
+                title = new ASlickLabel("  Error    ");
+
+            }
+            showDialog();
+    	}
+    }
+    
+    public ADialog(int Type, String Text, Object obj){
+    	if(obj instanceof ActionListener){
+    		setButtonListener((ActionListener) obj);
+    		this.Type = Type;
+            this.Text = Text;
+            font = new Font("Arial", Font.PLAIN, 20);
+
+            if (Type == aDIALOG_WARNING) {
+
+                img = new AImagePane("Aurora_Dialog2.png");
+                img.setLayout(new BorderLayout());
+                add(BorderLayout.CENTER, img);
+
+                title = new ASlickLabel("  Warning    ");
+
+
+            } else if (Type == aDIALOG_ERROR) {
+
+
+                img = new AImagePane("Aurora_Dialog1.png");
+                img.setLayout(new BorderLayout());
+                add(BorderLayout.CENTER, img);
+                title = new ASlickLabel("  Error    ");
+            }
+
+            showDialog();
+    	}
+    }
+    
     public ADialog(int Type, String Text, Font font) {
 
 
@@ -108,25 +172,24 @@ public final class ADialog extends ADragFrame {
     public void setButtonListener(ActionListener a) {
 
         this.a = a;
-        btnOk.addActionListener(a);
+        //btnOk.addActionListener(a);
     }
 
     public void showDialog() {
 
-
         /// EXIT BUTTON
-        exit = new AButton("Aurora_Close_normal.png", "Aurora_Close_down.png", "Aurora_Close_over.png");
-        exit.addActionListener(new ExitListener());
+        //exit = new AButton("Aurora_Close_normal.png", "Aurora_Close_down.png", "Aurora_Close_over.png");
+        //exit.addActionListener(new ExitListener());
 
         //TOP
-        Top = new JPanel();
+        /*Top = new JPanel();
         Top.setOpaque(false);
         Top.setLayout(new BorderLayout());
 
         Top.add(BorderLayout.WEST, title);
-        Top.add(BorderLayout.EAST, exit);
+        //Top.add(BorderLayout.EAST, exit);
 
-        img.add(BorderLayout.PAGE_START, Top);
+        img.add(BorderLayout.PAGE_START, Top);*/
 
 
 
@@ -135,6 +198,7 @@ public final class ADialog extends ADragFrame {
         setSize(490, 230);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
+        
 
 
 
@@ -142,6 +206,7 @@ public final class ADialog extends ADragFrame {
 
         lblText.setFont(font.deriveFont(font.BOLD, 28));
         lblText.setForeground(Color.LIGHT_GRAY);
+
 
         title.setForeground(Color.LIGHT_GRAY);
 
@@ -152,6 +217,7 @@ public final class ADialog extends ADragFrame {
         img.add(BorderLayout.EAST, lblText);
 
         btnOk = new AButton("Aurora_dOk_normal.png", "Aurora_dOk_down.png", "Aurora_dOk_over.png");
+        btnCancel = new AButton("Aurora_dOk_normal.png", "Aurora_dOk_down.png", "Aurora_dOk_over.png"); //must insert correct cancel button images
         if (a != null) {
             btnOk.addActionListener(a);
 
@@ -180,7 +246,6 @@ public final class ADialog extends ADragFrame {
             };
             btnOk.addActionListener(a);
 
-
         }
 
 
@@ -188,20 +253,22 @@ public final class ADialog extends ADragFrame {
         Bottom.setOpaque(false);
 
         Bottom.add(btnOk);
+        Bottom.add(btnCancel);
         img.add(BorderLayout.PAGE_END, Bottom);
         img.addKeyListener(new EnterKeyListener());
         Bottom.addKeyListener(new EnterKeyListener());
         btnOk.addKeyListener(new EnterKeyListener());
+        btnCancel.addActionListener(new ExitListener());
         title.addKeyListener(new EnterKeyListener());
         lblText.addKeyListener(new EnterKeyListener());
         addKeyListener(new EnterKeyListener());
-        Top.addKeyListener(new EnterKeyListener());
-        exit.addKeyListener(new EnterKeyListener());
+        //Top.addKeyListener(new EnterKeyListener());
+        //exit.addKeyListener(new EnterKeyListener());
 
 //        img.requestFocusInWindow();
 
-    }
-
+    }    
+    
     class EnterKeyListener extends KeyAdapter {
 
 
