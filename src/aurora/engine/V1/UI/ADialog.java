@@ -43,7 +43,7 @@ import javax.swing.*;
  * |
  * .........................................................................
  *
- * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Sammy Guergachi <sguergachi at gmail.com> & Marius Brandt <marius dot brandt at hotmail dot com>
  * 
  */
 public final class ADialog extends ADragFrame {
@@ -123,10 +123,15 @@ public final class ADialog extends ADragFrame {
      */
     public JPanel iconContainer;
     
+    /**
+     * Text container.
+     */
+    public JPanel textContainer;
+    
     
     /**
      * .-----------------------------------------------------------------------.
-     * | ADialog(int Type, String Text, Font font, Object obj)
+     * | ADialog(int Type, String Text, Font font, ActionListener al)
      * .-----------------------------------------------------------------------.
      * |
      * |This constructor takes the type of dialog that should be shown (error or warning),
@@ -138,42 +143,39 @@ public final class ADialog extends ADragFrame {
      * | 
      * .........................................................................
      *
-     * @param Type int, Text String, font Font, obj Object
+     * @param Type int, Text String, font Font, al ActionListener
      *
      */
     
-    public ADialog(int Type, String Text, Font font, Object obj){
-      if(obj instanceof ActionListener){
-    		setButtonListener((ActionListener) obj);
-    		this.Type = Type;
-            this.Text = Text;
-            this.font = font;
+    public ADialog(int Type, String Text, Font font, ActionListener al){
+    	setButtonListener(al);
+    	this.Type = Type;
+        this.Text = Text;
+        this.font = font;
+        if (Type == aDIALOG_WARNING) {
 
-            if (Type == aDIALOG_WARNING) {
-
-                img = new AImagePane("app_dialog_bg.png");
-                img.setLayout(new BorderLayout());
-                add(BorderLayout.CENTER, img);
+            img = new AImagePane("app_dialog_bg.png");
+            img.setLayout(new BorderLayout());
+            add(BorderLayout.CENTER, img);
                 
-                iconImg = new AImage("app_icon_dialog_warning.png");
+            iconImg = new AImage("app_icon_dialog_warning.png");
 
 
-            } else if (Type == aDIALOG_ERROR) {
+        } else if (Type == aDIALOG_ERROR) {
 
-                img = new AImagePane("app_dialog_bg.png");
-                img.setLayout(new BorderLayout());
-                add(BorderLayout.CENTER, img);
+            img = new AImagePane("app_dialog_bg.png");
+            img.setLayout(new BorderLayout());
+            add(BorderLayout.CENTER, img);
                 
-                iconImg = new AImage("app_icon_dialog_error.png");
+            iconImg = new AImage("app_icon_dialog_error.png");
 
-            }
-            showDialog();
-    	}
+        }
+        showDialog();
     }
     
     /**
      * .-----------------------------------------------------------------------.
-     * | ADialog(int Type, String Text, Object obj)
+     * | ADialog(int Type, String Text, ActionListener al)
      * .-----------------------------------------------------------------------.
      * |
      * |This constructor takes the type of dialog that should be shown (error or warning),
@@ -185,39 +187,37 @@ public final class ADialog extends ADragFrame {
      * | 
      * .........................................................................
      *
-     * @param Type int, Text String, obj Object
+     * @param Type int, Text String, al ActionListener
      *
      */
     
-    public ADialog(int Type, String Text, Object obj){
-    	if(obj instanceof ActionListener){
-    		setButtonListener((ActionListener) obj);
-    		this.Type = Type;
-            this.Text = Text;
-            font = new Font("Arial", Font.PLAIN, 20);
+    public ADialog(int Type, String Text, ActionListener al){
+    	setButtonListener(al);
+    	this.Type = Type;
+        this.Text = Text;
+        font = new Font("Arial", Font.PLAIN, 20);
 
-            if (Type == aDIALOG_WARNING) {
-
-                img = new AImagePane("app_dialog_bg.png");
-                img.setLayout(new BorderLayout());                
-                add(BorderLayout.CENTER, img);
+        if (Type == aDIALOG_WARNING) {
+        	img = new AImagePane("app_dialog_bg.png");
+        	img.setLayout(new BorderLayout());                
+        	add(BorderLayout.CENTER, img);
                 
-                iconImg = new AImage("app_icon_dialog_warning.png");
+        	iconImg = new AImage("app_icon_dialog_warning.png");
 
 
 
-            } else if (Type == aDIALOG_ERROR) {
+        } else if (Type == aDIALOG_ERROR) {
 
 
-                img = new AImagePane("app_dialog_bg.png");
-                img.setLayout(new BorderLayout());
-                add(BorderLayout.CENTER, img);
+        	img = new AImagePane("app_dialog_bg.png");
+        	img.setLayout(new BorderLayout());
+        	add(BorderLayout.CENTER, img);
                 
-                iconImg = new AImage("app_icon_dialog_error.png");
-            }
+        	iconImg = new AImage("app_icon_dialog_error.png");
+        }
 
-            showDialog();
-    	}
+        showDialog();
+
     }
     
     /**
@@ -335,7 +335,7 @@ public final class ADialog extends ADragFrame {
     
     /**
      * .-----------------------------------------------------------------------.
-     * | setOKButtonListener(Object listener)
+     * | setOKButtonListener(ActionListener listener)
      * .-----------------------------------------------------------------------.
      * |
      * | This function requires a custom ActionListener that has to be passed like this
@@ -350,15 +350,13 @@ public final class ADialog extends ADragFrame {
      * |
      * .........................................................................
      *
-     * @param listener Object
+     * @param listener ActionListener
      *
      */
     
-    public void setOKButtonListener(Object listener){
-    	if(listener instanceof ActionListener){
-    		btnOk.removeActionListener(a);
-    		btnOk.addActionListener((ActionListener) listener);
-    	}
+    public void setOKButtonListener(ActionListener listener){
+    	btnOk.removeActionListener(a);
+    	btnOk.addActionListener(listener);
     }
 
     /**
@@ -387,18 +385,21 @@ public final class ADialog extends ADragFrame {
         iconContainer.add(iconImg);
         img.add(iconContainer,BorderLayout.NORTH);
         
-        lblText = new ASlickLabel(Text + "   ");
         
-        lblText.setFont(font.deriveFont(font.BOLD, 28));
+        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        textContainer.setOpaque(false);
+        lblText = new ASlickLabel(Text + "   ");
+        lblText.setFont(font);
         lblText.setForeground(Color.LIGHT_GRAY);
+        textContainer.add(lblText);
 
 
         //BOTTOM
 
-        img.add(lblText,BorderLayout.CENTER);
+        img.add(textContainer,BorderLayout.CENTER);
 
-        btnOk = new AButton("Aurora_dOk_normal.png", "Aurora_dOk_down.png", "Aurora_dOk_over.png");
-        btnCancel = new AButton("app_btn_cancelDialog_norm.png", "app_btn_cancelDialog_norm.png", "app_btn_cancelDialog_norm.png"); //must insert correct cancel button images
+        btnOk = new AButton("app_btn_okDialog_norm.png", "app_btn_okDialog_down.png", "app_btn_okDialog_over.png");
+        btnCancel = new AButton("app_btn_cancelDialog_norm.png", "app_btn_cancelDialog_down.png", "app_btn_cancelDialog_over.png"); //must insert correct cancel button images
         if (a != null) {
             btnOk.addActionListener(a);
 
