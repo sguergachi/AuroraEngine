@@ -375,9 +375,8 @@ public final class ADialog extends ADragFrame {
         }
 
 
-        Bottom = new JPanel(new BorderLayout(0,0));
+        Bottom = new JPanel(new BorderLayout(0, 0));
         pnlButtonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
-//        pnlButtonContainer.setLayout(new BoxLayout(pnlButtonContainer, BoxLayout.X_AXIS));
         pnlButtonContainer.setOpaque(false);
         pnlButtonContainer.add(btnCancel);
         pnlButtonContainer.add(btnOk);
@@ -385,19 +384,25 @@ public final class ADialog extends ADragFrame {
 
         Bottom.setOpaque(false);
         Bottom.add(pnlButtonContainer, BorderLayout.EAST);
-
         img.add(BorderLayout.PAGE_END, Bottom);
-        img.addKeyListener(new EnterKeyListener());
-        Bottom.addKeyListener(new EnterKeyListener());
-        btnOk.addKeyListener(new EnterKeyListener());
+
         btnCancel.addActionListener(new ExitListener());
-        lblText.addKeyListener(new EnterKeyListener());
-        addKeyListener(new EnterKeyListener());
-        img.requestFocusInWindow();
+
+        img.getInputMap().put(KeyStroke.getKeyStroke(
+                java.awt.event.KeyEvent.VK_ENTER, 0), "enterDown");
+        img.getActionMap().put("enterDown", new AbstractAction() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a.actionPerformed(null);
+            }
+        });
+
+        requestFocusInWindow();
 
     }
 
-    class EnterKeyListener extends KeyAdapter {
+    public class EnterKeyListener extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {
