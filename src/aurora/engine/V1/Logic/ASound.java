@@ -20,6 +20,8 @@ package aurora.engine.V1.Logic;
 
 import aurora.engine.V1.UI.ADialog;
 
+import java.applet.Applet;
+import java.applet.AudioClip;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -29,8 +31,8 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
 
 /**
  * .------------------------------------------------------------------------.
@@ -100,6 +102,16 @@ public class ASound implements Runnable {
      */
     private Clip audioClip;
     
+    /**
+     * Audio clip
+     */
+    private AudioClip sound;
+    
+    /**
+     * Location to File
+     */
+    private URL path;
+    
     
     /**
      * .-----------------------------------------------------------------------.
@@ -163,12 +175,8 @@ public class ASound implements Runnable {
      *
      */
     public void Stop(){
-    	if(audioClip != null){
-    		if (audioClip.isOpen()){
-    			audioClip.stop();
-    			audioClip.flush();
-    			audioClip.close();
-    		}
+    	if(sound != null){
+    		sound.stop();
     	}
     }
     
@@ -188,12 +196,15 @@ public class ASound implements Runnable {
      */
     
     private void playSound() throws UnsupportedAudioFileException, IOException, URISyntaxException, LineUnavailableException {
+    	path = new URL(getClass().getResource("/aurora/V1/resources/Sound/" + URL).toString());
     	in = AudioSystem.getAudioInputStream(new URL(getClass().getResource("/aurora/V1/resources/Sound/" + URL).toString()));
-        audioClip = AudioSystem.getClip();
-        audioClip.open(in);
-        if(loop)
-        	audioClip.loop(Clip.LOOP_CONTINUOUSLY);
-        audioClip.start();
+    	audioClip = AudioSystem.getClip();
+    	sound = Applet.newAudioClip(path);
+    	if(loop){
+    		sound.loop();
+    	}else{
+    		sound.play();
+    	}
     }
     
     /**
