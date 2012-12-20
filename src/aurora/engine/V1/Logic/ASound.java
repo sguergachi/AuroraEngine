@@ -93,16 +93,6 @@ public class ASound implements Runnable {
     private boolean loop;
     
     /**
-     * Audio stream constant
-     */
-    private AudioInputStream in;
-    
-    /**
-     * Audio clip
-     */
-    private Clip audioClip;
-    
-    /**
      * Audio clip
      */
     private AudioClip sound;
@@ -197,8 +187,6 @@ public class ASound implements Runnable {
     
     private void playSound() throws UnsupportedAudioFileException, IOException, URISyntaxException, LineUnavailableException {
     	path = new URL(getClass().getResource("/aurora/V1/resources/Sound/" + URL).toString());
-    	in = AudioSystem.getAudioInputStream(new URL(getClass().getResource("/aurora/V1/resources/Sound/" + URL).toString()));
-    	audioClip = AudioSystem.getClip();
     	sound = Applet.newAudioClip(path);
     	if(loop){
     		sound.loop();
