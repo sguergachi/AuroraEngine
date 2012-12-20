@@ -19,37 +19,127 @@
 package aurora.engine.V1.Logic;
 
 import aurora.engine.V1.UI.ADialog;
-import java.io.*;
+
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.sound.sampled.*;
+import java.net.URL;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 
 /**
- * Allows Application to play sounds in both a loop or on demand
- * //Currently is buggy and development for this has been pushed until later//
- * @author Sammy
- * @version 0.1
+ * .------------------------------------------------------------------------.
+ * | ASound
+ * .------------------------------------------------------------------------.
+ * |
+ * | This class handles sound playback. 
+ * | The sound runs on a new Thread to avoid interruption of the main program.
+ * | 
+ * .........................................................................
+ *
+ * @author Sammy Guergachi <sguergachi at gmail.com>
+ * @author Carlos Machado <camachado at gmail.com>
+ * @author Marius Brandt <marius dot brandt at hotmail.com>
+ * 
  */
+
 public class ASound implements Runnable {
 
+	/**
+	 * Thread to run on.
+	 */
     private Thread runner;
+    
+    /**
+     * Path to sound.
+     */
     private String URL;
-    private ADialog err;
+    
+    /**
+     * Name Constant.
+     */
     public final static String sfxButton = "button.wav";
+    
+    /**
+     * Name Constant.
+     */
     public final static String sfxAlert = "Alert.wav";
+    
+    /**
+     * Name Constant.
+     */
     public final static String sfxClunk = "Clunk.wav";
+    
+    /**
+     * Name Constant.
+     */
     public final static String sfxError = "Error.wav";
+    
+    /**
+     * Name Constant.
+     */
     public final static String sfxTheme = "loop.wav";
+    
+    /**
+     * Bool Constant.
+     */
     private boolean loop;
-    private AudioInputStream din;
-
+    
+    /**
+     * Audio stream constant
+     */
+    private AudioInputStream in;
+    
+    /**
+     * Audio clip
+     */
+    private Clip audioClip;
+    
+    
+    /**
+     * .-----------------------------------------------------------------------.
+     * | ASound(String, boolean)
+     * .-----------------------------------------------------------------------.
+     * |
+     * | This is the constructor for the ASound class.
+     * | It will prepare the given sound for playback.
+     * | 
+     * | Note: The URL should be something like this -> "yoursound.wav"
+     * | 
+     * | If you want the sound to be played in a loop, set the boolean loop to true
+     * | otherwise set it to false.
+     * |
+     * |
+     * .........................................................................
+     *
+     * @param URL String, loop boolean
+     *
+     */
     public ASound(String URL, boolean loop) throws MalformedURLException, UnsupportedAudioFileException, IOException, LineUnavailableException {
         this.URL = URL;
 
         this.loop = loop;
     }
+    
+    /**
+     * .-----------------------------------------------------------------------.
+     * | Play()
+     * .-----------------------------------------------------------------------.
+     * |
+     * | Use this method to play the sound defined in the constructor.
+     * |
+     * | This method MUST either be embedded into a try-catch statement,
+     * | or the method which calls this method must have certain throws declarations
+     * | Note: Eclipse will offer you to do any of both options for you.
+     * |
+     * .........................................................................
+     *
+     */
 
     public void Play() throws UnsupportedAudioFileException, IOException, LineUnavailableException, InterruptedException {
         if (runner == null) {
@@ -59,119 +149,71 @@ public class ASound implements Runnable {
         } else {
             //runner.notify();
         }
-
     }
-
+    
+    /**
+     * .-----------------------------------------------------------------------.
+     * | Stop()
+     * .-----------------------------------------------------------------------.
+     * |
+     * | This method will manually stop the current audio.
+     * | It will also try to free all used resources.
+     * | 
+     * .........................................................................
+     *
+     */
+    public void Stop(){
+    	if(audioClip != null){
+    		if (audioClip.isOpen()){
+    			audioClip.stop();
+    			audioClip.flush();
+    			audioClip.close();
+    		}
+    	}
+    }
+    
+    /**
+     * .-----------------------------------------------------------------------.
+     * | playSound()
+     * .-----------------------------------------------------------------------.
+     * |
+     * | This private method will be called once a Thread of this class has been
+     * | created successfully.
+     * | 
+     * | If you are using custom resources, change "/aurora/V1/resources/Sound/" 
+     * | to whatever fits your project setup.
+     * | 
+     * .........................................................................
+     *
+     */
+    
     private void playSound() throws UnsupportedAudioFileException, IOException, URISyntaxException, LineUnavailableException {
-
-
-        AudioInputStream in = AudioSystem.getAudioInputStream(new File(getClass().getResource("/aurora/V1/resources/sound/" + URL).toURI()));
-
-
-
-        AudioFormat baseFormat = in.getFormat();
-        AudioFormat decodedFormat = new AudioFormat(
-                AudioFormat.Encoding.PCM_SIGNED, // Encoding to use
-                baseFormat.getSampleRate(), // sample rate (same as base format)
-                16, // sample size in bits
-                baseFormat.getChannels(), // # of Channels
-                baseFormat.getChannels() * 2, // Frame Size
-                baseFormat.getSampleRate(), // Frame Rate
-                false // Big Endian
-                );
-
-
-
-        din = AudioSystem.getAudioInputStream(decodedFormat, in);
-        DataLine.Info info = new DataLine.Info(SourceDataLine.class, decodedFormat);
-        SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
-        try {
-            line = (SourceDataLine) AudioSystem.getLine(info);
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            line.open(decodedFormat);
-        } catch (LineUnavailableException ex) {
-            Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-
-        if (line != null) {
-            byte[] data = new byte[4096]; // 4k is a reasonable transfer size.
-            // Start
-            line.start(); // Start the line.
-
-            int nBytesRead;
-            try {
-                while ((nBytesRead = din.read(data, 0, data.length)) != -1) {
-                    line.write(data, 0, nBytesRead);
-                }
-            } catch (IOException ex) {
-                Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            // Stop
-            line.drain();
-            line.stop();
-            line.close();
-            try {
-                din.close();
-
-            } catch (IOException ex) {
-                Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-
-
-
-        }
+    	in = AudioSystem.getAudioInputStream(new URL(getClass().getResource("/aurora/V1/resources/Sound/" + URL).toString()));
+        audioClip = AudioSystem.getClip();
+        audioClip.open(in);
+        if(loop)
+        	audioClip.loop(Clip.LOOP_CONTINUOUSLY);
+        audioClip.start();
     }
-
+    
+    /**
+     * .-----------------------------------------------------------------------.
+     * | run()
+     * .-----------------------------------------------------------------------.
+     * |
+     * | This method is the main method of any Thread.
+     * | It will be executed as soon as the Thread has been created.
+     * | 
+     * .........................................................................
+     *
+     */
     @Override
     public void run() {
-
-        if (loop) {
-            System.out.println(Thread.currentThread() == runner);
-            while (Thread.currentThread() == runner) {
-
-                try {
-                    try {
-                        playSound();
-                    } catch (LineUnavailableException ex) {
-                        Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } catch (UnsupportedAudioFileException ex) {
-                    Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (URISyntaxException ex) {
-                    Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-
-
-
-        } else {
-            try {
-                try {
-                    playSound();
-                } catch (LineUnavailableException ex) {
-                    Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            } catch (UnsupportedAudioFileException ex) {
-                Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (URISyntaxException ex) {
-                Logger.getLogger(ASound.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
+    	try {
+			playSound();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
         runner = null;
     }
 }
