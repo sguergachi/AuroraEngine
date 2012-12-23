@@ -64,3 +64,5 @@ Thumbs.db
 *.class
 
 *.class
+
+.classpath
