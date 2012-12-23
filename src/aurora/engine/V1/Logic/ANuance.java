@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.Logic;
 
 import java.util.Calendar;
@@ -29,27 +28,54 @@ import java.util.Random;
 public class ANuance {
     //TODO Add DAY Sensitive Greetings, i.e. Happy Holidays OR Merry Christmas, OR Happy Birthday <- might be harder to implement
     //TODO Add ability to read greetings from text file
+
     private String[] fld_Welcome = {"Welcome"};
+
     public static final int inx_Welcome = 0;
-    private String[] fld_Sure = {"Sure", "Certain", "Confident"};
+
+    private String[] fld_Sure = {"Sure", "Certain", "Confident", "Positive"};
+
     public static final int inx_Sure = 1;
+
     private String[] fld_Please = {"Please", "Kindly", "Calmly"};
+
     public static final int inx_Please = 2;
-    private String[] fld_Searching = {"Searching", "Exploring", "Looking", "Scaning", "Probing", "Scouring", "Inspecting"};
+
+    private String[] fld_Searching = {"Searching", "Exploring", "Looking",
+        "Scaning", "Probing", "Scouring", "Inspecting"};
+
     public static final int inx_Searching = 3;
-    private String[] fld_Preparing = {"Preparing", "Accommodating", "Adjusting", "Modifying", "Configuring", "Altering"};
+
+    private String[] fld_Preparing = {"Preparing", "Accommodating", "Adjusting",
+        "Modifying", "Configuring", "Altering"};
+
     public static final int inx_Preparing = 4;
+
     private String[] fld_Hi = {"Hey", "Hello", "Hi"};
+
     private String[] fld_Error = {"Error", "Fault", "Invalid", "Failure"};
+
     public static final int inx_Error = 5;
-    private String[] fld_Exit = {"Exit", "Quit", "Leave", "Go", "Depart", "Scram", "Flee", "Terminate"};
+
+    private String[] fld_Exit = {"Exit", "Resign", "Leave", "Back Out", "Depart",
+        "Go Back To Real Life", "Flee", "Terminate", "Evacuate", "Bail Out",
+        "Pull Out", "Vacate"};
+
     public static final int inx_Exit = 6;
 //added by Carlos
+
     public static final int inx_Greeting = 7;
-    private String[] fld_WelcomeBack = {"Welcome Back!", "How Was Your Day!", "Let Me Finish Loading Your Games", "Good To See You!", "Lets Play Some Games!!"};
+
+    private String[] fld_WelcomeBack = {"Welcome Back!", "How Was Your Day!",
+        "Let Me Finish Loading Your Games", "Good To See You!",
+        "Lets Play Some Games!!"};
+
     public static final int inx_WelcomeBack = 8;
+
     public static final int inx_User = 9;
+
     private String vi_Response;
+
     private final Random randomGenerator;
 
     public ANuance() {
@@ -75,7 +101,8 @@ public class ANuance {
         } else if (index == inx_User) {
             vi_Response = System.getProperty("user.name");
         } else if (index == inx_WelcomeBack) {
-            vi_Response = fld_WelcomeBack[generateNum(0, fld_WelcomeBack.length - 1)];
+            vi_Response = fld_WelcomeBack[generateNum(0, fld_WelcomeBack.length
+                                                         - 1)];
         } else if (index == inx_Greeting) {
             int greetingRand = generateNum(0, 1);
 
