@@ -108,7 +108,7 @@ public class AScrollingImage extends JPanel implements Runnable {
             runner = new Thread(this);
         }
         runner.start();
-        Ypos = loopImage2.getImgIcon().getIconHeight();
+        Ypos = imageHeight + (this.getHeight() / 2);
     }
 
     @Override

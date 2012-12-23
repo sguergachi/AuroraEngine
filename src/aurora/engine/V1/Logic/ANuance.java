@@ -58,7 +58,7 @@ public class ANuance {
     public static final int inx_Error = 5;
 
     private String[] fld_Exit = {"Exit", "Resign", "Leave", "Back Out", "Depart",
-        "Go Back To Real Life", "Flee", "Terminate", "Evacuate", "Bail Out",
+        "Flee", "Terminate", "Evacuate", "Bail Out",
         "Pull Out", "Vacate"};
 
     public static final int inx_Exit = 6;

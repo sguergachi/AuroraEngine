@@ -226,7 +226,8 @@ public class ASound implements Runnable {
                                     URISyntaxException, LineUnavailableException {
         path = new URL(getClass().getResource("/aurora/V1/resources/Sound/"
                                               + URL).toString());
-        sound = Applet.newAudioClip(path);
+        sound = Applet.newAudioClip(path );
+        System.out.println("Playing Sound " + path);
         if (loop) {
             sound.loop();
         } else {
