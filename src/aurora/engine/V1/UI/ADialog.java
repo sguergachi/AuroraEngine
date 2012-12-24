@@ -147,20 +147,13 @@ public final class ADialog extends ADragFrame {
         this.font = font;
         if (Type == aDIALOG_WARNING) {
 
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
 
-            iconImg = new AImage("app_icon_dialog_warning.png");
+            iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
 
 
         } else if (Type == aDIALOG_ERROR) {
 
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
-
-            iconImg = new AImage("app_icon_dialog_error.png");
+            iconImg = new AImage("app_icon_dialog_error.png", 100, 100);
 
         }
         showDialog();
@@ -190,20 +183,13 @@ public final class ADialog extends ADragFrame {
         font = new Font("Arial", Font.BOLD, 20);
 
         if (Type == aDIALOG_WARNING) {
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
 
-            iconImg = new AImage("app_icon_dialog_warning.png");
+            iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
 
 
 
         } else if (Type == aDIALOG_ERROR) {
 
-
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
 
             iconImg = new AImage("app_icon_dialog_error.png");
         }
@@ -237,21 +223,13 @@ public final class ADialog extends ADragFrame {
 
         if (Type == aDIALOG_WARNING) {
 
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
-
-            iconImg = new AImage("app_icon_dialog_warning.png");
+            iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
 
 
 
         } else if (Type == aDIALOG_ERROR) {
 
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
-
-            iconImg = new AImage("app_icon_dialog_error.png");
+            iconImg = new AImage("app_icon_dialog_error.png", 100, 100);
 
         }
         showDialog();
@@ -282,21 +260,13 @@ public final class ADialog extends ADragFrame {
 
         if (Type == aDIALOG_WARNING) {
 
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
 
-            iconImg = new AImage("app_icon_dialog_warning.png");
+            iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
 
 
         } else if (Type == aDIALOG_ERROR) {
 
-
-            img = new AImagePane("app_dialog_bg.png");
-            img.setLayout(new BorderLayout());
-            add(BorderLayout.CENTER, img);
-
-            iconImg = new AImage("app_icon_dialog_error.png");
+            iconImg = new AImage("app_icon_dialog_error.png", 100, 100);
         }
 
         showDialog();
@@ -357,9 +327,14 @@ public final class ADialog extends ADragFrame {
      */
     public void showDialog() {
 
-        /// Frame Config
+
+        img = new AImagePane("app_dialog_bg.png");
+        img.setLayout(new BorderLayout());
+        add(BorderLayout.CENTER, img);
+
+        //* Config Dialog *//
         setUndecorated(true);
-        setSize(510, 250);
+        setSize(535, 240);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
 
@@ -371,7 +346,7 @@ public final class ADialog extends ADragFrame {
 
         textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         textContainer.setOpaque(false);
-        lblText = new ASlickLabel(Text );
+        lblText = new ASlickLabel(Text);
         lblText.setFont(font);
         lblText.setForeground(Color.LIGHT_GRAY);
         textContainer.add(lblText);
@@ -400,27 +375,34 @@ public final class ADialog extends ADragFrame {
         }
 
 
-        Bottom = new JPanel(new BorderLayout());
-        pnlButtonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT,0,0));
+        Bottom = new JPanel(new BorderLayout(0, 0));
+        pnlButtonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         pnlButtonContainer.setOpaque(false);
-        pnlButtonContainer.add(btnOk);
         pnlButtonContainer.add(btnCancel);
+        pnlButtonContainer.add(btnOk);
+
 
         Bottom.setOpaque(false);
         Bottom.add(pnlButtonContainer, BorderLayout.EAST);
-
         img.add(BorderLayout.PAGE_END, Bottom);
-        img.addKeyListener(new EnterKeyListener());
-        Bottom.addKeyListener(new EnterKeyListener());
-        btnOk.addKeyListener(new EnterKeyListener());
+
         btnCancel.addActionListener(new ExitListener());
-        lblText.addKeyListener(new EnterKeyListener());
-        addKeyListener(new EnterKeyListener());
-        img.requestFocusInWindow();
+
+        img.getInputMap().put(KeyStroke.getKeyStroke(
+                java.awt.event.KeyEvent.VK_ENTER, 0), "enterDown");
+        img.getActionMap().put("enterDown", new AbstractAction() {
+            private static final long serialVersionUID = 1L;
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                a.actionPerformed(null);
+            }
+        });
+
+        requestFocusInWindow();
 
     }
 
-    class EnterKeyListener extends KeyAdapter {
+    public class EnterKeyListener extends KeyAdapter {
 
         @Override
         public void keyPressed(KeyEvent e) {

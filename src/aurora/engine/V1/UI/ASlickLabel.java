@@ -22,11 +22,11 @@ public class ASlickLabel extends JLabel{
     }
 
     public ASlickLabel(String text) {
-        super(text + "   ");
+        super(text + "  ");
     }
 
     public ASlickLabel(String text, int horizontalAlignment) {
-        super(text + "   ", horizontalAlignment);
+        super(text + "  ", horizontalAlignment);
     }
 
     public ASlickLabel(Icon image, int horizontalAlignment) {
@@ -34,7 +34,7 @@ public class ASlickLabel extends JLabel{
     }
 
     public ASlickLabel(String text, Icon icon, int horizontalAlignment) {
-        super(text + "   ", icon, horizontalAlignment);
+        super(text + "  ", icon, horizontalAlignment);
     }
 
     public ASlickLabel() {
