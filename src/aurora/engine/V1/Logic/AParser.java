@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AParser {
 
 	private ArrayList<String> parrsedArray;
-	private aFileManager mngr;
+	private AFileManager mngr;
 
 	/**
 	 * Interact with file system to get required data
@@ -19,7 +19,7 @@ public class AParser {
 	 *            path to the directory containing the file(s) you want to parse
 	 */
 	public AParser(String RootPath) {
-		this.mngr = new aFileManager(RootPath, true);
+		this.mngr = new AFileManager(RootPath, true);
 		this.parrsedArray = new ArrayList<String>();
 	}
 
