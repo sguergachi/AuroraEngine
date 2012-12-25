@@ -58,6 +58,7 @@ public class ASound implements Runnable {
     /**
      * Path to sound.
      */
+
     private String URL;
 
     /**
@@ -83,7 +84,7 @@ public class ASound implements Runnable {
     /**
      * Name Constant.
      */
-    public final static String sfxTheme = "loop.wav";
+    public final static String sfxTheme = "ambience.wav";
 
     /**
      * Bool Constant.
