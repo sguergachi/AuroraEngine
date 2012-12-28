@@ -111,15 +111,13 @@ public class ANuance {
 
         file = new File(localFile);
 
-        AParser parser = new AParser(file.getAbsolutePath()
-                .substring(0, file.getAbsolutePath().length() - file.getName()
-                .length())
-                .concat("\\"));
+        AParser parser = new AParser(file.getCanonicalPath()
+                .substring(0, file.getCanonicalPath().length() - file.getName()
+                .length()));
 
-        System.out.println("LOCAL FILE: " + file.getAbsolutePath()
-                .substring(0, file.getAbsolutePath().length() - file.getName()
-                .length())
-                .concat("\\"));
+        System.out.println("LOCAL FILE: " + file.getCanonicalPath()
+                .substring(0, file.getCanonicalPath().length() - file.getName()
+                .length()));
 
 
         fileContent = parser.parseFile(file.getName());
@@ -131,11 +129,13 @@ public class ANuance {
         randomGenerator = new Random();
         lineLength = new int[64];
         file = new File(localFile);
-        AParser parser = new AParser(file.getAbsolutePath()
-                .substring(0, file.getAbsolutePath().length() - file.getName()
-                .length())
-                .concat("\\"));
-        fileContent = parser.parseFile(new File(localFile).getName());
+        AParser parser = new AParser(file.getCanonicalPath()
+                .substring(0, file.getCanonicalPath().length() - file.getName()
+                .length()));
+        System.out.println("Path: " + file.getCanonicalPath()
+                .substring(0, file.getCanonicalPath().length() - file.getName()
+                .length()));
+        fileContent = parser.parseFile(file.getName());
         nuanceDict = parse(fileContent, 64);
     }
 
