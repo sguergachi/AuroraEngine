@@ -516,7 +516,12 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
     @Override
     public Point getToolTipLocation(MouseEvent e) {
-        return new Point(this.getMousePosition().x - this.getToolTipText().length(), -10);
+        if (this.getMousePosition() != null) {
+            return new Point(this.getMousePosition().x - this.getToolTipText()
+                    .length(), -10);
+        }
+        return null;
+
     }
 
     @Override
