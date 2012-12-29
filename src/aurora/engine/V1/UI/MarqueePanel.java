@@ -51,7 +51,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
     private boolean scrollWhenFocused = true;
 
-    private Timer timer = new Timer(100, this);
+    private Timer timer = new Timer(1000, this);
 
     private ASurface ressource;
 
@@ -66,6 +66,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
     public static ArrayList<AInfoFeedLabel> infoFeedLabelList;
 
     private ToolTipManager ttm;
+
     private Graphics g;
 
     /**
@@ -94,9 +95,10 @@ public class MarqueePanel extends JPanel implements ActionListener,
         addMouseListener(this);
         addMouseMotionListener(this);
         ttm = ToolTipManager.sharedInstance();
-        ttm.setInitialDelay(5);
+        ttm.setInitialDelay(50);
         ttm.setReshowDelay(100);
         ttm.setDismissDelay(1000);
+
     }
 
     /*
@@ -107,28 +109,28 @@ public class MarqueePanel extends JPanel implements ActionListener,
     public void paintChildren(Graphics g) {
         // Need this so we don't see a flicker of the text before scrolling
 
-                if (!paintChildren) {
-                    return;
-                }
+        if (!paintChildren) {
+            return;
+        }
 
-                // Normal painting as the components scroll right to left
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.translate(-scrollOffset, 0);
-                super.paintChildren(g);
-                g2d.translate(scrollOffset, 0);
+        // Normal painting as the components scroll right to left
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(-scrollOffset, 0);
+        super.paintChildren(g);
+        g2d.translate(scrollOffset, 0);
 
-                // Repaint the start of the components on the right edge of the panel
-                // once
-                // all the components are completely visible on the panel.
-                // (Its like the components are in two places at the same time)
+        // Repaint the start of the components on the right edge of the panel
+        // once
+        // all the components are completely visible on the panel.
+        // (Its like the components are in two places at the same time)
 
-                if (isWrap()) {
-                    wrapOffset = scrollOffset - super.getPreferredSize().width
-                                 - wrapAmount;
-                    g2d.translate(-wrapOffset, 0);
-                    super.paintChildren(g);
-                    g2d.translate(wrapOffset, 0);
-                }
+        if (isWrap()) {
+            wrapOffset = scrollOffset - super.getPreferredSize().width
+                         - wrapAmount;
+            g2d.translate(-wrapOffset, 0);
+            super.paintChildren(g);
+            g2d.translate(wrapOffset, 0);
+        }
 
     }
 
@@ -429,7 +431,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
     @Override
     public JToolTip createToolTip() {
         JToolTip tip = super.createToolTip();
-        tip.setBackground(new Color(87,140,204));
+        tip.setBackground(new Color(87, 140, 204));
         tip.setForeground(Color.BLACK);
         return tip;
     }
@@ -513,6 +515,11 @@ public class MarqueePanel extends JPanel implements ActionListener,
     }
 
     @Override
+    public Point getToolTipLocation(MouseEvent e) {
+        return new Point(this.getMousePosition().x - this.getToolTipText().length(), -10);
+    }
+
+    @Override
     public void mouseMoved(MouseEvent arg0) {
 
         int x = arg0.getX();
@@ -541,7 +548,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
                     if (labelClicked >= xPos && labelClicked <= (xPos + width)) {
                         label.setForeground(Color.GREEN);
-                        this.setToolTipText(label.getSourceName());
+                        this.setToolTipText("Source: " + label.getSourceName());
                         componentFound = true;
                     } else {
                         label.setForeground(Color.WHITE);
