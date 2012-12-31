@@ -111,6 +111,7 @@ public class ANuance {
 
         file = new File(localFile);
 
+
         AParser parser = new AParser(file.getCanonicalPath()
                 .substring(0, file.getCanonicalPath().length() - file.getName()
                 .length()));
@@ -118,7 +119,6 @@ public class ANuance {
         System.out.println("LOCAL FILE: " + file.getCanonicalPath()
                 .substring(0, file.getCanonicalPath().length() - file.getName()
                 .length()));
-
 
         fileContent = parser.parseFile(file.getName());
         nuanceDict = parse(fileContent, 64);
@@ -129,6 +129,7 @@ public class ANuance {
         randomGenerator = new Random();
         lineLength = new int[64];
         file = new File(localFile);
+
         AParser parser = new AParser(file.getCanonicalPath()
                 .substring(0, file.getCanonicalPath().length() - file.getName()
                 .length()));
@@ -136,6 +137,7 @@ public class ANuance {
                 .substring(0, file.getCanonicalPath().length() - file.getName()
                 .length()));
         fileContent = parser.parseFile(file.getName());
+
         nuanceDict = parse(fileContent, 64);
     }
 
