@@ -96,7 +96,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
         addMouseMotionListener(this);
         ttm = ToolTipManager.sharedInstance();
         ttm.setInitialDelay(50);
-        ttm.setReshowDelay(100);
+        ttm.setReshowDelay(10);
         ttm.setDismissDelay(1000);
 
     }
