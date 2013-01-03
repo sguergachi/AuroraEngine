@@ -477,6 +477,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
             boolean componentFound = false;
 
             while (!componentFound && i < components.length) {
+                
 
                 Component c = components[i];
 
