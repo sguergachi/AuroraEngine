@@ -369,15 +369,19 @@ public class MarqueePanel extends JPanel implements ActionListener,
      * are scrolling from right to left.
      */
     public void actionPerformed(ActionEvent ae) {
-        scrollOffset = scrollOffset + scrollAmount;
-        int width = super.getPreferredSize().width;
 
-        if (scrollOffset > width) {
-            scrollOffset = isWrap() ? wrapOffset + scrollAmount :
-                    -getSize().width;
-        }
 
-        repaint();
+                scrollOffset = scrollOffset + scrollAmount;
+                int width = getPreferredSize().width;
+
+                if (scrollOffset > width) {
+                    scrollOffset = isWrap() ? wrapOffset + scrollAmount :
+                            -getSize().width;
+                }
+
+                repaint();
+      
+
     }
 
     // Implement AncestorListener
@@ -477,7 +481,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
             boolean componentFound = false;
 
             while (!componentFound && i < components.length) {
-                
+
 
                 Component c = components[i];
 
