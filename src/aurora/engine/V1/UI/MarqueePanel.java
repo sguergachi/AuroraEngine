@@ -51,7 +51,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
     private boolean scrollWhenFocused = true;
 
-    private Timer timer = new Timer(1000, this);
+    private Timer timer = new Timer(0, this);
 
     private ASurface ressource;
 
@@ -68,6 +68,10 @@ public class MarqueePanel extends JPanel implements ActionListener,
     private ToolTipManager ttm;
 
     private Graphics g;
+
+    private int orgScrollAmount = 0;
+
+    private boolean isHovering;
 
     /**
      * Convenience constructor that sets both the scroll frequency and scroll
@@ -95,8 +99,8 @@ public class MarqueePanel extends JPanel implements ActionListener,
         addMouseListener(this);
         addMouseMotionListener(this);
         ttm = ToolTipManager.sharedInstance();
-        ttm.setInitialDelay(50);
-        ttm.setReshowDelay(10);
+        ttm.setInitialDelay(0);
+        ttm.setReshowDelay(0);
         ttm.setDismissDelay(1000);
 
     }
@@ -371,16 +375,39 @@ public class MarqueePanel extends JPanel implements ActionListener,
     public void actionPerformed(ActionEvent ae) {
 
 
-                scrollOffset = scrollOffset + scrollAmount;
-                int width = getPreferredSize().width;
+        scrollOffset = scrollOffset + scrollAmount;
+        int width = getPreferredSize().width;
 
-                if (scrollOffset > width) {
-                    scrollOffset = isWrap() ? wrapOffset + scrollAmount :
-                            -getSize().width;
-                }
+        if (scrollOffset > width) {
+            scrollOffset = isWrap() ? wrapOffset + scrollAmount :
+                    -getSize().width;
+        }
 
-                repaint();
-      
+        repaint();
+
+
+    }
+
+    @Override
+    public JToolTip createToolTip() {
+        JToolTip tip = super.createToolTip();
+        tip.setBackground(new Color(87, 140, 204));
+        tip.setForeground(Color.BLACK);
+        if (isHovering) {
+            return tip;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Point getToolTipLocation(MouseEvent e) {
+            if ( isHovering && this.getMousePosition() != null) {
+                return new Point(this.getMousePosition().x - this
+                        .getToolTipText()
+                        .length(), -10);
+            }
+        return null;
 
     }
 
@@ -432,25 +459,23 @@ public class MarqueePanel extends JPanel implements ActionListener,
         // startScrolling();
     }
 
-    @Override
-    public JToolTip createToolTip() {
-        JToolTip tip = super.createToolTip();
-        tip.setBackground(new Color(87, 140, 204));
-        tip.setForeground(Color.BLACK);
-        return tip;
-    }
-
     // implement MouseListener
     public void mouseClicked(MouseEvent arg0) {
     }
 
     public void mouseEntered(MouseEvent arg0) {
-        setScrollFrequency(25);
+
+        if (orgScrollAmount == 0) {
+            orgScrollAmount = (int) getScrollAmount() / 2;
+        }
+        setScrollAmount(orgScrollAmount);
     }
 
     public void mouseExited(MouseEvent arg0) {
 
-        setScrollFrequency(55);
+
+
+        setScrollAmount(orgScrollAmount * 2);
 
         Component[] c = this.getComponents();
 
@@ -460,7 +485,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
                 label.setForeground(Color.WHITE);
             }
         }
-        this.setToolTipText("");
+        this.setToolTipText(null);
     }
 
     public void mousePressed(MouseEvent arg0) {
@@ -520,16 +545,6 @@ public class MarqueePanel extends JPanel implements ActionListener,
     }
 
     @Override
-    public Point getToolTipLocation(MouseEvent e) {
-        if (this.getMousePosition() != null) {
-            return new Point(this.getMousePosition().x - this.getToolTipText()
-                    .length(), -10);
-        }
-        return null;
-
-    }
-
-    @Override
     public void mouseMoved(MouseEvent arg0) {
 
         int x = arg0.getX();
@@ -557,16 +572,18 @@ public class MarqueePanel extends JPanel implements ActionListener,
                     int width = label.getWidth();
 
                     if (labelClicked >= xPos && labelClicked <= (xPos + width)) {
-                        label.setForeground(Color.GREEN);
+                        isHovering = true;
                         this.setToolTipText("Source: " + label.getSourceName());
+                        label.setForeground(Color.GREEN);
                         componentFound = true;
                     } else {
+                        isHovering = false;
                         label.setForeground(Color.WHITE);
                     }
                     // if the AInfoFeedLabel is not hovered over then set the
                     // tool tip text to null
                 } else {
-                    this.setToolTipText("");
+                    this.setToolTipText(null);
                 }
                 i++;
             }
