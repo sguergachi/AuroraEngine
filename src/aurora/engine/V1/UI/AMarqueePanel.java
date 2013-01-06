@@ -18,7 +18,7 @@ import javax.swing.event.*;
  * Changes to the properties are dynamic and will take effect the next time the
  * components are scrolled.
  */
-public class MarqueePanel extends AImagePane implements ActionListener,
+public class AMarqueePanel extends AImagePane implements ActionListener,
         AncestorListener, WindowListener, MouseListener, MouseMotionListener {
 
     /**
@@ -65,7 +65,7 @@ public class MarqueePanel extends AImagePane implements ActionListener,
      * @param icons
      *                  the Icons to be painted as part of the animation
      */
-    public MarqueePanel(int width, int height, String backgroundImage) {
+    public AMarqueePanel(int width, int height, String backgroundImage) {
 
         super(backgroundImage, width, height);
 
@@ -91,7 +91,7 @@ public class MarqueePanel extends AImagePane implements ActionListener,
      * @param icons
      *                  the Icons to be painted as part of the animation
      */
-    public MarqueePanel(int scrollSpeed, int width, int height,
+    public AMarqueePanel(int scrollSpeed, int width, int height,
                         String backgroundImage) {
 
         super(backgroundImage, width, height);

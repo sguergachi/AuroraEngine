@@ -372,15 +372,17 @@ public class ACarousel extends JPanel implements Runnable {
 
                 //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
                 if ((panelWidth % 14.5) == 0) {
-                    increment =  14.5;
+                    increment = 2 * 14.5;
                 } else if ((panelWidth % 16.0) == 0) {
-                    increment = 16.0;
+                    increment = (2 * 16.0);
                 }
 
                 if (isOdd(i)) {
-                    cPane.setPoint(point.x - (int) (  2.5 * increment), point.y + (int) (  2.5 * Incr1));
+                    cPane.setPoint(point.x - (increment), point.y + (2
+                                                                     * Incr1));
                 } else {
-                    cPane.setPoint(point.x - (int) (  2.5 * increment), point.y + (int) (  2.5 * Incr2));
+                    cPane.setPoint(point.x - (increment), point.y + (2
+                                                                     * Incr2));
                 }
             }
 
@@ -399,7 +401,7 @@ public class ACarousel extends JPanel implements Runnable {
             centerPane.changeTitle(TitleType.NORMAL);
 
             try {
-
+                //* 60 fps for smoothness *//
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
                 err.setVisible(true);
@@ -412,20 +414,20 @@ public class ACarousel extends JPanel implements Runnable {
 
             for (int i = 0; i < this.getComponentCount(); i++) {
                 ACarouselPane cPane = (ACarouselPane) this.getComponent(i);
-                Point.Double p = cPane.getPoint();
+                Point.Double point = cPane.getPoint();
                 double increment = 0.0;
 
                 //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
                 if ((panelWidth % 14.5) == 0) {
-                    increment = 14.5;
+                    increment = 2 * 14.5;
                 } else if ((panelWidth % 16.0) == 0) {
-                    increment = 16.0;
+                    increment = (2 * 16.0);
                 }
 
                 if (isOdd(i)) {
-                    cPane.setPoint(p.x + (int) (  2.5 * increment), p.y + (int) (  2.5 * Incr1));
+                    cPane.setPoint(point.x + (increment), point.y + (2 * Incr1));
                 } else {
-                    cPane.setPoint(p.x + (int) (  2.5 * increment), p.y + (int) (  2.5 * Incr2));
+                    cPane.setPoint(point.x + (increment), point.y + (2 * Incr2));
                 }
             }
 
@@ -443,6 +445,8 @@ public class ACarousel extends JPanel implements Runnable {
     /**
      *
      * @param n
+     *          <
+     *          p/>
      * <p/>
      * @return
      */
@@ -479,6 +483,8 @@ public class ACarousel extends JPanel implements Runnable {
      * @param runDirection
      * @param increment1
      * @param increment2
+     *                     <
+     *                     p/>
      * <p/>
      * @return
      */
@@ -490,8 +496,9 @@ public class ACarousel extends JPanel implements Runnable {
         if (isCarouselMoving) {
             for (int i = 0; i < numberOfPanes; i++) {
                 ACarouselPane pane = (ACarouselPane) this.getComponent(i);
-                //System.out.println("Point X + 15 = " + (pane.getPointX()+ 15));
-                //System.out.println("");
+//                System.out.println("Cent X " + (centX + 10) + " " + (centX
+//                                                                - 10));
+//                System.out.println("Pane Point X " + pane.getPointX());
                 if (pane.getPointX() == centX) {
                     if (runDirection == 0) {
                         runLeft = null;
