@@ -52,7 +52,6 @@ public class MarqueePanel extends AImagePane implements ActionListener,
 
     private ToolTipManager ttm;
 
-
     private int orgScrollAmount = 0;
 
     private boolean isHovering = false;
@@ -67,11 +66,38 @@ public class MarqueePanel extends AImagePane implements ActionListener,
      *                  the Icons to be painted as part of the animation
      */
     public MarqueePanel(int width, int height, String backgroundImage) {
-    	
-    	super(backgroundImage, width, height);
-        
+
+        super(backgroundImage, width, height);
+
         setScrollFrequency(60);
         setScrollAmount(2);
+        setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        addAncestorListener(this);
+        addMouseListener(this);
+        addMouseMotionListener(this);
+        ttm = ToolTipManager.sharedInstance();
+        ttm.setInitialDelay(0);
+        ttm.setReshowDelay(0);
+        ttm.setDismissDelay(1000);
+
+    }
+
+    /**
+     * Create an AnimatedIcon that will continuously cycle with the default
+     * (500ms).
+     * <p/>
+     * @param component
+     *                  the component the icon will be painted on
+     * @param icons
+     *                  the Icons to be painted as part of the animation
+     */
+    public MarqueePanel(int scrollSpeed, int width, int height,
+                        String backgroundImage) {
+
+        super(backgroundImage, width, height);
+
+        setScrollFrequency(60);
+        setScrollAmount(scrollSpeed);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         addAncestorListener(this);
         addMouseListener(this);
@@ -343,11 +369,11 @@ public class MarqueePanel extends AImagePane implements ActionListener,
 
     @Override
     public Point getToolTipLocation(MouseEvent e) {
-            if (isHovering && this.getMousePosition() != null) {
-                return new Point(this.getMousePosition().x - this
-                        .getToolTipText()
-                        .length(), -10);
-            }
+        if (isHovering && this.getMousePosition() != null) {
+            return new Point(this.getMousePosition().x - this
+                    .getToolTipText()
+                    .length(), -10);
+        }
         return null;
 
     }
