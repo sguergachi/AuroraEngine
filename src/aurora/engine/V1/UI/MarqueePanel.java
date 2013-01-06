@@ -3,16 +3,11 @@ package aurora.engine.V1.UI;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
-import aurora.engine.V1.Logic.ASurface;
 
 /**
  * The MarqueePanel is used to scroll components from the right edge of the
@@ -23,7 +18,7 @@ import aurora.engine.V1.Logic.ASurface;
  * Changes to the properties are dynamic and will take effect the next time the
  * components are scrolled.
  */
-public class MarqueePanel extends JPanel implements ActionListener,
+public class MarqueePanel extends AImagePane implements ActionListener,
         AncestorListener, WindowListener, MouseListener, MouseMotionListener {
 
     /**
@@ -53,21 +48,10 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
     private Timer timer = new Timer(0, this);
 
-    private ASurface ressource;
-
-    String imageFile = "aurora/V1/resources/dash_infoBar_bg.png";
-
-    private ImageIcon image;
-
-    private int imageHeight = 0;
-
-    private int imageWidth = 0;
-
     public static ArrayList<AInfoFeedLabel> infoFeedLabelList;
 
     private ToolTipManager ttm;
 
-    private Graphics g;
 
     private int orgScrollAmount = 0;
 
@@ -77,9 +61,9 @@ public class MarqueePanel extends JPanel implements ActionListener,
      * Convenience constructor that sets both the scroll frequency and scroll
      * amount to a value of 5.
      */
-    public MarqueePanel() {
+/*    public MarqueePanel() {
         this(5, 5);
-    }
+    }*/
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
@@ -90,8 +74,10 @@ public class MarqueePanel extends JPanel implements ActionListener,
      * @param icons
      *                  the Icons to be painted as part of the animation
      */
-    public MarqueePanel(int scrollFrequency, int scrollAmount) {
-        ressource = new ASurface("");
+    public MarqueePanel(int scrollFrequency, int scrollAmount, int width, int height, String backgroundImage) {
+    	
+    	super(backgroundImage, width, height);
+        
         setScrollFrequency(scrollFrequency);
         setScrollAmount(scrollAmount);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -135,42 +121,6 @@ public class MarqueePanel extends JPanel implements ActionListener,
             super.paintChildren(g);
             g2d.translate(wrapOffset, 0);
         }
-
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        //  Dispaly  image on Panel\
-
-
-        try {
-            image = new ImageIcon(new URL(
-                    ressource.getSurfacePath()
-                    + "/aurora/V1/resources/dash_infoBar_bg.png"));
-        } catch (MalformedURLException ex) {
-            try {
-                image = new ImageIcon(getClass()
-                        .getResource(
-                        "/aurora/V1/resources/dash_infoBar_bg.png"));
-            } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(
-                        Level.SEVERE,
-                        null, exx);
-            }
-        }
-
-        if (image != null) {
-            if (imageWidth == 0 && imageHeight == 0) {
-                imageWidth = image.getIconWidth();
-                imageHeight = image.getIconHeight();
-            }
-            g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight,
-                    this);
-        } else {
-            g.clearRect(0, 0, imageWidth, imageHeight);
-
-        }
-
 
     }
 
