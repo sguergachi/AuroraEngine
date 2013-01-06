@@ -58,14 +58,6 @@ public class MarqueePanel extends AImagePane implements ActionListener,
     private boolean isHovering = false;
 
     /**
-     * Convenience constructor that sets both the scroll frequency and scroll
-     * amount to a value of 5.
-     */
-/*    public MarqueePanel() {
-        this(5, 5);
-    }*/
-
-    /**
      * Create an AnimatedIcon that will continuously cycle with the default
      * (500ms).
      * <p/>
@@ -74,12 +66,12 @@ public class MarqueePanel extends AImagePane implements ActionListener,
      * @param icons
      *                  the Icons to be painted as part of the animation
      */
-    public MarqueePanel(int scrollFrequency, int scrollAmount, int width, int height, String backgroundImage) {
+    public MarqueePanel(int width, int height, String backgroundImage) {
     	
     	super(backgroundImage, width, height);
         
-        setScrollFrequency(scrollFrequency);
-        setScrollAmount(scrollAmount);
+        setScrollFrequency(60);
+        setScrollAmount(2);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         addAncestorListener(this);
         addMouseListener(this);
