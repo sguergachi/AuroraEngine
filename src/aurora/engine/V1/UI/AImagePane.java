@@ -144,8 +144,10 @@ public class AImagePane extends JPanel {
         //  Dispaly  image on Panel
 
         if (image != null) {
-            if (imageWidth == 0 && imageHeight == 0) {
+            if (imageWidth == 0) {
                 imageWidth = image.getIconWidth();
+
+            } else if (imageHeight == 0) {
                 imageHeight = image.getIconHeight();
             }
             g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);

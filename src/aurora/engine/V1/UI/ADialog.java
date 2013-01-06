@@ -71,7 +71,7 @@ public final class ADialog extends ADragFrame {
     /**
      * Background.
      */
-    private JPanel img;
+    private JPanel paneDialogBG;
 
     /**
      * Custom text label.
@@ -328,9 +328,9 @@ public final class ADialog extends ADragFrame {
     public void showDialog() {
 
 
-        img = new AImagePane("app_dialog_bg.png");
-        img.setLayout(new BorderLayout());
-        add(BorderLayout.CENTER, img);
+        paneDialogBG = new AImagePane("app_dialog_bg.png");
+        paneDialogBG.setLayout(new BorderLayout());
+        add(BorderLayout.CENTER, paneDialogBG);
 
         //* Config Dialog *//
         setUndecorated(true);
@@ -341,7 +341,7 @@ public final class ADialog extends ADragFrame {
         iconContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         iconContainer.setOpaque(false);
         iconContainer.add(iconImg);
-        img.add(iconContainer, BorderLayout.NORTH);
+        paneDialogBG.add(iconContainer, BorderLayout.NORTH);
 
 
         textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -354,7 +354,7 @@ public final class ADialog extends ADragFrame {
 
         //BOTTOM
 
-        img.add(textContainer, BorderLayout.CENTER);
+        paneDialogBG.add(textContainer, BorderLayout.CENTER);
 
         btnOk = new AButton("app_btn_okDialog_norm.png",
                 "app_btn_okDialog_down.png", "app_btn_okDialog_over.png");
@@ -384,13 +384,13 @@ public final class ADialog extends ADragFrame {
 
         Bottom.setOpaque(false);
         Bottom.add(pnlButtonContainer, BorderLayout.EAST);
-        img.add(BorderLayout.PAGE_END, Bottom);
+        paneDialogBG.add(BorderLayout.PAGE_END, Bottom);
 
         btnCancel.addActionListener(new ExitListener());
 
-        img.getInputMap().put(KeyStroke.getKeyStroke(
+        paneDialogBG.getInputMap().put(KeyStroke.getKeyStroke(
                 java.awt.event.KeyEvent.VK_ENTER, 0), "enterDown");
-        img.getActionMap().put("enterDown", new AbstractAction() {
+        paneDialogBG.getActionMap().put("enterDown", new AbstractAction() {
             private static final long serialVersionUID = 1L;
             @Override
             public void actionPerformed(ActionEvent e) {

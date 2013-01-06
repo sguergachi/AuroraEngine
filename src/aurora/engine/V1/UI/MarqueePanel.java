@@ -71,7 +71,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
     private int orgScrollAmount = 0;
 
-    private boolean isHovering;
+    private boolean isHovering = false;
 
     /**
      * Convenience constructor that sets both the scroll frequency and scroll
@@ -252,7 +252,6 @@ public class MarqueePanel extends JPanel implements ActionListener,
         this.scrollFrequency = scrollFrequency;
 
         int delay = 1000 / scrollFrequency;
-        timer.setInitialDelay(delay);
         timer.setDelay(delay);
     }
 
@@ -402,7 +401,7 @@ public class MarqueePanel extends JPanel implements ActionListener,
 
     @Override
     public Point getToolTipLocation(MouseEvent e) {
-            if ( isHovering && this.getMousePosition() != null) {
+            if (isHovering && this.getMousePosition() != null) {
                 return new Point(this.getMousePosition().x - this
                         .getToolTipText()
                         .length(), -10);
