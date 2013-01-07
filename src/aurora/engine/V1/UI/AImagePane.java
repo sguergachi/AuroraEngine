@@ -147,7 +147,9 @@ public class AImagePane extends JPanel {
             if (imageWidth == 0) {
                 imageWidth = image.getIconWidth();
 
-            } else if (imageHeight == 0) {
+            }
+
+            if (imageHeight == 0) {
                 imageHeight = image.getIconHeight();
             }
             g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
