@@ -36,6 +36,8 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
     private int preferredWidth = -1;
 
+    private int frequency = 57;
+
     private int scrollAmount;
 
     private int scrollFrequency;
@@ -69,7 +71,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         super(backgroundImage, width, height);
 
-        setScrollFrequency(60);
+        setScrollFrequency(frequency);
         setScrollAmount(2);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         addAncestorListener(this);
@@ -92,11 +94,12 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      *                  the Icons to be painted as part of the animation
      */
     public AMarqueePanel(int scrollSpeed, int width, int height,
-                        String backgroundImage) {
+                         String backgroundImage) {
 
         super(backgroundImage, width, height);
+        this.setOpaque(true);
 
-        setScrollFrequency(60);
+        setScrollFrequency(frequency);
         setScrollAmount(scrollSpeed);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         addAncestorListener(this);
@@ -123,9 +126,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         // Normal painting as the components scroll right to left
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(-scrollOffset, 0);
+        g2d.translate(-scrollOffset, -5);
         super.paintChildren(g);
-        g2d.translate(scrollOffset, 0);
+        g2d.translate(scrollOffset, -5);
 
         // Repaint the start of the components on the right edge of the panel
         // once
@@ -135,10 +138,31 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
-            g2d.translate(-wrapOffset, 0);
+            g2d.translate(-wrapOffset, -5);
             super.paintChildren(g);
-            g2d.translate(wrapOffset, 0);
+            g2d.translate(wrapOffset, -5);
         }
+
+    }
+
+    // Implement ActionListener
+    /**
+     * Adjust the offset of the components on the panel so it appears that they
+     * are scrolling from right to left.
+     */
+    public void actionPerformed(ActionEvent ae) {
+
+
+        scrollOffset = scrollOffset + scrollAmount;
+        int width = getPreferredSize().width;
+
+        if (scrollOffset > width) {
+            scrollOffset = isWrap() ? wrapOffset + scrollAmount :
+                    -getSize().width;
+        }
+
+        repaint();
+
 
     }
 
@@ -332,27 +356,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
             timer.restart();
             scrollingPaused = false;
         }
-    }
-
-    // Implement ActionListener
-    /**
-     * Adjust the offset of the components on the panel so it appears that they
-     * are scrolling from right to left.
-     */
-    public void actionPerformed(ActionEvent ae) {
-
-
-        scrollOffset = scrollOffset + scrollAmount;
-        int width = getPreferredSize().width;
-
-        if (scrollOffset > width) {
-            scrollOffset = isWrap() ? wrapOffset + scrollAmount :
-                    -getSize().width;
-        }
-
-        repaint();
-
-
     }
 
     @Override
