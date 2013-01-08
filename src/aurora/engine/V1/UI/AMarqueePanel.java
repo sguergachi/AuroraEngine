@@ -115,6 +115,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     /*
      * Translate the location of the children before they are painted so it
      * appears they are scrolling left to right
+     *
      */
     @Override
     public void paintChildren(Graphics g) {
@@ -126,9 +127,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         // Normal painting as the components scroll right to left
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(-scrollOffset, -5);
+        g2d.translate(-scrollOffset, -2);
         super.paintChildren(g);
-        g2d.translate(scrollOffset, -5);
+        g2d.translate(scrollOffset, -2);
 
         // Repaint the start of the components on the right edge of the panel
         // once
@@ -138,9 +139,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
-            g2d.translate(-wrapOffset, -5);
+            g2d.translate(-wrapOffset, -2);
             super.paintChildren(g);
-            g2d.translate(wrapOffset, -5);
+            g2d.translate(wrapOffset, -2);
         }
 
     }
@@ -543,7 +544,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
                     if (labelClicked >= xPos && labelClicked <= (xPos + width)) {
                         isHovering = true;
-                        this.setToolTipText("Source: " + label.getSourceName());
+                        this.setToolTipText("Source: " + label.getToolTip());
                         label.setForeground(Color.GREEN);
                         componentFound = true;
                     } else {

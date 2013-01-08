@@ -34,20 +34,8 @@ public class AInfoFeedLabel extends JLabel {
      */
     private int endPosition;
 
-    /**
-     *
-     */
-    /*
-     * public AInfoFeedLabel() {
-     *
-     * super(null); // this.url = new URL(null); }
-     */
+    private String customToolTip;
 
-    /*
-     * public AInfoFeedLabel(String title) {
-     *
-     * super(title); // this.url = new URL(null); }
-     */
     /**
      *
      */
@@ -58,8 +46,12 @@ public class AInfoFeedLabel extends JLabel {
 
     }
 
-    public void setUrl(URL url) {
-        // this.url = url;
+    public void setUrl(String url) {
+         this.url = url;
+    }
+
+    public void setToolTip(String customToolTip){
+        this.customToolTip = customToolTip;
     }
 
     public String getUrl() {
@@ -97,11 +89,17 @@ public class AInfoFeedLabel extends JLabel {
         return sourceName;
     }
 
+    public String getToolTip() {
+        if (customToolTip == null) {
+            return sourceName;
+        } else {
+            return customToolTip;
+        }
+    }
+
     @Override
     public String toString() {
 
         return "Title:= " + this.getText(); // + " URL:= " + url.toString();
     }
-
-  
 }
