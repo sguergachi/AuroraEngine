@@ -179,7 +179,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
 
-        d.width = (preferredWidth == -1) ? d.width / 2 : preferredWidth;
+        d.width = (preferredWidth == -1) ? d.width  : preferredWidth;
 
         return d;
     }
