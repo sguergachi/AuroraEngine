@@ -127,9 +127,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         // Normal painting as the components scroll right to left
         Graphics2D g2d = (Graphics2D) g;
-        g2d.translate(-scrollOffset, -2);
+        g2d.translate(-scrollOffset, 0);
         super.paintChildren(g);
-        g2d.translate(scrollOffset, -2);
+        g2d.translate(scrollOffset, 0);
 
         // Repaint the start of the components on the right edge of the panel
         // once
@@ -139,9 +139,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
-            g2d.translate(-wrapOffset, -2);
+            g2d.translate(-wrapOffset, 0);
             super.paintChildren(g);
-            g2d.translate(wrapOffset, -2);
+            g2d.translate(wrapOffset, 0);
         }
 
     }
