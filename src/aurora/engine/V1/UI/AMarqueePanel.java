@@ -179,7 +179,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     public Dimension getPreferredSize() {
         Dimension d = super.getPreferredSize();
 
-        d.width = (preferredWidth == -1) ? d.width  : preferredWidth;
+        d.width = (preferredWidth == -1) ? d.width : preferredWidth;
 
         return d;
     }
@@ -373,10 +373,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
     @Override
     public Point getToolTipLocation(MouseEvent e) {
-        if (isHovering && this.getMousePosition() != null) {
-            return new Point(this.getMousePosition().x - this
-                    .getToolTipText()
-                    .length(), -10);
+       if (isHovering && e.getLocationOnScreen() != null) {
+            return new Point(e.getX() - this.getToolTipText().length(),
+                    - 10);
         }
         return null;
 
@@ -435,7 +434,8 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     }
 
     public void mouseEntered(MouseEvent arg0) {
-
+        this.requestFocusInWindow();
+        isHovering = true;
         if (orgScrollAmount == 0) {
             orgScrollAmount = (int) getScrollAmount() / 2;
         }
