@@ -15,80 +15,84 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 
 public class AScrollBar extends BasicScrollBarUI {
 
-	private final Image imageThumb;
-	private final Image imageTrack;
+    private final Image imageThumb;
 
-	public AScrollBar(Image thumb, Image track) {
-		this.imageThumb = thumb;
-		this.imageTrack = track;
-	}
+    private final Image imageTrack;
 
-	@Override
-	protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
-		Graphics2D g2d = (Graphics2D) g;
+    public AScrollBar(String thumb, String track) {
 
-		g2d.translate(thumbBounds.x, thumbBounds.y);
-		g2d.setColor(Color.black);
-		g2d.drawRect(0, 0, thumbBounds.width - 2, thumbBounds.height - 1);
-		AffineTransform transform = AffineTransform.getScaleInstance(
-				(double) thumbBounds.width / imageThumb.getWidth(null),
-				(double) thumbBounds.height / imageThumb.getHeight(null));
-		((Graphics2D) g).drawImage(imageThumb, transform, null);
-		g2d.translate(-thumbBounds.x, -thumbBounds.y);
-	}
+        AImage thumbImg = new AImage(thumb);
+        AImage trackImg = new AImage(track);
+        this.imageThumb = thumbImg.getImgIcon().getImage();
+        this.imageTrack = trackImg.getImgIcon().getImage();
+    }
 
-	@Override
-	protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
-		Graphics2D g2d = (Graphics2D) g;
-		g2d.translate(trackBounds.x, trackBounds.y);
-		((Graphics2D) g).drawImage(
-				imageTrack,
-				AffineTransform.getScaleInstance(1, (double) trackBounds.height
-						/ imageTrack.getHeight(null)), null);
-		g2d.translate(-trackBounds.x, -trackBounds.y);
-	}
+    @Override
+    protected void paintThumb(Graphics g, JComponent c, Rectangle thumbBounds) {
+        Graphics2D g2d = (Graphics2D) g;
 
-	@Override
-	protected void installComponents() {
-		switch (scrollbar.getOrientation()) {
-		case JScrollBar.VERTICAL:
-			incrButton = createIncreaseButton(SOUTH);
-			decrButton = createDecreaseButton(NORTH);
-			break;
+        g2d.translate(thumbBounds.x, thumbBounds.y);
+        g2d.setColor(Color.black);
+        g2d.drawRect(0, 0, thumbBounds.width - 2, thumbBounds.height - 1);
+        AffineTransform transform = AffineTransform.getScaleInstance(
+                (double) thumbBounds.width / imageThumb.getWidth(null),
+                (double) thumbBounds.height / imageThumb.getHeight(null));
+        ((Graphics2D) g).drawImage(imageThumb, transform, null);
+        g2d.translate(-thumbBounds.x, -thumbBounds.y);
+    }
 
-		case JScrollBar.HORIZONTAL:
-			if (scrollbar.getComponentOrientation().isLeftToRight()) {
-				incrButton = createIncreaseButton(EAST);
-				decrButton = createDecreaseButton(WEST);
-			} else {
-				incrButton = createIncreaseButton(WEST);
-				decrButton = createDecreaseButton(EAST);
-			}
-			break;
-		}
-		scrollbar.add(incrButton);
-		scrollbar.add(decrButton);
-		// Force the children's enabled state to be updated.
-		scrollbar.setEnabled(scrollbar.isEnabled());
-	}
+    @Override
+    protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.translate(trackBounds.x, trackBounds.y);
+        ((Graphics2D) g).drawImage(
+                imageTrack,
+                AffineTransform
+                .getScaleInstance(1, (double) trackBounds.height
+                                     / imageTrack.getHeight(null)), null);
+        g2d.translate(-trackBounds.x, -trackBounds.y);
+    }
 
-	protected JButton createZeroButton() {
-		JButton button = new JButton("zero button");
-		Dimension zeroDim = new Dimension(0, 0);
-		button.setPreferredSize(zeroDim);
-		button.setMinimumSize(zeroDim);
-		button.setMaximumSize(zeroDim);
-		return button;
-	}
+    @Override
+    protected void installComponents() {
+        switch (scrollbar.getOrientation()) {
+            case JScrollBar.VERTICAL:
+                incrButton = createIncreaseButton(SOUTH);
+                decrButton = createDecreaseButton(NORTH);
+                break;
 
-	@Override
-	protected JButton createDecreaseButton(int orientation) {
-		return createZeroButton();
-	}
+            case JScrollBar.HORIZONTAL:
+                if (scrollbar.getComponentOrientation().isLeftToRight()) {
+                    incrButton = createIncreaseButton(EAST);
+                    decrButton = createDecreaseButton(WEST);
+                } else {
+                    incrButton = createIncreaseButton(WEST);
+                    decrButton = createDecreaseButton(EAST);
+                }
+                break;
+        }
+        scrollbar.add(incrButton);
+        scrollbar.add(decrButton);
+        // Force the children's enabled state to be updated.
+        scrollbar.setEnabled(scrollbar.isEnabled());
+    }
 
-	@Override
-	protected JButton createIncreaseButton(int orientation) {
-		return createZeroButton();
-	}
+    protected JButton createZeroButton() {
+        JButton button = new JButton("zero button");
+        Dimension zeroDim = new Dimension(0, 0);
+        button.setPreferredSize(zeroDim);
+        button.setMinimumSize(zeroDim);
+        button.setMaximumSize(zeroDim);
+        return button;
+    }
 
+    @Override
+    protected JButton createDecreaseButton(int orientation) {
+        return createZeroButton();
+    }
+
+    @Override
+    protected JButton createIncreaseButton(int orientation) {
+        return createZeroButton();
+    }
 }

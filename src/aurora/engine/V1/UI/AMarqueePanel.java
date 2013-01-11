@@ -10,6 +10,8 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 /**
+ * Made By Sardonix Creative.
+ *
  * The MarqueePanel is used to scroll components from the right edge of the
  * panel to the left edge. Scrolling is continuous. To simulate the scrolling of
  * text you can simply add a JLabel to the panel.

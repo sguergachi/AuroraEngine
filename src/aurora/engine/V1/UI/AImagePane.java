@@ -291,6 +291,14 @@ public class AImagePane extends JPanel {
         return ImageURL;
     }
 
+    public int getRealImageWidth(){
+        return this.getImgIcon().getIconWidth();
+    }
+
+    public int getRealImageHeight(){
+        return this.getImgIcon().getIconHeight();
+    }
+
     //TODO GET REAL SIZE AND WIDTH using get getImgIcon().getIconWidth()
     public void setImageHeight(int imageHeight) {
         this.imageHeight = imageHeight;
