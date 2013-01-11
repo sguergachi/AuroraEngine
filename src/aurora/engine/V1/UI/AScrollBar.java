@@ -32,8 +32,8 @@ public class AScrollBar extends BasicScrollBarUI {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.translate(thumbBounds.x, thumbBounds.y);
-        g2d.setColor(Color.black);
-        g2d.drawRect(0, 0, thumbBounds.width - 2, thumbBounds.height - 1);
+//        g2d.setColor(Color.black);
+//        g2d.drawRect(0, 0, thumbBounds.width - 2, thumbBounds.height - 1);
         AffineTransform transform = AffineTransform.getScaleInstance(
                 (double) thumbBounds.width / imageThumb.getWidth(null),
                 (double) thumbBounds.height / imageThumb.getHeight(null));
