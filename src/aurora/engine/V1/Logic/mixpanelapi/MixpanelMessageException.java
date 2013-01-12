@@ -1,6 +1,6 @@
-package com.mixpanel.mixpanelapi;
+package aurora.engine.V1.Logic.mixpanelapi;
 
-import org.json.JSONObject;
+import aurora.engine.V1.Logic.JSON.JSONObject;
 
 /**
  * Thrown when the library detects malformed or invalid Mixpanel messages.

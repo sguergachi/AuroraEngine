@@ -1,4 +1,4 @@
-package com.mixpanel.mixpanelapi;
+package aurora.engine.V1.Logic.mixpanelapi;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,8 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import aurora.engine.V1.Logic.JSON.JSONArray;
+import aurora.engine.V1.Logic.JSON.JSONObject;
 
 /**
  * Simple interface to the Mixpanel tracking API, intended for use in

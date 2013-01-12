@@ -1,9 +1,9 @@
-package com.mixpanel.mixpanelapi;
+package aurora.engine.V1.Logic.mixpanelapi;
 
 import java.util.Map;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import aurora.engine.V1.Logic.JSON.JSONException;
+import aurora.engine.V1.Logic.JSON.JSONObject;
 
 /**
  * This class writes JSONObjects of a form appropriate to send as Mixpanel events and
