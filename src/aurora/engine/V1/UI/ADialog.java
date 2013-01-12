@@ -24,6 +24,8 @@ import java.awt.Container;
 import java.awt.Desktop.Action;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -390,29 +392,32 @@ public final class ADialog extends ADragFrame {
 
         paneDialogBG.getInputMap().put(KeyStroke.getKeyStroke(
                 java.awt.event.KeyEvent.VK_ENTER, 0), "enterDown");
+
         paneDialogBG.getActionMap().put("enterDown", new AbstractAction() {
             private static final long serialVersionUID = 1L;
+
             @Override
             public void actionPerformed(ActionEvent e) {
                 a.actionPerformed(null);
             }
         });
 
+
+//        KeyboardFocusManager.getCurrentKeyboardFocusManager()
+//                .addKeyEventDispatcher(
+//                new KeyEventDispatcher() {
+//                    public boolean dispatchKeyEvent(KeyEvent e) {
+//
+//                        if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
+//                            new ExitListener().actionPerformed(null);
+//                            return true;
+//                        }
+//                        return false;
+//                    }
+//                });
+
         requestFocusInWindow();
 
-    }
-
-    public class EnterKeyListener extends KeyAdapter {
-
-        @Override
-        public void keyPressed(KeyEvent e) {
-            System.out.println("Pressed Key");
-            if (e.getKeyChar() == KeyEvent.VK_ENTER) {
-
-                a.actionPerformed(null);
-
-            }
-        }
     }
 
     class ExitListener implements ActionListener {

@@ -24,6 +24,6 @@ package aurora.engine.V1.Logic;
  */
 public interface APostHandler {
 
-     public abstract void actionPerformed();
+     public abstract void postAction();
 
 }

@@ -407,7 +407,7 @@ public class AAnimate implements Runnable {
     ///Run when animation is complete
     private void doneAnimation() {
         if (e != null) {
-            e.actionPerformed();
+            e.postAction();
         }
     }
 
