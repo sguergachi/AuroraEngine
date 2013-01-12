@@ -49,6 +49,7 @@ public class AImage extends JLabel implements MouseListener {
     private final ASurface ressource;
 
     private String url;
+    private Cursor prevCursor;
 
     public String getImgURl() {
         return ImageURl;
@@ -96,6 +97,7 @@ public class AImage extends JLabel implements MouseListener {
 
     public void setLink(String URL) {
         this.url = URL;
+        this.addMouseListener(this);
     }
 
     public AImage(String ImgURL) {
@@ -227,8 +229,15 @@ public class AImage extends JLabel implements MouseListener {
     }
 
     public void mouseEntered(MouseEvent e) {
+        if(url != null){
+            prevCursor = this.getCursor();
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+        }
     }
 
     public void mouseExited(MouseEvent e) {
+         if(url != null){
+            setCursor(prevCursor);
+        }
     }
 }

@@ -4,6 +4,8 @@
  */
 package aurora.engine.V1.UI;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -25,6 +27,8 @@ import javax.swing.JLabel;
  */
 public class ASlickLabel extends JLabel implements MouseListener{
     private String url;
+    private Color prevColor;
+    private Cursor prevCursor;
 
     public ASlickLabel(String text) {
         super(text + "  ");
@@ -44,6 +48,7 @@ public class ASlickLabel extends JLabel implements MouseListener{
 
     public void setLink(String URL){
         this.url = URL;
+        this.addMouseListener(this);
     }
 
 
@@ -66,6 +71,7 @@ public class ASlickLabel extends JLabel implements MouseListener{
     }
 
     public void mouseClicked(MouseEvent e) {
+
         if(url != null){
             try {
                 try {
@@ -82,14 +88,27 @@ public class ASlickLabel extends JLabel implements MouseListener{
     }
 
     public void mousePressed(MouseEvent e) {
+        System.out.println("Mouse Clicked Link!");
     }
 
     public void mouseReleased(MouseEvent e) {
     }
 
     public void mouseEntered(MouseEvent e) {
+
+        if(url != null){
+            prevColor = this.getForeground();
+            prevCursor = this.getCursor();
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            this.setForeground(Color.green);
+        }
+
     }
 
     public void mouseExited(MouseEvent e) {
+        if(url!=null){
+            this.setForeground(prevColor);
+             setCursor(prevCursor);
+        }
     }
 }
