@@ -34,7 +34,7 @@ public class AMixpanelAnalytics {
     public void sendEvent(String Event) {
 
         MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
-        message = builder.event(PROJECT_TOKEN,
+        message = builder.event(System.getProperty("user.name")+System.nanoTime(),
                 Event, null);
         delivery = new ClientDelivery();
         delivery.addMessage(message);

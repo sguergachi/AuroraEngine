@@ -403,18 +403,6 @@ public final class ADialog extends ADragFrame {
         });
 
 
-//        KeyboardFocusManager.getCurrentKeyboardFocusManager()
-//                .addKeyEventDispatcher(
-//                new KeyEventDispatcher() {
-//                    public boolean dispatchKeyEvent(KeyEvent e) {
-//
-//                        if (e.getKeyChar() == KeyEvent.VK_ESCAPE) {
-//                            new ExitListener().actionPerformed(null);
-//                            return true;
-//                        }
-//                        return false;
-//                    }
-//                });
 
         requestFocusInWindow();
 

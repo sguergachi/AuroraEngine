@@ -4,9 +4,17 @@
  */
 package aurora.engine.V1.UI;
 
+import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 
@@ -15,7 +23,8 @@ import javax.swing.JLabel;
  * <p/>
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class ASlickLabel extends JLabel {
+public class ASlickLabel extends JLabel implements MouseListener{
+    private String url;
 
     public ASlickLabel(String text) {
         super(text + "  ");
@@ -33,6 +42,12 @@ public class ASlickLabel extends JLabel {
         super.setText(text + "  ");
     }
 
+    public void setLink(String URL){
+        this.url = URL;
+    }
+
+
+
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -48,5 +63,33 @@ public class ASlickLabel extends JLabel {
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         super.paintComponent(g2d);
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        if(url != null){
+            try {
+                try {
+                    Desktop.getDesktop().browse(new URI(url));
+                } catch (URISyntaxException ex) {
+                    Logger.getLogger(ASlickLabel.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
+            } catch (IOException ex) {
+                Logger.getLogger(ASlickLabel.class.getName()).
+                        log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    public void mousePressed(MouseEvent e) {
+    }
+
+    public void mouseReleased(MouseEvent e) {
+    }
+
+    public void mouseEntered(MouseEvent e) {
+    }
+
+    public void mouseExited(MouseEvent e) {
     }
 }
