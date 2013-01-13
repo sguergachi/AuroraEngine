@@ -98,6 +98,7 @@ public class AImage extends JLabel implements MouseListener {
     public void setLink(String URL) {
         this.url = URL;
         this.addMouseListener(this);
+        this.setToolTipText(URL);
     }
 
     public AImage(String ImgURL) {

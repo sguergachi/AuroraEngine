@@ -376,7 +376,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     @Override
     public Point getToolTipLocation(MouseEvent e) {
        if (isHovering && e.getLocationOnScreen() != null) {
-            return new Point(e.getX() - this.getToolTipText().length(),
+            return new Point(e.getX() - (this.getToolTipText().length() * 3),
                     - 10);
         }
         return null;
