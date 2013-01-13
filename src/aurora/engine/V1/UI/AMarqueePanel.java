@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 
+
 /**
  * Made By Sardonix Creative.
  *
@@ -59,6 +60,8 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private int orgScrollAmount = 0;
 
     private boolean isHovering = false;
+    
+    private ActionListener postCycleListener = null;
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
@@ -160,6 +163,11 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         int width = getPreferredSize().width;
 
         if (scrollOffset > width) {
+        	if (postCycleListener != null) {
+        		postCycleListener.actionPerformed(null);	
+        		this.revalidate();
+        	}
+        	
             scrollOffset = isWrap() ? wrapOffset + scrollAmount :
                     -getSize().width;
         }
@@ -167,6 +175,12 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         repaint();
 
 
+    }
+    
+    public void setPostCycleListener(ActionListener listener) {
+    
+    	this.postCycleListener = listener;    	
+    
     }
 
     /*
@@ -348,6 +362,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (timer.isRunning()) {
             timer.stop();
             scrollingPaused = true;
+            System.out.println("pausing scrolling");
         }
     }
 
@@ -358,6 +373,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (scrollingPaused) {
             timer.restart();
             scrollingPaused = false;
+            System.out.println("resuming scrolling");
         }
     }
 
