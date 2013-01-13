@@ -211,7 +211,6 @@ public class AButton extends JButton {
         this.w = width;
         this.h = height;
         try {
-            //btnOver.setImage(AImage.resizeImage((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlOver)).getImage()),w,h));
             btnOver.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlOver)).getImage()), w, h));
             btnNormal.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlNormal)).getImage()), w, h));
             btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlDown)).getImage()), w, h));

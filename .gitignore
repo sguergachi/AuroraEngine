@@ -65,6 +65,7 @@ Thumbs.db
 *.class
 
 *.class
+<<<<<<< HEAD
 =======
 # Compiled source #
 ###################
@@ -129,3 +130,7 @@ Thumbs.db
 /dist/
 /lib/
 >>>>>>> 94f36e3675147abf2730609136a5703fc80a725c
+=======
+
+.classpath
+>>>>>>> origin/dev

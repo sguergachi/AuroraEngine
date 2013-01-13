@@ -108,9 +108,9 @@ public class ATextArea extends AImagePane {
 			imgScrollThumb = new AImage(scrollThumb);
 			imgScrollTrack = new AImage(scrollTrack);
 
-			areaScrollPane.getVerticalScrollBar().setUI(
-					new AScrollBar(imgScrollThumb.getImgIcon().getImage(),
-							imgScrollTrack.getImgIcon().getImage()));
+//			areaScrollPane.getVerticalScrollBar().setUI(
+//					new AScrollBar(imgScrollThumb.getImgIcon().getImage(),
+//							imgScrollTrack.getImgIcon().getImage()));
 		}
 
 		areaScrollPane.getVerticalScrollBar().setPreferredSize(

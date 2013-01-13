@@ -50,6 +50,7 @@ public class AInfoFeed extends AImagePane implements Runnable {
     private Font dFont;
 
     private String spereratorURl;
+    private int speed;
 
     public AInfoFeed(ArrayList TextArray) {
         this.setLayout(null);
@@ -89,12 +90,12 @@ public class AInfoFeed extends AImagePane implements Runnable {
         isRunning = true;
 
         dFont = new Font("AgencyFB", Font.BOLD, 20);
+        speed = 2;
 
         createLable();
 
         runner.start();
 
-        //System.out.println("FINISHED pre-run");
 
     }
 
@@ -154,14 +155,14 @@ public class AInfoFeed extends AImagePane implements Runnable {
                                 .getText().length())) + 60) {
 
                             DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
-                                    .getX() - 10, defaultYpos, 20
+                                    .getX() - speed, defaultYpos, 20
                                                                * DisplayLabels
                                     .get(i).getText().length(), 50);
                         }
 
                     } else {
                         DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
-                                .getX() - 10, defaultYpos, 20 * DisplayLabels
+                                .getX() - speed, defaultYpos, 20 * DisplayLabels
                                 .get(i).getText().length(), 50);
 
                     }
@@ -179,14 +180,14 @@ public class AInfoFeed extends AImagePane implements Runnable {
 
                         //DisplayLabels.remove(i);
                         DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
-                                .getX() - 10, defaultYpos + 5, 40, 40);
+                                .getX() - speed, defaultYpos + 5, 40, 40);
 
                     } else if (this.getWidth() - DisplayLabels.get(i - 1)
                             .getLocation().x >= (10 * (DisplayLabels.get(i - 1)
                             .getText().length())) + 40) {
 
                         DisplayLabels.get(i).setBounds(DisplayLabels.get(i)
-                                .getX() - 10, defaultYpos, 50, 50);
+                                .getX() - speed, defaultYpos, 50, 50);
                     }
 
                 }
@@ -211,7 +212,7 @@ public class AInfoFeed extends AImagePane implements Runnable {
 
             }
             try {
-                Thread.sleep(90);
+                Thread.sleep(20);
             } catch (InterruptedException ex) {
                 Logger.getLogger(AInfoFeed.class.getName()).log(Level.SEVERE,
                         null, ex);

@@ -82,9 +82,6 @@ public class AScrollingImage extends JPanel implements Runnable {
         loopImage2 = new AImage(imgURL);
         loopImage3 = new AImage(imgURL);
 
-//        loopImage1 = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + imgURL));
-//        loopImage2 = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + imgURL));
-//        loopImage3 = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + imgURL));
 
         if (ImageWidth != 0 && ImageHeight != 0) {
             loopImage1.setImg(new ImageIcon(AImage.resizeImage(loopImage1
@@ -111,7 +108,7 @@ public class AScrollingImage extends JPanel implements Runnable {
             runner = new Thread(this);
         }
         runner.start();
-        Ypos = loopImage2.getImgIcon().getIconHeight();
+        Ypos = imageHeight - imageHeight/8;
     }
 
     @Override
@@ -169,31 +166,33 @@ public class AScrollingImage extends JPanel implements Runnable {
         this.Xpos = Xpos;
     }
 
+    public void setCenterToFrame(JFrame frame) {
+
+        Xpos = frame.getSize().width / 10 + 1;
+        loopImage2.setVisible(false);
+        loopImage3.setVisible(false);
+
+        Xpos2 = Xpos2 + loopImage2.getImgWidth();
+        Xpos3 = Xpos3 - loopImage3.getImgWidth();
+    }
+
     public void grow(int size) {
 
-        Xpos = Xpos - (size + 40) / 3 - 2;
-        Ypos = Ypos - size / 7 + 1;
-        imageHeight = imageHeight + size / 3 + 4;
-        imageWidth = imageWidth + (size + 40) + 2;
+        Xpos2 = Xpos2 - (size + 40) / 3 - 4;
+        Xpos3 = Xpos3 - (size + 40) / 3 - 4;
+        Xpos = Xpos - (size + 40) / 3 - 4;
+        Ypos = Ypos - size / 7;
+        imageHeight = imageHeight + size / 3 + 5;
+        imageWidth = imageWidth + (size + 40) + 6;
         block = block + 2;
         border = border + imageWidth;
 
     }
 
-    public void setCenterToFrame(JFrame frame) {
-
-        Xpos = frame.getSize().width / 9;
-        loopImage2.setVisible(false);
-        loopImage3.setVisible(false);
-
-        Xpos2 = Xpos2 - loopImage2.getImgWidth();
-        Xpos3 = Xpos3 - loopImage3.getImgWidth();
-    }
-
     @Override
     public void paintComponent(Graphics g) {
 
-            update(g);
+        update(g);
     }
 
     /*

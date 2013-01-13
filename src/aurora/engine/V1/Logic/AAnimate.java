@@ -67,6 +67,8 @@ public class AAnimate implements Runnable {
 
     private boolean Animating = false;
 
+    private int acc;
+
     public AAnimate(JComponent component) {
         this.component = component;
         this.component.setDoubleBuffered(true);
@@ -280,21 +282,39 @@ public class AAnimate implements Runnable {
             } else if (AnimationID == 2) {
 
 
-                x = x + (speed);
+                x += (speed) + acc;
 
                 component.setBounds(x, component.getLocation().y, component
                         .getWidth(), component.getHeight());
 
+
                 if (speed > 0) {
 
                     if (component.getLocation().x >= XPos) {
-                        // component.setVisible(false);
                         break;
                     }
+
+                    if (component.getLocation().x > XPos / 2) {
+                        System.out.println("Slow Down Pos!!");
+                        acc--;
+                        acc--;
+                    } else if (component.getLocation().x < XPos / 2) {
+                        System.out.println("Accelerate Pos!!");
+                        acc++;
+                    }
+
                 } else {
                     if (component.getLocation().x <= XPos) {
-                        // component.setVisible(false);
                         break;
+                    }
+
+                    if (component.getLocation().x <= XPos / 2) {
+                        System.out.println("Slow Down Neg!!");
+                        acc++;
+                        acc++;
+                    } else if (component.getLocation().x >= XPos / 2) {
+                        System.out.println("Accelerate Neg!!");
+                        acc--;
                     }
                 }
                 this.component.setVisible(true);
@@ -387,7 +407,7 @@ public class AAnimate implements Runnable {
     ///Run when animation is complete
     private void doneAnimation() {
         if (e != null) {
-            e.actionPerformed();
+            e.postAction();
         }
     }
 

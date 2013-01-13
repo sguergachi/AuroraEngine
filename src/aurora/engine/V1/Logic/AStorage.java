@@ -31,6 +31,7 @@ import java.util.logging.Logger;
 public abstract class AStorage {
 
     public ASimpleDB db;
+
     protected ArrayList database;
 
     public abstract void storeFromDatabase();
@@ -43,24 +44,30 @@ public abstract class AStorage {
         database = new ArrayList();
         try {
 
-            ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM " + TableName);
-
+            ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
+                                        + TableName);
+            System.out.println("RS " + rs);
 
 
             //Check if db is still empty
-           rs.beforeFirst();
-            if (rs.next()) {
-                rs.first();
-                do {
-                    database.add(rs.getObject(ColumnName));
-                } while (rs.next());
+
+            if (rs != null) {
+                rs.beforeFirst();
+                if (rs.next()) {
+                    rs.first();
+                    do {
+                        database.add(rs.getObject(ColumnName));
+                    } while (rs.next());
+                }
+                return database;
+            }else{
+                return null;
             }
 
 
-            return database;
-
         } catch (SQLException ex) {
-            Logger.getLogger(AStorage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AStorage.class.getName()).log(Level.SEVERE, null,
+                    ex);
             return database;
         } finally {
             db.CloseConnection();

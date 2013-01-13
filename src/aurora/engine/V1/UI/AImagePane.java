@@ -144,8 +144,12 @@ public class AImagePane extends JPanel {
         //  Dispaly  image on Panel
 
         if (image != null) {
-            if (imageWidth == 0 && imageHeight == 0) {
+            if (imageWidth == 0) {
                 imageWidth = image.getIconWidth();
+
+            }
+
+            if (imageHeight == 0) {
                 imageHeight = image.getIconHeight();
             }
             g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
@@ -285,6 +289,14 @@ public class AImagePane extends JPanel {
 
     public String getImageName() {
         return ImageURL;
+    }
+
+    public int getRealImageWidth(){
+        return this.getImgIcon().getIconWidth();
+    }
+
+    public int getRealImageHeight(){
+        return this.getImgIcon().getIconHeight();
     }
 
     //TODO GET REAL SIZE AND WIDTH using get getImgIcon().getIconWidth()
