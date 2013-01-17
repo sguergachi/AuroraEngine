@@ -1,23 +1,17 @@
 package aurora.engine.V1.Logic;
 
+import aurora.engine.V1.Logic.JSON.JSONException;
 import aurora.engine.V1.Logic.JSON.JSONObject;
 import aurora.engine.V1.Logic.mixpanelapi.ClientDelivery;
 import aurora.engine.V1.Logic.mixpanelapi.MessageBuilder;
 import aurora.engine.V1.Logic.mixpanelapi.MixpanelAPI;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
-import java.util.Queue;
-import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -46,9 +40,10 @@ public class AMixpanelAnalytics {
     public void sendEvent(String Event) {
 
         MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
-        String computername = null;
+        String computerID;
+        String computerName = System.getProperty("user.name");
         try {
-            computername = InetAddress.getLocalHost().getHostName();
+            computerID = InetAddress.getLocalHost().getHostName();
         } catch (UnknownHostException ex) {
             Logger.getLogger(AMixpanelAnalytics.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -85,11 +80,30 @@ public class AMixpanelAnalytics {
 
         }
 
+        JSONObject userProperties = new JSONObject();
+        try {
+            userProperties.put("$name", computerName);
+        } catch (JSONException ex) {
+            Logger.getLogger(AMixpanelAnalytics.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+
+
+
         // Build the Message to send //
-        message = builder.event(ID,
-                Event, null);
+
         delivery = new ClientDelivery();
+        try {
+            message = builder.event(ID,
+                    Event, new JSONObject().put("mp_name_tag", computerName));
+        } catch (JSONException ex) {
+            Logger.getLogger(AMixpanelAnalytics.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
         delivery.addMessage(message);
+        message = builder.set(ID, userProperties);
+        delivery.addMessage(message);
+
 
         AThreadWorker worker = new AThreadWorker(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
