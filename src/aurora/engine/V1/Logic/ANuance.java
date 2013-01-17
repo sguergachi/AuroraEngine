@@ -125,20 +125,28 @@ public class ANuance {
     }
 
     //use existing file on local hard drive
-    public ANuance(String localFile) throws IOException {
+    public ANuance(String localFile) {
         randomGenerator = new Random();
-        lineLength = new int[64];
-        file = new File(localFile);
+        try {
 
-        AParser parser = new AParser(file.getCanonicalPath()
-                .substring(0, file.getCanonicalPath().length() - file.getName()
-                .length()));
-        System.out.println("Path: " + file.getCanonicalPath()
-                .substring(0, file.getCanonicalPath().length() - file.getName()
-                .length()));
-        fileContent = parser.parseFile(file.getName());
+            lineLength = new int[64];
+            file = new File(localFile);
 
-        nuanceDict = parse(fileContent, 64);
+            AParser parser = new AParser(file.getCanonicalPath()
+                    .substring(0, file.getCanonicalPath().length() - file
+                    .getName()
+                    .length()));
+            System.out.println("Path: " + file.getCanonicalPath()
+                    .substring(0, file.getCanonicalPath().length() - file
+                    .getName()
+                    .length()));
+            fileContent = parser.parseFile(file.getName());
+
+            nuanceDict = parse(fileContent, 64);
+        } catch (Exception e) {
+            useInternal = true;
+            e.printStackTrace();
+        }
     }
 
     private void writeFileFromURL(String FileURL, String localFile) {
@@ -159,6 +167,7 @@ public class ANuance {
             in.close();
 
         } catch (Exception e) {
+            useInternal = true;
             e.printStackTrace();
         }
     }
