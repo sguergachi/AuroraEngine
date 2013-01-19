@@ -12,6 +12,9 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,19 +33,62 @@ public class AMixpanelAnalytics {
 
     private MixpanelAPI mixpanelAPI;
 
+    private String computerID;
+
+    private final LinkedHashMap<Object, Object> propertiesMap;
+    private final String computerName;
+
     public AMixpanelAnalytics(String Token) {
         PROJECT_TOKEN = Token;
         mixpanelAPI = new MixpanelAPI();
+        computerID = getMAC();
+        computerName = System.getProperty("user.name");
+        propertiesMap = new LinkedHashMap<Object, Object>();
     }
 
-    public void sendEventProperty(String Event, String key, Object property) {
+    /**
+     * Adds to an accumulating list of properties which will all be sent
+     * with an associated even using sendEventProperty() and then cleared to
+     * be usable again
+     * @param key
+     * @param property
+     */
+    public void addProperty(Object key, Object property) {
+        propertiesMap.put(key, property);
+    }
 
-        String computerID = getMAC();
-        String computerName = System.getProperty("user.name");
+    /**
+     * Sends all that was previously added to the properties list
+     * via addProperty() to Mixpanel and clears the properties list.
+     *
+     * if the property is a Boolean then an increment() is sent to the
+     * specific key through Mixpanel API.
+     * If not then the Object attached to the key is sent.
+     *
+     * @param Event
+     * @param key
+     * @param property
+     */
+    public void sendEventProperty(String Event) {
+
+
         MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
         JSONObject properties = new JSONObject();
         try {
-            properties.put(key, property);
+            Iterator entries = propertiesMap.entrySet().iterator();
+            while (entries.hasNext()) {
+                Entry propertyEntry = (Entry) entries.next();
+                if (propertyEntry.getValue() instanceof Boolean) {
+                    properties.increment(propertyEntry.getKey().toString());
+                } else {
+                    properties.put(propertyEntry.getKey().toString(),
+                            propertyEntry.getValue());
+                }
+            }
+            propertiesMap.clear();
+
+            properties.put("mp_name_tag", computerName);
+
         } catch (JSONException ex) {
             Logger.getLogger(AMixpanelAnalytics.class.getName()).
                     log(Level.SEVERE, null, ex);
@@ -54,21 +100,13 @@ public class AMixpanelAnalytics {
         delivery = new ClientDelivery();
         delivery.addMessage(message);
 
-        try {
-            message = builder.event(computerID,
-                    Event, new JSONObject().put("mp_name_tag", computerName));
-        } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        delivery.addMessage(message);
-
 
         AThreadWorker worker = new AThreadWorker(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
                     mixpanelAPI.deliver(delivery);
-                    System.out.println(" >> Sent Property Events to Mixpanel <<");
+                    System.out
+                            .println(" >> Sent Property Events to Mixpanel <<");
                 } catch (IOException ex) {
                     Logger.getLogger(AMixpanelAnalytics.class.getName()).
                             log(Level.SEVERE, null, ex);
@@ -78,62 +116,10 @@ public class AMixpanelAnalytics {
 
         worker.startOnce();
     }
-
-     public void sendEventProperty(String Event, String key, Boolean increment) {
-
-        String computerID = getMAC();
-        String computerName = System.getProperty("user.name");
-        MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
-        JSONObject properties = new JSONObject();
-        try {
-            properties.increment(key);
-        } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-
-        message = builder.event(computerID, Event, properties);
-
-
-        delivery = new ClientDelivery();
-        delivery.addMessage(message);
-
-        try {
-            message = builder.event(computerID,
-                    null, new JSONObject().put("mp_name_tag", computerName));
-        } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class.getName()).
-                    log(Level.SEVERE, null, ex);
-        }
-        delivery.addMessage(message);
-
-
-        mixpanelAPI = new MixpanelAPI();
-        AThreadWorker worker = new AThreadWorker(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    mixpanelAPI.deliver(delivery);
-                    System.out.println(" >> Sent Property Events to Mixpanel <<");
-                } catch (IOException ex) {
-                    Logger.getLogger(AMixpanelAnalytics.class.getName()).
-                            log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        worker.startOnce();
-    }
-
 
     public void sendEvent(String Event) {
 
         MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
-        String computerID = getMAC();
-        String computerName = System.getProperty("user.name");
-
-
-
-
 
         JSONObject userProperties = new JSONObject();
         try {
@@ -142,7 +128,6 @@ public class AMixpanelAnalytics {
             Logger.getLogger(AMixpanelAnalytics.class.getName()).
                     log(Level.SEVERE, null, ex);
         }
-
 
 
         // Build the Message to send //

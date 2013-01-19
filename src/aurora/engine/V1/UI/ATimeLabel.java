@@ -29,7 +29,7 @@ import javax.swing.JLabel;
  * @author Sammy
  * @version 0.2
  */
-public final class ATimeLabel extends ASlickLabel implements Runnable {
+public final class ATimeLabel extends JLabel implements Runnable {
 
     private Thread runner;
 
@@ -105,4 +105,22 @@ public final class ATimeLabel extends ASlickLabel implements Runnable {
 
         }
     }
+
+        @Override
+    protected void paintComponent(Graphics g) {
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+
+        super.paintComponent(g2d);
+    }
+
 }
