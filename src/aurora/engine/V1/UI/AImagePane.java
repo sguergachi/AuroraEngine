@@ -42,6 +42,10 @@ public class AImagePane extends JPanel {
     private int imageHeight = 0;
 
     private int imageWidth = 0;
+    
+    private float heightRatio = 1;
+    
+    private float widthRatio = 1;
 
     private ASurface ressource;
 
@@ -142,23 +146,18 @@ public class AImagePane extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         //  Dispaly  image on Panel
-
         if (image != null) {
             if (imageWidth == 0) {
                 imageWidth = image.getIconWidth();
-
             }
-
+            
             if (imageHeight == 0) {
                 imageHeight = image.getIconHeight();
             }
             g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
         } else {
             g.clearRect(0, 0, imageWidth, imageHeight);
-
         }
-
-
     }
 
     public void setURL(String URL) {
@@ -317,6 +316,22 @@ public class AImagePane extends JPanel {
 
     public int getImageWidth() {
         return imageWidth;
+    }
+    
+    public void setHeightRatio(float heightRatio) {
+        this.heightRatio = heightRatio;
+    }
+    
+    public float getHeightRatio() {
+        return heightRatio;
+    }
+    
+    public void setWidthRatio(float widthRatio) {
+        this.widthRatio = widthRatio;
+    }
+    
+    public float getWidthRatio() {
+        return widthRatio;
     }
 
     public void setSurface(String SurfaceName) {

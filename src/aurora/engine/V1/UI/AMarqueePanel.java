@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 
-
 /**
  * Made By Sardonix Creative.
  *
@@ -73,7 +72,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      *                  the Icons to be painted as part of the animation
      */
     public AMarqueePanel(int width, int height, String backgroundImage) {
-
         super(backgroundImage, width, height);
 
         setScrollFrequency(frequency);
@@ -86,7 +84,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         ttm.setInitialDelay(0);
         ttm.setReshowDelay(0);
         ttm.setDismissDelay(1000);
-
     }
 
     /**
@@ -100,7 +97,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      */
     public AMarqueePanel(int scrollSpeed, int width, int height,
                          String backgroundImage) {
-
         super(backgroundImage, width, height);
         this.setOpaque(true);
 
@@ -114,7 +110,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         ttm.setInitialDelay(0);
         ttm.setReshowDelay(0);
         ttm.setDismissDelay(1000);
-
     }
 
     /*
@@ -132,6 +127,16 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         // Normal painting as the components scroll right to left
         Graphics2D g2d = (Graphics2D) g;
+        
+        // The scrolling data ends up writing over the borders of the
+        // background image  to use the aspect ratio data to try to
+        // clip the display area reasonably
+        Rectangle rect = g2d.getClip().getBounds();
+        int relationalX = Math.round(6 * getWidthRatio());
+        int relationalWidth = Math.round( 15 * getWidthRatio());
+        rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width - relationalWidth, rect.height));
+        g2d.setClip(rect);
+        
         g2d.translate(-scrollOffset, 0);
         super.paintChildren(g);
         g2d.translate(scrollOffset, 0);
@@ -144,6 +149,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
+            
             g2d.translate(-wrapOffset, 0);
             super.paintChildren(g);
             g2d.translate(wrapOffset, 0);
@@ -157,8 +163,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      * are scrolling from right to left.
      */
     public void actionPerformed(ActionEvent ae) {
-
-
         scrollOffset = scrollOffset + scrollAmount;
         int width = getPreferredSize().width;
 
@@ -171,16 +175,12 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
             scrollOffset = isWrap() ? wrapOffset + scrollAmount :
                     -getSize().width;
         }
-
+        
         repaint();
-
-
     }
     
     public void setPostCycleListener(ActionListener listener) {
-    
-    	this.postCycleListener = listener;    	
-    
+    	this.postCycleListener = listener;    
     }
 
     /*
