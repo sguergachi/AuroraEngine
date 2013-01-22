@@ -60,7 +60,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private int orgScrollAmount = 0;
 
     private boolean isHovering = false;
-    
+
     private ActionListener postCycleListener = null;
 
     /**
@@ -164,10 +164,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         if (scrollOffset > width) {
         	if (postCycleListener != null) {
-        		postCycleListener.actionPerformed(null);	
+        		postCycleListener.actionPerformed(null);
         		this.revalidate();
         	}
-        	
+
             scrollOffset = isWrap() ? wrapOffset + scrollAmount :
                     -getSize().width;
         }
@@ -176,11 +176,11 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
 
     }
-    
+
     public void setPostCycleListener(ActionListener listener) {
-    
-    	this.postCycleListener = listener;    	
-    
+
+    	this.postCycleListener = listener;
+
     }
 
     /*
