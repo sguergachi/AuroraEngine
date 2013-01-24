@@ -19,15 +19,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Simple Mixpanel Tracking impementation based off MixpanelAPIDemo.java
+ * Simple Mixpanel Tracking implementation based off MixpanelAPI
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class AMixpanelAnalytics {
 
     public String PROJECT_TOKEN;
-
-    private JSONObject message;
 
     private ClientDelivery delivery;
 
@@ -36,12 +34,13 @@ public class AMixpanelAnalytics {
     private String computerID;
 
     private final LinkedHashMap<Object, Object> propertiesMap;
+
     private final String computerName;
 
     public AMixpanelAnalytics(String Token) {
         PROJECT_TOKEN = Token;
         mixpanelAPI = new MixpanelAPI();
-        computerID = getMAC();
+        computerID = Integer.toString(getMAC().hashCode());
         computerName = System.getProperty("user.name");
         propertiesMap = new LinkedHashMap<Object, Object>();
     }
@@ -50,6 +49,7 @@ public class AMixpanelAnalytics {
      * Adds to an accumulating list of properties which will all be sent
      * with an associated even using sendEventProperty() and then cleared to
      * be usable again
+     * <p/>
      * @param key
      * @param property
      */
@@ -72,9 +72,18 @@ public class AMixpanelAnalytics {
     public void sendEventProperty(String Event) {
 
 
-        MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
+        JSONObject userProperties = new JSONObject();
         JSONObject properties = new JSONObject();
+        JSONObject propertiesMessage;
+        JSONObject userMessage;
+        MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
+
+
+
+
         try {
+
+            // Add Properties from Map to JSONobj //
             Iterator entries = propertiesMap.entrySet().iterator();
             while (entries.hasNext()) {
                 Entry propertyEntry = (Entry) entries.next();
@@ -87,6 +96,7 @@ public class AMixpanelAnalytics {
             }
             propertiesMap.clear();
 
+            // Attaches User name to property //
             properties.put("mp_name_tag", computerName);
 
         } catch (JSONException ex) {
@@ -94,13 +104,28 @@ public class AMixpanelAnalytics {
                     log(Level.SEVERE, null, ex);
         }
 
-        message = builder.event(computerID, Event, properties);
+        try {
+            // People Analytic //
+            userProperties.put("$name", computerName);
+
+        } catch (JSONException ex) {
+            Logger.getLogger(AMixpanelAnalytics.class
+                    .getName()).
+                    log(Level.SEVERE, null, ex);
+        }
 
 
+
+        // Create Messages //
+
+        propertiesMessage = builder.event(computerID, Event, properties);
+        userMessage = builder.set(computerID, userProperties);
+
+
+        // Send Messages To Mixpanel //
         delivery = new ClientDelivery();
-        delivery.addMessage(message);
-
-
+        delivery.addMessage(userMessage);
+        delivery.addMessage(propertiesMessage);
         AThreadWorker worker = new AThreadWorker(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -120,12 +145,15 @@ public class AMixpanelAnalytics {
     public void sendEvent(String Event) {
 
         MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
-
+        JSONObject message = null;
         JSONObject userProperties = new JSONObject();
         try {
             userProperties.put("$name", computerName);
+
+
         } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class.getName()).
+            Logger.getLogger(AMixpanelAnalytics.class
+                    .getName()).
                     log(Level.SEVERE, null, ex);
         }
 
@@ -133,11 +161,15 @@ public class AMixpanelAnalytics {
         // Build the Message to send //
 
         delivery = new ClientDelivery();
+
         try {
             message = builder.event(computerID,
                     Event, new JSONObject().put("mp_name_tag", computerName));
+
+
         } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class.getName()).
+            Logger.getLogger(AMixpanelAnalytics.class
+                    .getName()).
                     log(Level.SEVERE, null, ex);
         }
         delivery.addMessage(message);
@@ -150,8 +182,11 @@ public class AMixpanelAnalytics {
                 try {
                     mixpanelAPI.deliver(delivery);
                     System.out.println(" >> Sent Event to Mixpanel <<");
+
+
                 } catch (IOException ex) {
-                    Logger.getLogger(AMixpanelAnalytics.class.getName()).
+                    Logger.getLogger(AMixpanelAnalytics.class
+                            .getName()).
                             log(Level.SEVERE, null, ex);
                 }
             }
