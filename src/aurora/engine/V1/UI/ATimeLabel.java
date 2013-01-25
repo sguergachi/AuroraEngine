@@ -33,7 +33,7 @@ public final class ATimeLabel extends JLabel implements Runnable {
 
     private Thread runner;
 
-    public static final String FULL_DATE = "EEEEE, MMMMM dd \n hh:mm a";
+    public static final String FULL_DATE = "EEEEE, MMMMM dd hh:mm:ss a";
 
     public static final String TIME = "hh:mm a";
 
@@ -49,10 +49,10 @@ public final class ATimeLabel extends JLabel implements Runnable {
 
     public static final String MONTH = "MM-dd";
 
-    private static String[] WEEK_DATE = {"Sunday", "Monday", "Tuesday",
+    private static String[] WEEK_ARRAY = {"Sunday", "Monday", "Tuesday",
         "Wednesday", "Thursday", "Friday", "Saturday"};
 
-    public static final String[] MONTH_DATE = {" January", " February", " March",
+    public static final String[] MONTH_ARRAY = {" January", " February", " March",
         " April", " May", " June", " July", " August", " September", " October",
         " November", " December"};
 

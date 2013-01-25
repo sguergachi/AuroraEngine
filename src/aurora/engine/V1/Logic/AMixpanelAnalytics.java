@@ -43,6 +43,8 @@ public class AMixpanelAnalytics {
         computerID = Integer.toString(getMAC().hashCode());
         computerName = System.getProperty("user.name");
         propertiesMap = new LinkedHashMap<Object, Object>();
+
+        System.out.println("COMPUTER ID: " + computerID);
     }
 
     /**

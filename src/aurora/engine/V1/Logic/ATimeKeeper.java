@@ -35,7 +35,6 @@ public class ATimeKeeper extends Timer {
 				sec = seconds % 60;
 				timeString = new String("" + hours + " hours " + min + " min "
 						+ sec + " sec");
-
 			}
 
 		});
