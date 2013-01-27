@@ -94,7 +94,7 @@ public class ASurface {
         s.append(locationPath);
 
 
-        AFileManager mngr = new AFileManager(s.toString(), true);
+        AFileManager mngr = new AFileManager(s.toString());
 
 
 

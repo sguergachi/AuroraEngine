@@ -61,36 +61,15 @@ public class AFileManager {
      *
      * @param RootfolderName
      */
-    public AFileManager(String RootfolderName) {
+    public AFileManager(String currentPath) {
 
+        this.path = currentPath;
 
-        //Detect Path for Windows 7 Windows Vista Mac and XP
-        if (System.getProperty("os.name").equals("Windows 7") || System
-                .getProperty("os.name").equals("Windows Vista")) {
-            this.path = System.getProperty("user.home") + "/Documents/"
-                        + RootfolderName;
-        } else if (System.getProperty("os.name").equals("Windows XP")) {
-            this.path = System.getProperty("user.home") + "/My Documents/"
-                        + RootfolderName;
-        } else if (System.getProperty("os.name").equals("Mac OS X")) {
-            this.path = "//Users//" + USER_NAME + "//Documents//"
-                        + RootfolderName;
-        }
         System.out.println(path);
 
         //make folder
         //File Root = new File(path);
         //Root.mkdir();
-    }
-
-    /**
-     * Uses Custom path to get to any Directory
-     *
-     * @param pathDir
-     * @param on      : any value will work
-     */
-    public AFileManager(String pathDir, Boolean on) {
-        this.path = pathDir;
     }
 
     /**
@@ -359,6 +338,8 @@ public class AFileManager {
      *
      * @param FolderName
      * @param ObjectName
+     *                   <
+     *                   p/>
      * <p/>
      * @return deserialized Object
      */
@@ -454,6 +435,84 @@ public class AFileManager {
 
     }
 
+    public void moveFolder(String source, String destination) {
+        File sourceFile = new File(source);
+        File destinationFile = new File(destination);
+
+
+        copyDirectory(sourceFile, destinationFile);
+        try {
+            if (!deleteFile(sourceFile)) {
+                throw new IOException("Unable to delete original folder");
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(AFileManager.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void copyDirectory(File sourceDir, File destDir) {
+
+        if (sourceDir.exists()) {
+            if (!destDir.exists()) {
+                destDir.mkdir();
+            }
+
+            File[] children = sourceDir.listFiles();
+
+            for (File sourceChild : children) {
+                String name = sourceChild.getName();
+                File destChild = new File(destDir, name);
+                if (sourceChild.isDirectory()) {
+                    copyDirectory(sourceChild, destChild);
+                } else {
+                    try {
+                        copyFile(sourceChild, destChild);
+                    } catch (IOException ex) {
+                        Logger.getLogger(AFileManager.class.getName()).
+                                log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void copyFile(File source, File dest) throws IOException {
+
+        if (!dest.exists()) {
+            dest.createNewFile();
+        }
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            in = new FileInputStream(source);
+            out = new FileOutputStream(dest);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } finally {
+            in.close();
+            out.close();
+        }
+
+    }
+
+    public static boolean deleteFile(File resource) throws IOException {
+        if (resource.isDirectory()) {
+            File[] childFiles = resource.listFiles();
+            for (File child : childFiles) {
+                deleteFile(child);
+            }
+
+        }
+        return resource.delete();
+
+    }
+
     /**
      * Get the extension of a file.
      *
@@ -475,7 +534,7 @@ public class AFileManager {
      * Determine if Folder or File Already exists
      */
     public boolean checkFile(String fileName) {
-        System.out.println(fileName);
+        System.out.println("Checking if " + fileName + " Exists");
         File f = new File(fileName);
         if (f.exists()) {
             return true;
@@ -484,9 +543,34 @@ public class AFileManager {
         }
     }
 
-///Getter & Setters
+    /**
+     * get current working path
+     * <p/>
+     * @return string of path
+     */
     public String getPath() {
         return path;
+    }
+
+    /**
+     * get my document path for windows and mac
+     * <p/>
+     * @return string of MyDocuments folder path
+     */
+    public String getMyDocPath() {
+        String docPath = System.getProperty("user.home");
+
+        //Detect Path for My Doc on Windows 7 Windows Vista Mac and XP
+        if (System.getProperty("os.name").equals("Windows 7") || System
+                .getProperty("os.name").equals("Windows Vista")) {
+            docPath = System.getProperty("user.home") + "/Documents/";
+        } else if (System.getProperty("os.name").equals("Windows XP")) {
+            docPath = System.getProperty("user.home") + "/My Documents/";
+        } else if (System.getProperty("os.name").equals("Mac OS X")) {
+            docPath = "//Users//" + USER_NAME + "//Documents//";
+        }
+
+        return docPath;
     }
 
     public String getUserName() {
