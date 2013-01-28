@@ -21,10 +21,10 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -68,6 +68,8 @@ public class AAnimate implements Runnable {
     private boolean Animating = false;
 
     private int acc;
+    
+    static final Logger logger = Logger.getLogger(AAnimate.class);
 
     public AAnimate(JComponent component) {
         this.component = component;
@@ -204,7 +206,11 @@ public class AAnimate implements Runnable {
 
         }
         AnimationID = 2;
-        System.out.println("move horz with X at: " + x);
+        
+        if (logger.isDebugEnabled()) {
+        	logger.debug("move horz with X at: " + x);
+        }
+
         start();
     }
 
@@ -232,8 +238,9 @@ public class AAnimate implements Runnable {
         runner = new Thread(this);
         runner.start();
 
-
-        System.out.println("Running Animation");
+        if (logger.isDebugEnabled()) {
+        	logger.debug("Running animation");
+        }
 
     }
 
@@ -245,8 +252,9 @@ public class AAnimate implements Runnable {
             if (AnimationID == 0) {
                 g2d.setComposite(makeComposite(Alpha));
 
-
-                System.out.println("Alpha " + Alpha);
+                if (logger.isDebugEnabled()) {
+                	logger.debug("Alpha " + Alpha);
+                }
 
                 component.paintComponents(g2d);
                 component.paint(g2d);
@@ -259,7 +267,11 @@ public class AAnimate implements Runnable {
                 Alpha += 0.2F;
 
             } else if (AnimationID == 1) {
-                System.out.println("Alpha of Animation: " + Alpha);
+            	
+            	if (logger.isDebugEnabled()) {
+                	logger.debug("Alpha of Animation: " + Alpha);
+                }
+
                 g2d.setComposite(makeComposite(Alpha));
                 //Decrease Alpha
                 Alpha -= 0.1F;
@@ -295,11 +307,17 @@ public class AAnimate implements Runnable {
                     }
 
                     if (component.getLocation().x > XPos / 2) {
-                        System.out.println("Slow Down Pos!!");
+                    	if (logger.isDebugEnabled()) {
+                        	logger.debug("Slow Down Pos!!");
+                        }
+                        
                         acc--;
                         acc--;
                     } else if (component.getLocation().x < XPos / 2) {
-                        System.out.println("Accelerate Pos!!");
+                    	if (logger.isDebugEnabled()) {
+                    		logger.debug("Accelerate Pos!!");
+                    	}
+
                         acc++;
                     }
 
@@ -309,11 +327,17 @@ public class AAnimate implements Runnable {
                     }
 
                     if (component.getLocation().x <= XPos / 2) {
-                        System.out.println("Slow Down Neg!!");
+                    	if (logger.isDebugEnabled()) {
+                    		logger.debug("Slow Down Neg!!");
+                    	}
+
                         acc++;
                         acc++;
                     } else if (component.getLocation().x >= XPos / 2) {
-                        System.out.println("Accelerate Neg!!");
+                    	if (logger.isDebugEnabled()) {
+                    		logger.debug("Accelerate Neg!!");
+                    	}
+
                         acc--;
                     }
                 }
@@ -340,11 +364,10 @@ public class AAnimate implements Runnable {
 
 
                 component.repaint();
-                System.out.println("bool : " + (YPos
-                                                <= component.getLocation().y));
-
-
-
+                
+                if (logger.isDebugEnabled()) {
+                	logger.debug("bool : " + (YPos <= component.getLocation().y));
+                }
 
                 //DIAGONAL
             } else if (AnimationID == 4) {
@@ -380,12 +403,14 @@ public class AAnimate implements Runnable {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AAnimate.class.getName()).log(Level.SEVERE,
-                        null, ex);
+            	logger.error(ex);
             }
 
-            System.out.println("X Val: " + x);
-            System.out.println("Y Val: " + y);
+            if (logger.isDebugEnabled()) {
+            	logger.debug("X Val: " + x);
+            	logger.debug("Y Val: " + y);
+            }
+
             this.component.repaint();
             this.component.setVisible(true);
 

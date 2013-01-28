@@ -24,6 +24,9 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -32,6 +35,8 @@ public class AConsole extends JFrame{
 private static JTextArea txtBox;
 private JScrollPane scroller;
 private static int counter = 0;
+static final Logger logger = Logger.getLogger(AConsole.class);
+
 public AConsole(){
     setTitle("Aurora -- Console");
     txtBox = new JTextArea(10,20);
