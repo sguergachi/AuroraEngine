@@ -10,6 +10,9 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
+import org.apache.log4j.Logger;
+
+
 /**
  * .-----------------------------------------------------------------------.
  * | ACursor
@@ -28,6 +31,8 @@ public class ACursor {
     private final AImage cursorImage;
 
     private Cursor Cursor;
+    
+    static final Logger logger = Logger.getLogger(ACursor.class);
 
     public ACursor(AImage aCursorImage) {
 
@@ -78,7 +83,7 @@ public class ACursor {
 
 
         } catch (Exception exp) {
-            exp.printStackTrace();
+        	logger.error(exp, exp);
         }
     }
 

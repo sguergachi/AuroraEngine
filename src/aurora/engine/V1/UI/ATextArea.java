@@ -15,6 +15,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+
 public class ATextArea extends AImagePane {
 
 	private String imagePath;
@@ -24,6 +26,7 @@ public class ATextArea extends AImagePane {
 	private String scrollTrack;
 	private AImage imgScrollThumb;
 	private AImage imgScrollTrack;
+	static final Logger logger = Logger.getLogger(ATextArea.class);
 
 	public ATextArea() {
 		makeTextBox();

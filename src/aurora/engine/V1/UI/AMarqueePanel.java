@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.apache.log4j.Logger;
+
 /**
  * Made By Sardonix Creative.
  *
@@ -61,6 +63,8 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private boolean isHovering = false;
     
     private ActionListener postCycleListener = null;
+    
+    static final Logger logger = Logger.getLogger(AMarqueePanel.class);
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
@@ -362,7 +366,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (timer.isRunning()) {
             timer.stop();
             scrollingPaused = true;
-            System.out.println("pausing scrolling");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Paused scrolling");
+            }
         }
     }
 
@@ -373,7 +379,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (scrollingPaused) {
             timer.restart();
             scrollingPaused = false;
-            System.out.println("resuming scrolling");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Resume scrolling");
+            }
         }
     }
 
@@ -506,17 +514,18 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
                     int width = label.getWidth();
 
                     if (labelClicked >= xPos && labelClicked <= (xPos + width)) {
-                        System.out.println("URL = "
-                                           + label.getUrl());
+                    	if (logger.isDebugEnabled()) {
+                    		logger.debug("URL = " + label.getUrl());
+                    	}
                         Desktop myNewBrowserDesktop = Desktop.getDesktop();
                         URI myNewLocation;
                         try {
                             myNewLocation = new URI(label.getUrl());
                             myNewBrowserDesktop.browse(myNewLocation);
                         } catch (URISyntaxException e) {
-                            e.printStackTrace();
+                        	logger.error(e, e);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                        	logger.error(e, e);
                         }
 
                         componentFound = true;

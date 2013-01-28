@@ -9,6 +9,9 @@ import java.net.URL;
 import javax.swing.JLabel;
 import javax.swing.JToolTip;
 
+import org.apache.log4j.Logger;
+
+
 /**
  * The AInfoFeedLabel is used to scroll components from the right edge of the
  * panel to the left edge. Scrolling is continuous. To simulate the scrolling of
@@ -35,6 +38,8 @@ public class AInfoFeedLabel extends JLabel {
     private int endPosition;
 
     private String customToolTip;
+    
+    static final Logger logger = Logger.getLogger(AInfoFeedLabel.class);
 
     /**
      *

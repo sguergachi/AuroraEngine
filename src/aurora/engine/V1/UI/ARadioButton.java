@@ -23,6 +23,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JFrame;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -33,6 +36,7 @@ public class ARadioButton extends AImagePane {
     private String btnOver;
     public boolean isSelected = false;
     private JFrame frame;
+    static final Logger logger = Logger.getLogger(ARadioButton.class);
 
     public ARadioButton(String ImgUp, String ImgOvr, JFrame frame) {
 

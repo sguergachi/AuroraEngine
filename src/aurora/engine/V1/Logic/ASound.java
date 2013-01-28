@@ -33,6 +33,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.apache.log4j.Logger;
+
 /**
  * .------------------------------------------------------------------------.
  * | ASound
@@ -102,6 +104,8 @@ public class ASound implements Runnable {
     private URL path;
 
     private boolean paused;
+    
+    static final Logger logger = Logger.getLogger(ASound.class);
 
     /**
      * .-----------------------------------------------------------------------.
@@ -228,7 +232,10 @@ public class ASound implements Runnable {
         path = new URL(getClass().getResource("/aurora/V1/resources/Sound/"
                                               + URL).toString());
         sound = Applet.newAudioClip(path );
-        System.out.println("Playing Sound " + path);
+        if (logger.isDebugEnabled()) {
+        	logger.debug("Playing Sound " + path);
+        }
+
         if (loop) {
             sound.loop();
         } else {
@@ -252,7 +259,8 @@ public class ASound implements Runnable {
         try {
             playSound();
         } catch (Exception e) {
-            e.printStackTrace();
+        	logger.error(e, e);
+
         }
         runner = null;
     }

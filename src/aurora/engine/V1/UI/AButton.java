@@ -22,10 +22,10 @@ package aurora.engine.V1.UI;
 import aurora.engine.V1.Logic.ASurface;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+
+import org.apache.log4j.Logger;
 
 /**
  * Extention of JButton to allow custom Image states (regardless of Look & Feel)
@@ -43,6 +43,7 @@ public class AButton extends JButton {
     private ImageIcon btnDown;
     private int w;
     private int h;
+    static final Logger logger = Logger.getLogger(AButton.class);
     //////////////////////
     ///  Constructor    //
     //////////////////////
@@ -76,7 +77,7 @@ public class AButton extends JButton {
                 btnOver = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + ImgOvr));
                 btnDown = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgDwn));
             } catch (Exception exx) {
-                Logger.getLogger(AButton.class.getName()).log(Level.SEVERE, null, exx);
+            	logger.error(exx);
             }
         }
 
@@ -108,7 +109,7 @@ public class AButton extends JButton {
                 btnOver = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + ImgOvr));
                 btnDown = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgDwn));
             } catch (Exception exx) {
-                Logger.getLogger(AButton.class.getName()).log(Level.SEVERE, null, exx);
+            	logger.error(exx);
             }
         }
 
@@ -145,7 +146,7 @@ public class AButton extends JButton {
                 btnOver = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + ImgOvr));
                 btnDown = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgDwn));
             } catch (Exception exx) {
-                Logger.getLogger(AButton.class.getName()).log(Level.SEVERE, null, exx);
+            	logger.error(exx);
             }
         }
 
@@ -175,7 +176,7 @@ public class AButton extends JButton {
                 btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlDown)).getImage()), w, h));
 
             } catch (Exception exx) {
-                Logger.getLogger(AButton.class.getName()).log(Level.SEVERE, null, exx);
+            	logger.error(exx);
             }
         }
 
@@ -222,7 +223,7 @@ public class AButton extends JButton {
                 btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlDown)).getImage()), w, h));
 
             } catch (Exception exx) {
-                Logger.getLogger(AButton.class.getName()).log(Level.SEVERE, null, exx);
+            	logger.error(exx);
             }
         }
 

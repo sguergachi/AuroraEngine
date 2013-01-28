@@ -24,6 +24,9 @@ import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -31,6 +34,7 @@ import javax.swing.plaf.basic.BasicScrollBarUI;
 public class AScrollPane extends JScrollPane {
 
     private final String scrollBarImgPath;
+    static final Logger logger = Logger.getLogger(AScrollPane.class);
 
     public AScrollPane(Component component, int Policy, String ScrollBarImg) {
         super(component);

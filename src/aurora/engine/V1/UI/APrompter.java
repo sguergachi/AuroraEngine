@@ -21,9 +21,10 @@ import aurora.engine.V1.Logic.APostHandler;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -69,6 +70,8 @@ public class APrompter extends JPanel implements Runnable {
     private ArrayList<Color> listUpdateColor;
 
     private boolean done;
+    
+    static final Logger logger = Logger.getLogger(APrompter.class);
 
     public APrompter(Font font) {
         super(true);
@@ -132,7 +135,9 @@ public class APrompter extends JPanel implements Runnable {
         if (!updateList.isEmpty() && !toDisplayList.containsAll(updateList)) {
             //Transfer updateList to Display List
             //Then Clear updateList
-            System.out.println("updating prompt...");
+        	if (logger.isDebugEnabled()) {
+        		logger.debug("Updating prompt...");
+        	}
             toDisplayList = (ArrayList<String>) updateList.clone();
             updateList.clear();
 
@@ -180,8 +185,7 @@ public class APrompter extends JPanel implements Runnable {
                     try {
                         Thread.sleep(900);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(AProgressWheel.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 }
                 if (Ypos == (this.getHeight() / 2)) {
@@ -191,8 +195,7 @@ public class APrompter extends JPanel implements Runnable {
                     try {
                         Thread.sleep(600);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(AProgressWheel.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 }
 
@@ -229,8 +232,7 @@ public class APrompter extends JPanel implements Runnable {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AProgressWheel.class.getName()).log(
-                        Level.SEVERE, null, ex);
+            	logger.error(ex);
             }
         }
 
@@ -310,8 +312,7 @@ public class APrompter extends JPanel implements Runnable {
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AProgressWheel.class.getName()).log(
-                        Level.SEVERE, null, ex);
+            	logger.error(ex);
             }
 
             Xpos = this.getWidth() / 2;

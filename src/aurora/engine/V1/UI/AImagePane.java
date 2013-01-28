@@ -22,10 +22,10 @@ import java.awt.Graphics;
 import java.awt.LayoutManager;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 /**
  * Image on a panel
@@ -50,6 +50,8 @@ public class AImagePane extends JPanel {
     private ASurface ressource;
 
     private String SurfaceName;
+    
+    static final Logger logger = Logger.getLogger(AImagePane.class);
 
     //////////////
     //Constructors
@@ -137,8 +139,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
+            	logger.error(exx);
             }
         }
     }
@@ -210,8 +211,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
+            	logger.error(exx);
             }
         }
         this.revalidate();
@@ -234,8 +234,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
+            	logger.error(exx);
             }
         }
         imageWidth = image.getIconWidth();
@@ -263,8 +262,9 @@ public class AImagePane extends JPanel {
     public void setImageURL(String ImageURL) throws MalformedURLException {
         this.image = null;
 
-
-        System.out.println("URL " + ImageURL);
+        if (logger.isDebugEnabled()) {
+        	logger.debug("URL " + ImageURL);
+        }
         this.ImageURL = ImageURL;
         setImage(ImageURL);
 
