@@ -534,7 +534,6 @@ public class AFileManager {
      * Determine if Folder or File Already exists
      */
     public boolean checkFile(String fileName) {
-        System.out.println("Checking if " + fileName + " Exists");
         File f = new File(fileName);
         if (f.exists()) {
             return true;
