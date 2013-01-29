@@ -24,6 +24,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JLabel;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -59,6 +62,8 @@ public final class ATimeLabel extends JLabel implements Runnable {
     public String DATE;
 
     private final String timeType;
+    
+    static final Logger logger = Logger.getLogger(ATimeLabel.class);
 
     public ATimeLabel() {
         timeType = ATimeLabel.FULL_DATE;
@@ -100,7 +105,7 @@ public final class ATimeLabel extends JLabel implements Runnable {
             try {
                 Thread.sleep(600);
             } catch (InterruptedException e) {
-                System.out.println("Time Thread failed");
+            	logger.error("Time thread failed");
             }
 
         }

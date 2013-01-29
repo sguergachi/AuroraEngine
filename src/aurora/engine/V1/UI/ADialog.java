@@ -31,8 +31,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.*;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * .------------------------------------------------------------------------.
@@ -124,6 +126,8 @@ public final class ADialog extends ADragFrame {
      * Text container.
      */
     public JPanel textContainer;
+    
+    static final Logger logger = Logger.getLogger(ADialog.class);
 
     /**
      * .-----------------------------------------------------------------------.

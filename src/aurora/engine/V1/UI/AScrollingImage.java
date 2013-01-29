@@ -21,13 +21,14 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import org.apache.log4j.Logger;
+
 
 /**
  *
@@ -71,6 +72,8 @@ public class AScrollingImage extends JPanel implements Runnable {
     private boolean pause;
 
     private boolean lock;
+    
+    static final Logger logger = Logger.getLogger(AScrollingImage.class);
 
     public AScrollingImage(String URL, int ImageWidth, int ImageHeight) {
 
@@ -128,8 +131,7 @@ public class AScrollingImage extends JPanel implements Runnable {
                     Thread.sleep(16);
 
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(AScrollingImage.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
 
             } else {

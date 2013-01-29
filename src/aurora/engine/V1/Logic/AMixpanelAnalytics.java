@@ -15,8 +15,9 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * Simple Mixpanel Tracking implementation based off MixpanelAPI
@@ -36,6 +37,8 @@ public class AMixpanelAnalytics {
     private final LinkedHashMap<Object, Object> propertiesMap;
 
     private final String computerName;
+    
+    static final Logger logger = Logger.getLogger(AMixpanelAnalytics.class);
 
     public AMixpanelAnalytics(String Token) {
         PROJECT_TOKEN = Token;
@@ -44,7 +47,7 @@ public class AMixpanelAnalytics {
         computerName = System.getProperty("user.name");
         propertiesMap = new LinkedHashMap<Object, Object>();
 
-        System.out.println("COMPUTER ID: " + computerID);
+        logger.info("COMPUTER ID: " + computerID);
     }
 
     /**
@@ -102,8 +105,7 @@ public class AMixpanelAnalytics {
             properties.put("mp_name_tag", computerName);
 
         } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class.getName()).
-                    log(Level.SEVERE, null, ex);
+        	logger.error(ex);
         }
 
         try {
@@ -111,9 +113,7 @@ public class AMixpanelAnalytics {
             userProperties.put("$name", computerName);
 
         } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class
-                    .getName()).
-                    log(Level.SEVERE, null, ex);
+        	logger.error(ex);
         }
 
 
@@ -132,11 +132,10 @@ public class AMixpanelAnalytics {
             public void actionPerformed(ActionEvent e) {
                 try {
                     mixpanelAPI.deliver(delivery);
-                    System.out
-                            .println(" >> Sent Property Events to Mixpanel <<");
+                    logger.info(" >> Sent Property Events to Mixpanel <<");
+                    
                 } catch (IOException ex) {
-                    Logger.getLogger(AMixpanelAnalytics.class.getName()).
-                            log(Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             }
         });
@@ -154,9 +153,7 @@ public class AMixpanelAnalytics {
 
 
         } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class
-                    .getName()).
-                    log(Level.SEVERE, null, ex);
+        	logger.error(ex);
         }
 
 
@@ -170,10 +167,9 @@ public class AMixpanelAnalytics {
 
 
         } catch (JSONException ex) {
-            Logger.getLogger(AMixpanelAnalytics.class
-                    .getName()).
-                    log(Level.SEVERE, null, ex);
+        	logger.error(ex);
         }
+        
         delivery.addMessage(message);
         message = builder.set(computerID, userProperties);
         delivery.addMessage(message);
@@ -183,13 +179,9 @@ public class AMixpanelAnalytics {
             public void actionPerformed(ActionEvent e) {
                 try {
                     mixpanelAPI.deliver(delivery);
-                    System.out.println(" >> Sent Event to Mixpanel <<");
-
-
+                    logger.info(" >> Sent Event to Mixpanel <<");
                 } catch (IOException ex) {
-                    Logger.getLogger(AMixpanelAnalytics.class
-                            .getName()).
-                            log(Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             }
         });
@@ -220,12 +212,10 @@ public class AMixpanelAnalytics {
             ID = sb.toString();
 
         } catch (UnknownHostException e) {
-
-            e.printStackTrace();
+        	logger.error(e);
 
         } catch (SocketException e) {
-
-            e.printStackTrace();
+        	logger.error(e);
 
         }
         return ID;

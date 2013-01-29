@@ -27,10 +27,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -50,6 +50,8 @@ public class AImage extends JLabel implements MouseListener {
 
     private String url;
     private Cursor prevCursor;
+    
+    static final Logger logger = Logger.getLogger(AImage.class);
 
     public String getImgURl() {
         return ImageURl;
@@ -139,8 +141,7 @@ public class AImage extends JLabel implements MouseListener {
                                                              "/aurora/V1/resources/"
                                                              + ImageURl));
             } catch (Exception exx) {
-                Logger.getLogger(AImage.class.getName()).log(Level.SEVERE, null,
-                        exx);
+            	logger.error(exx);
             }
         }
 
@@ -213,12 +214,10 @@ public class AImage extends JLabel implements MouseListener {
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (URISyntaxException ex) {
-                    Logger.getLogger(AImage.class.getName()).
-                            log(Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             } catch (IOException ex) {
-                Logger.getLogger(AImage.class.getName()).
-                        log(Level.SEVERE, null, ex);
+            	logger.error(ex);
             }
         }
     }

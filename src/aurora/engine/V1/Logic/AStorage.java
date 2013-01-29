@@ -20,8 +20,9 @@ package aurora.engine.V1.Logic;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * A Store is an Object that contains data from a database
@@ -39,6 +40,8 @@ public abstract class AStorage {
     public abstract void storeToDatabase();
 
     public abstract void setUpDatabase(Boolean FirstTime, String Path);
+    
+    static final Logger logger = Logger.getLogger(AStorage.class);
 
     protected ArrayList getDatabaseArray(String TableName, String ColumnName) {
         database = new ArrayList();
@@ -46,7 +49,10 @@ public abstract class AStorage {
 
             ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
                                         + TableName);
-            System.out.println("RS " + rs);
+            
+            if (logger.isDebugEnabled()) {
+            	logger.debug("RS " + rs);
+            }
 
 
             //Check if db is still empty
@@ -66,8 +72,7 @@ public abstract class AStorage {
 
 
         } catch (SQLException ex) {
-            Logger.getLogger(AStorage.class.getName()).log(Level.SEVERE, null,
-                    ex);
+        	logger.error(ex);
             return database;
         } finally {
             db.CloseConnection();

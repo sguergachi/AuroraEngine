@@ -24,6 +24,9 @@ import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @version 0.1
@@ -36,6 +39,7 @@ public class AGridPanel extends JPanel {
     private boolean full;
     private ArrayList<JComponent> componentList = new ArrayList<JComponent>();
     private int numberOfComponentsAdded;
+    static final Logger logger = Logger.getLogger(AGridPanel.class);
 
     public AGridPanel() {
         this.setLayout(new GridLayout());
@@ -78,7 +82,9 @@ public class AGridPanel extends JPanel {
                 componentList.add(comp);
                 this.add(componentList.get(componentList.indexOf(comp)));
                 numberOfComponentsAdded++;
-                System.out.println("Adding to grid... Size = " + componentList.size());
+                if (logger.isDebugEnabled()) {
+                	logger.debug("Adding to grid... Size = " + componentList.size());
+                }
             }
         }
     }

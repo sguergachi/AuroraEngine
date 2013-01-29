@@ -6,6 +6,9 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
+
+
 public class AThreadWorker implements Runnable {
 
     private Thread runner;
@@ -18,6 +21,8 @@ public class AThreadWorker implements Runnable {
 
     private boolean once;
     private  ActionListener doAfter;
+    
+    static final Logger logger = Logger.getLogger(AThreadWorker.class);
 
     public AThreadWorker(ActionListener act) {
         this.toDo = act;
@@ -43,7 +48,11 @@ public class AThreadWorker implements Runnable {
     }
 
     public void start() {
-        System.out.println("Starting New Background Thread...");
+    	
+    	if (logger.isDebugEnabled()) {
+    		logger.debug("Starting New Background Thread...");
+    	}
+
         if (!canRun) {
             runner = null;
         }
@@ -78,8 +87,7 @@ public class AThreadWorker implements Runnable {
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error(e, e);
             }
 
             if (once) {

@@ -13,6 +13,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import org.apache.log4j.Logger;
+
+
 /**
  * .-----------------------------------------------------------------------.
  * | AImageLoader
@@ -38,6 +41,8 @@ public class AImageLoader extends JLabel implements Cloneable {
     private int height;
 
     private BufferedImage originalImage = null;
+    
+    static final Logger logger = Logger.getLogger(AImageLoader.class);
 
     public AImageLoader(String path) {
         this.ImageURl = path;
@@ -66,7 +71,7 @@ public class AImageLoader extends JLabel implements Cloneable {
                     originalImage = ImageIO.read(new File(ImageURl));
 
                 } catch (IOException e) {
-                    System.out.println("Error rendering Image");
+                	logger.debug("Error rendering image");
                 }
             }
 

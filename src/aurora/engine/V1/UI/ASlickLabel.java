@@ -15,10 +15,11 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * A Better Rendered Label
@@ -29,6 +30,7 @@ public class ASlickLabel extends JLabel implements MouseListener{
     private String url;
     private Color prevColor;
     private Cursor prevCursor;
+    static final Logger logger = Logger.getLogger(ASlickLabel.class);
 
     public ASlickLabel(String text) {
         super(text + "  ");
@@ -79,12 +81,10 @@ public class ASlickLabel extends JLabel implements MouseListener{
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (URISyntaxException ex) {
-                    Logger.getLogger(ASlickLabel.class.getName()).
-                            log(Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             } catch (IOException ex) {
-                Logger.getLogger(ASlickLabel.class.getName()).
-                        log(Level.SEVERE, null, ex);
+            	logger.error(ex);
             }
         }
     }

@@ -11,11 +11,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.apache.log4j.Logger;
+
 public class ATextField extends AImagePane {
 
 	private String imagePath;
 	private JTextField textBox;
 	private String activeImagePath;
+	static final Logger logger = Logger.getLogger(ATextField.class);
 
 	public ATextField() {
 		makeTextBox();

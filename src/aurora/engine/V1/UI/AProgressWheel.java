@@ -22,9 +22,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
+
 
 /**
  *
@@ -38,8 +39,8 @@ public class AProgressWheel extends JPanel implements Runnable {
     private int rotate = 0;
     private int speed = 15;
     private boolean isClockwiseRotating = true;
-
-    ;
+    static final Logger logger = Logger.getLogger(AProgressWheel.class);
+    
 
     public AImage getImg() {
         return img;
@@ -76,7 +77,7 @@ public class AProgressWheel extends JPanel implements Runnable {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AProgressWheel.class.getName()).log(Level.SEVERE, null, ex);
+            	logger.error(ex);
             }
 
         }

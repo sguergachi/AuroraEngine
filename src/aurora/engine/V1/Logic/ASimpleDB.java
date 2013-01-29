@@ -18,8 +18,9 @@
 package aurora.engine.V1.Logic;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * A Simple Interface to the H2 Database That performs simple Operations to
@@ -49,6 +50,8 @@ public class ASimpleDB {
     private String databasePath = System.getProperty("user.dir") + "\\lib\\";
     private String databasePath_DEV = System.getProperty("user.dir") + "//";
     //
+    
+    static final Logger logger = Logger.getLogger(ASimpleDB.class);
 
     /**
      * Initiate a Database By Providing a Database to connect to Allows for
@@ -114,7 +117,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName);
             }
 
-            System.out.println(databasePath + DatabaseName);
+            if (logger.isDebugEnabled()) {
+            	logger.debug(databasePath + DatabaseName);
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -135,11 +140,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
     }
 
@@ -166,7 +173,9 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName );
                 }
 
-                System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+                if (logger.isDebugEnabled()) {
+                	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
             } catch (Exception exx) {
                 String osName = System.getProperty("os.name");
@@ -186,11 +195,13 @@ public class ASimpleDB {
             } catch (SQLException ex) {
 
                 connection.rollback();
-                System.err.println(ex);
+                logger.error(ex);
 
             } finally {
                 connection.close();
-                System.out.println("Closed Connection");
+                if (logger.isDebugEnabled()) {
+                	logger.debug("Closed connection");
+                }
             }
 
         }
@@ -215,7 +226,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName );
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -235,11 +248,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -263,7 +278,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -283,11 +300,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -310,7 +329,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -329,11 +350,13 @@ public class ASimpleDB {
 
         } catch (SQLException ex) {
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -360,7 +383,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -382,18 +407,22 @@ public class ASimpleDB {
         }
 
         try {
-            System.out.println("INSERT INTO " + TableName + " (" + ColumnCSV.toString() + ") VALUES(" + CSV + ")");
+        	if (logger.isDebugEnabled()) {
+        		logger.debug("INSERT INTO " + TableName + " (" + ColumnCSV.toString() + ") VALUES(" + CSV + ")");
+        	}
             PreparedStatement statement = connection.prepareStatement("INSERT INTO " + TableName + " (" + ColumnCSV.toString() + ") VALUES(" + CSV + ")");
             statement.execute();
 
 
         } catch (SQLException ex) {
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -418,7 +447,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -444,11 +475,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -474,7 +507,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -494,11 +529,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -526,7 +563,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -540,17 +579,23 @@ public class ASimpleDB {
         try {
 
             PreparedStatement statement = connection.prepareStatement("UPDATE " + TableName + "  SET " + ColumnName + "='" + NewValue + "' WHERE " + UniqueColName + "=" + UniqueRowValue + ";");
-            System.out.println("UPDATE " + TableName + "  SET " + ColumnName + "='" + NewValue + "' WHERE " + UniqueColName + "=" + UniqueRowValue + ";");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("UPDATE " + TableName + "  SET " + ColumnName + "='" + NewValue + "' WHERE " + 
+            					UniqueColName + "=" + UniqueRowValue + ";");
+            }
+
             statement.execute();
 
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
 
@@ -587,8 +632,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(databasePath + DatabaseName + ";IFEXISTS=TRUE");
-
+            if (logger.isDebugEnabled()) {
+            	logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -598,7 +644,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "//" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "//" + DatabaseName + ";IFEXISTS=TRUE");
+            }
         }
         try {
 
@@ -617,11 +665,14 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
         //incase of error return nothing
@@ -671,10 +722,9 @@ public class ASimpleDB {
                                                          + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir")
-                               + "//lib//"
-                               + DatabaseName
-                               + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "//" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
             //Dev Mode
         } catch (Exception exx) {
@@ -693,9 +743,10 @@ public class ASimpleDB {
                                                          + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir")
-                               + "//" + DatabaseName
-                               + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "//" + DatabaseName + ";IFEXISTS=TRUE");
+            }
+
         }
         StringBuilder ColumnCSV = new StringBuilder();
         for (String column : FromColumnNames) {
@@ -706,11 +757,15 @@ public class ASimpleDB {
             }
         }
 
-
-        System.out.println(ColumnCSV);
+        if (logger.isDebugEnabled()) {
+        	logger.debug(ColumnCSV);
+        }
 
         try {
-            System.out.println("SELECT " + ColumnCSV + " FROM " + TableName + " WHERE " + WhereQuery);
+        	if (logger.isDebugEnabled()) {
+            	logger.debug("SELECT " + ColumnCSV + " FROM " + TableName + " WHERE " + WhereQuery);
+            }
+
             PreparedStatement statement = connection.prepareStatement("SELECT " + ColumnCSV + " FROM " + TableName + " WHERE " + WhereQuery);
 
             ResultSet rs = statement.executeQuery();
@@ -727,11 +782,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
             connection.rollback();
-            Logger.getLogger(ASimpleDB.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
         //incase of error return nothing
@@ -757,11 +814,13 @@ public class ASimpleDB {
 
         } catch (SQLException ex) {
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -785,7 +844,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -809,11 +870,13 @@ public class ASimpleDB {
 
         } catch (SQLException ex) {
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
     }
@@ -844,7 +907,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             try{
@@ -855,7 +920,7 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
             }catch(Exception exxx){
-                exxx.printStackTrace();
+            	logger.error(exxx);
                 connection.close();
             }
 
@@ -878,11 +943,13 @@ public class ASimpleDB {
         } catch (SQLException ex) {
 
 //            connection.rollback();
-            System.err.println(ex);
+        	logger.error(ex);
 
         } finally {
             connection.close();
-            System.out.println("Closed Connection");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Closed connection");
+            }
         }
 
         //incase of error return nothing
@@ -907,7 +974,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug(System.getProperty("user.dir") + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -921,14 +990,15 @@ public class ASimpleDB {
         try {
 
             PreparedStatement statement = connection.prepareStatement(SQL);
-            System.out.println(SQL);
+            if (logger.isDebugEnabled()) {
+            	logger.debug(SQL);
+            }
             statement.execute();
 
 
         } catch (SQLException ex) {
             connection.rollback();
-            System.err.println(ex);
-
+            logger.error(ex);
         }
 
     }
@@ -952,7 +1022,9 @@ public class ASimpleDB {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
             }
 
-            System.out.println("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
+            if (logger.isDebugEnabled()) {
+            	logger.debug("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
+            }
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
@@ -975,7 +1047,7 @@ public class ASimpleDB {
 
         } catch (SQLException ex) {
             connection.rollback();
-            System.err.println(ex);
+            logger.error(ex);
             return null;
         }
 
@@ -988,7 +1060,7 @@ public class ASimpleDB {
         try {
             connection.close();
         } catch (SQLException ex) {
-            Logger.getLogger(ASimpleDB.class.getName()).log(Level.SEVERE, null, ex);
+        	logger.error(ex);
         }
     }
 

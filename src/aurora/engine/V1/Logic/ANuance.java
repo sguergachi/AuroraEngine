@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -70,7 +73,6 @@ public class ANuance {
         "Scram", "Flee", "Terminate"};
 
     public static final int inx_Exit = 6;
-//added by Carlos
 
     private String[] fld_WelcomeBack = {"Welcome Back!", "How Was Your Day!",
         "Let Me Finish Loading Your Games", "Good To See You!",
@@ -97,6 +99,8 @@ public class ANuance {
     private File file;
 
     private boolean useInternal;
+    
+    static final Logger logger = Logger.getLogger(ANuance.class);
 
     public ANuance() {
         randomGenerator = new Random();
@@ -136,7 +140,7 @@ public class ANuance {
                     .substring(0, file.getCanonicalPath().length() - file
                     .getName()
                     .length()));
-            System.out.println("Path: " + file.getCanonicalPath()
+            logger.info("Path: " + file.getCanonicalPath()
                     .substring(0, file.getCanonicalPath().length() - file
                     .getName()
                     .length()));
@@ -145,7 +149,7 @@ public class ANuance {
             nuanceDict = parse(fileContent, 64);
         } catch (Exception e) {
             useInternal = true;
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -168,7 +172,7 @@ public class ANuance {
 
         } catch (Exception e) {
             useInternal = true;
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 

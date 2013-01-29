@@ -24,10 +24,10 @@ import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -51,6 +51,8 @@ public class AFileManager {
     private ObjectInputStream oInStream;
 
     private Object Obj;
+    
+    static final Logger logger = Logger.getLogger(AFileManager.class);
 
     public AFileManager() {
     }
@@ -65,7 +67,9 @@ public class AFileManager {
 
         this.path = currentPath;
 
-        System.out.println(path);
+        if (logger.isDebugEnabled()) {
+        	logger.debug(path);
+        }
 
         //make folder
         //File Root = new File(path);
@@ -81,15 +85,15 @@ public class AFileManager {
      */
     public ArrayList<String> readFile(String fileName) {
 
-
-        System.out.println(this.path + fileName);
+    	if (logger.isDebugEnabled()) {
+        	logger.debug(this.path + fileName);
+        }
 
         File file = null;
         try {
             file = new File(new URI(this.path + fileName));
         } catch (URISyntaxException ex) {
-            Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE,
-                    null, ex);
+        	logger.error(ex);
         }
 
         ArrayList<String> fileList = new ArrayList<String>();
@@ -116,8 +120,7 @@ public class AFileManager {
                 input.close();
             }
         } catch (IOException ex) {
-
-            System.err.println(ex);
+        	logger.error(ex);
             return null;
 
         }
@@ -135,8 +138,7 @@ public class AFileManager {
                     bImage.setAccelerationPriority(1);
                 } catch (IOException ex) {
                     bImage.flush();
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 ImageIcon img = new ImageIcon(bImage);
@@ -156,13 +158,11 @@ public class AFileManager {
                         bImage.setAccelerationPriority(1);
                     } catch (InterruptedException ex) {
                         bImage.flush();
-                        Logger.getLogger(AFileManager.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
 
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
 
                 ImageIcon img = new ImageIcon(bImage);
@@ -174,9 +174,6 @@ public class AFileManager {
             }
 
         }
-
-
-
 
     }
 
@@ -191,8 +188,7 @@ public class AFileManager {
                                            + fileName);
                 ImageIO.write(bi, "png", outputfile);
             } catch (IOException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE,
-                        null, ex);
+            	logger.error(ex);
             }
         } else {
             try {
@@ -200,8 +196,7 @@ public class AFileManager {
                 File outputfile = new File(path + "/" + fileName);
                 ImageIO.write(bi, "png", outputfile);
             } catch (IOException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE,
-                        null, ex);
+            	logger.error(ex);
             }
 
         }
@@ -230,12 +225,12 @@ public class AFileManager {
         //If No Folder Name Given Make File In Path
         if (FolderName == null) {
             File Folder = new File(path + "/" + FileName);
-            System.out.println("Creating file " + path + "/" + FileName);
+            logger.info("Creating file " + path + "/" + FileName);
+
             try {
                 Folder.createNewFile();
             } catch (IOException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE,
-                        null, ex);
+            	logger.error(ex);
             }
         } else {
             //Check if Folder Exists
@@ -244,8 +239,7 @@ public class AFileManager {
                 try {
                     Folder.createNewFile();
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
 
                 // If Does Not Exists make the Folder then Make the File
@@ -255,8 +249,7 @@ public class AFileManager {
                 try {
                     Folder.createNewFile();
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             }
 
@@ -281,12 +274,10 @@ public class AFileManager {
                     oOutStream.writeObject(obj);
                     oOutStream.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE,
-                        null, ex);
+            	logger.error(ex);
             }
         } else {
             //Check if Folder Exists
@@ -300,12 +291,10 @@ public class AFileManager {
                         oOutStream.writeObject(obj);
                         oOutStream.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
 
                 //Create Folder if does not Exist
@@ -320,12 +309,10 @@ public class AFileManager {
                         oOutStream.writeObject(obj);
                         oOutStream.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             }
 
@@ -353,16 +340,13 @@ public class AFileManager {
                     try {
                         Obj = oInStream.readObject();
                     } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(AFileManager.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE,
-                        null, ex);
+            	logger.error(ex);
             }
 
             return Obj;
@@ -380,16 +364,13 @@ public class AFileManager {
                         try {
                             Obj = oInStream.readObject();
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(AFileManager.class.getName())
-                                    .log(Level.SEVERE, null, ex);
+                        	logger.error(ex);
                         }
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
 
                 return Obj;
@@ -406,16 +387,13 @@ public class AFileManager {
                         try {
                             Obj = oInStream.readObject();
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(AFileManager.class.getName())
-                                    .log(Level.SEVERE, null, ex);
+                        	logger.error(ex);
                         }
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName())
-                                .log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(
-                            Level.SEVERE, null, ex);
+                	logger.error(ex);
                 }
 
                 return Obj;
@@ -446,8 +424,7 @@ public class AFileManager {
                 throw new IOException("Unable to delete original folder");
             }
         } catch (IOException ex) {
-            Logger.getLogger(AFileManager.class.getName()).
-                    log(Level.SEVERE, null, ex);
+        	logger.error(ex);
         }
     }
 
@@ -469,8 +446,7 @@ public class AFileManager {
                     try {
                         copyFile(sourceChild, destChild);
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName()).
-                                log(Level.SEVERE, null, ex);
+                    	logger.error(ex);
                     }
                 }
             }
@@ -534,6 +510,8 @@ public class AFileManager {
      * Determine if Folder or File Already exists
      */
     public boolean checkFile(String fileName) {
+    	
+    	logger.info("Checking if " + fileName + " exists");
         File f = new File(fileName);
         if (f.exists()) {
             return true;

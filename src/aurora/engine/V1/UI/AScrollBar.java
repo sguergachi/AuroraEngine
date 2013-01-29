@@ -13,11 +13,16 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import org.apache.log4j.Logger;
+
+
 public class AScrollBar extends BasicScrollBarUI {
 
     private final Image imageThumb;
 
     private final Image imageTrack;
+    
+    static final Logger logger = Logger.getLogger(AScrollBar.class);
 
     public AScrollBar(String thumb, String track) {
 

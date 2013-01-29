@@ -23,6 +23,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JFrame;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -31,6 +34,7 @@ public class ADragFrame extends JFrame implements MouseListener, MouseMotionList
 
     Point location;
     MouseEvent pressed;
+    static final Logger logger = Logger.getLogger(ADragFrame.class);
 
     public ADragFrame() {
 
