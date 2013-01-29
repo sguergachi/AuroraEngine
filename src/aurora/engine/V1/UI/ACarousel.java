@@ -94,7 +94,7 @@ public class ACarousel extends JPanel implements Runnable {
     private final static double MAX_Y_POINT = 200;	// maximum y-point for any pane
 
     private final static double MIN_Y_POINT = 0;	// minimum y-point for any pane
-    
+
     static final Logger logger = Logger.getLogger(ACarousel.class);
 
     public ACarousel(double panelWidth, int panelHeight, int totalWidth) {
@@ -366,7 +366,7 @@ public class ACarousel extends JPanel implements Runnable {
             centerPane.changeTitle(TitleType.NORMAL);
 
             try {
-                Thread.sleep(16);
+                Thread.sleep(6);
             } catch (InterruptedException ex) {
                 err.setVisible(true);
                 counter = 0;
@@ -416,7 +416,7 @@ public class ACarousel extends JPanel implements Runnable {
 
             try {
                 //* 60 fps for smoothness *//
-                Thread.sleep(16);
+                Thread.sleep(6);
             } catch (InterruptedException ex) {
                 err.setVisible(true);
                 break;
@@ -658,7 +658,7 @@ public class ACarousel extends JPanel implements Runnable {
         if (DEBUG) {
 
             counter++;
-            
+
             if (logger.isDebugEnabled()) {
             	logger.debug(" --------- " + counter + " --------------");
             	logger.debug("cent X (def) : " + centX);
@@ -679,7 +679,7 @@ public class ACarousel extends JPanel implements Runnable {
                 logger.debug("this.width " + this.getWidth());
             }
 
-            
+
         }
     }
 }
