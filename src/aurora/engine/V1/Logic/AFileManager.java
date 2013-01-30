@@ -51,7 +51,7 @@ public class AFileManager {
     private ObjectInputStream oInStream;
 
     private Object Obj;
-    
+
     static final Logger logger = Logger.getLogger(AFileManager.class);
 
     public AFileManager() {
@@ -453,13 +453,16 @@ public class AFileManager {
         }
     }
 
-    public static void copyFile(File source, File dest) throws IOException {
+    public void copyFile(File source, File dest) throws IOException {
 
         if (!dest.exists()) {
+           logger.info("Creating new file " +  dest);
             dest.createNewFile();
         }
         InputStream in = null;
         OutputStream out = null;
+
+         logger.info("Copying " + source + " to " + dest );
         try {
             in = new FileInputStream(source);
             out = new FileOutputStream(dest);
@@ -510,12 +513,14 @@ public class AFileManager {
      * Determine if Folder or File Already exists
      */
     public boolean checkFile(String fileName) {
-    	
-    	logger.info("Checking if " + fileName + " exists");
-        File f = new File(fileName);
-        if (f.exists()) {
+
+        File file = new File(fileName);
+        logger.info("Checking if " + file + " exists");
+        if (file.exists()) {
+            logger.info(file + " Exists!");
             return true;
         } else {
+             logger.info(file + " Does Not Exist!");
             return false;
         }
     }
