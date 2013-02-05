@@ -50,7 +50,7 @@ public class ASimpleDB {
     private String databasePath = System.getProperty("user.dir") + "\\lib\\";
     private String databasePath_DEV = System.getProperty("user.dir") + "//";
     //
-    
+
     static final Logger logger = Logger.getLogger(ASimpleDB.class);
 
     /**
@@ -580,7 +580,7 @@ public class ASimpleDB {
 
             PreparedStatement statement = connection.prepareStatement("UPDATE " + TableName + "  SET " + ColumnName + "='" + NewValue + "' WHERE " + UniqueColName + "=" + UniqueRowValue + ";");
             if (logger.isDebugEnabled()) {
-            	logger.debug("UPDATE " + TableName + "  SET " + ColumnName + "='" + NewValue + "' WHERE " + 
+            	logger.debug("UPDATE " + TableName + "  SET " + ColumnName + "='" + NewValue + "' WHERE " +
             					UniqueColName + "=" + UniqueRowValue + ";");
             }
 
@@ -669,7 +669,7 @@ public class ASimpleDB {
 
         } finally {
             connection.close();
-            
+
             if (logger.isDebugEnabled()) {
             	logger.debug("Closed connection");
             }
@@ -927,7 +927,7 @@ public class ASimpleDB {
         }
         try {
 
-            PreparedStatement statement = connection.prepareStatement("SELECT " + ColumnNameSelect + " FROM " + TableName + " WHERE " + ColumnNameWhere + " LIKE '%" + aproxString + "%'");
+            PreparedStatement statement = connection.prepareStatement("SELECT " + ColumnNameSelect + " FROM " + TableName + " WHERE " + ColumnNameWhere + " LIKE '%" + aproxString.replace("'", "''") + "%'");
 
             ResultSet rs = statement.executeQuery();
             rs.first();

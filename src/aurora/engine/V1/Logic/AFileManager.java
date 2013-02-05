@@ -67,13 +67,7 @@ public class AFileManager {
 
         this.path = currentPath;
 
-        if (logger.isDebugEnabled()) {
-        	logger.debug(path);
-        }
 
-        //make folder
-        //File Root = new File(path);
-        //Root.mkdir();
     }
 
     /**
@@ -516,6 +510,7 @@ public class AFileManager {
 
         File file = new File(fileName);
         logger.info("Checking if " + file + " exists");
+
         if (file.exists()) {
             logger.info(file + " Exists!");
             return true;

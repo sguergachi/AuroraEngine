@@ -104,7 +104,7 @@ public class ASound implements Runnable {
     private URL path;
 
     private boolean paused;
-    
+
     static final Logger logger = Logger.getLogger(ASound.class);
 
     /**
@@ -155,9 +155,7 @@ public class ASound implements Runnable {
             runner = new Thread(this);
             runner.start();
 
-        } else {
-            //runner.notify();
-        }
+        } 
     }
 
     /**
