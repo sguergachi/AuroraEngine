@@ -19,7 +19,9 @@ package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.ASurface;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.LayoutManager;
+import java.awt.RenderingHints;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -42,15 +44,15 @@ public class AImagePane extends JPanel {
     private int imageHeight = 0;
 
     private int imageWidth = 0;
-    
+
     private float heightRatio = 1;
-    
+
     private float widthRatio = 1;
 
     private ASurface ressource;
 
     private String SurfaceName;
-    
+
     static final Logger logger = Logger.getLogger(AImagePane.class);
 
     //////////////
@@ -139,7 +141,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
     }
@@ -147,17 +149,31 @@ public class AImagePane extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         //  Dispaly  image on Panel
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+                RenderingHints.VALUE_DITHER_ENABLE);
+
+         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
         if (image != null) {
             if (imageWidth == 0) {
                 imageWidth = image.getIconWidth();
             }
-            
+
             if (imageHeight == 0) {
                 imageHeight = image.getIconHeight();
             }
-            g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
+            g2d.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
         } else {
-            g.clearRect(0, 0, imageWidth, imageHeight);
+            g2d.clearRect(0, 0, imageWidth, imageHeight);
         }
     }
 
@@ -211,7 +227,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
         this.revalidate();
@@ -234,7 +250,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
         imageWidth = image.getIconWidth();
@@ -263,7 +279,7 @@ public class AImagePane extends JPanel {
         this.image = null;
 
         if (logger.isDebugEnabled()) {
-        	logger.debug("URL " + ImageURL);
+            logger.debug("URL " + ImageURL);
         }
         this.ImageURL = ImageURL;
         setImage(ImageURL);
@@ -290,11 +306,11 @@ public class AImagePane extends JPanel {
         return ImageURL;
     }
 
-    public int getRealImageWidth(){
+    public int getRealImageWidth() {
         return this.getImgIcon().getIconWidth();
     }
 
-    public int getRealImageHeight(){
+    public int getRealImageHeight() {
         return this.getImgIcon().getIconHeight();
     }
 
@@ -317,19 +333,19 @@ public class AImagePane extends JPanel {
     public int getImageWidth() {
         return imageWidth;
     }
-    
+
     public void setHeightRatio(float heightRatio) {
         this.heightRatio = heightRatio;
     }
-    
+
     public float getHeightRatio() {
         return heightRatio;
     }
-    
+
     public void setWidthRatio(float widthRatio) {
         this.widthRatio = widthRatio;
     }
-    
+
     public float getWidthRatio() {
         return widthRatio;
     }

@@ -49,8 +49,9 @@ public class AImage extends JLabel implements MouseListener {
     private final ASurface ressource;
 
     private String url;
+
     private Cursor prevCursor;
-    
+
     static final Logger logger = Logger.getLogger(AImage.class);
 
     public String getImgURl() {
@@ -125,9 +126,6 @@ public class AImage extends JLabel implements MouseListener {
 
     private void createImage() {
 
-
-
-
         try {
 
             image = new ImageIcon(new URL(ressource.getSurfacePath()
@@ -137,11 +135,11 @@ public class AImage extends JLabel implements MouseListener {
             //fallback
             try {
                 image = new ImageIcon(getClass()
-                                                             .getResource(
-                                                             "/aurora/V1/resources/"
-                                                             + ImageURl));
+                        .getResource(
+                        "/aurora/V1/resources/"
+                        + ImageURl));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
 
@@ -156,6 +154,26 @@ public class AImage extends JLabel implements MouseListener {
         img.flush();
 
         this.setIcon(image);
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
+                RenderingHints.VALUE_DITHER_ENABLE);
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        super.paintComponent(g2d);
     }
 
     public static BufferedImage resizeBufferedImg(Image image, int width,
@@ -214,10 +232,10 @@ public class AImage extends JLabel implements MouseListener {
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (URISyntaxException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
             } catch (IOException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
         }
     }
@@ -229,14 +247,14 @@ public class AImage extends JLabel implements MouseListener {
     }
 
     public void mouseEntered(MouseEvent e) {
-        if(url != null){
+        if (url != null) {
             prevCursor = this.getCursor();
             setCursor(new Cursor(Cursor.HAND_CURSOR));
         }
     }
 
     public void mouseExited(MouseEvent e) {
-         if(url != null){
+        if (url != null) {
             setCursor(prevCursor);
         }
     }
