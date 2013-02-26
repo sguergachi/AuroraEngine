@@ -157,9 +157,6 @@ public class AImagePane extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                 RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING,
-                RenderingHints.VALUE_DITHER_ENABLE);
-
          g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
