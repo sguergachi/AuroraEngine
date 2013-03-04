@@ -15,11 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.ASurface;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
@@ -36,17 +37,26 @@ import org.apache.log4j.Logger;
 public class AButton extends JButton {
 
     String urlNormal;
+
     String urlOver;
+
     String urlDown;
+
     private ImageIcon btnNormal;
+
     private ImageIcon btnOver;
+
     private ImageIcon btnDown;
+
     private int w;
+
     private int h;
+
     static final Logger logger = Logger.getLogger(AButton.class);
     //////////////////////
     ///  Constructor    //
     //////////////////////
+
     private ASurface ressource;
 
     /**
@@ -66,18 +76,30 @@ public class AButton extends JButton {
         this.urlDown = ImgDwn;
         ressource = new ASurface("");
         try {
-            btnNormal = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgUp));
-            btnOver = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgOvr));
-            btnDown = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgDwn));
+            btnNormal = new ImageIcon(new URL(ressource.getSurfacePath()
+                                              + "/aurora/V1/resources/" + ImgUp));
+            btnOver = new ImageIcon(new URL(ressource.getSurfacePath()
+                                            + "/aurora/V1/resources/" + ImgOvr));
+            btnDown = new ImageIcon(new URL(ressource.getSurfacePath()
+                                            + "/aurora/V1/resources/" + ImgDwn));
 
         } catch (MalformedURLException ex) {
             //Fallback
             try {
-                btnNormal = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgUp));
-                btnOver = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + ImgOvr));
-                btnDown = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgDwn));
+                btnNormal = new ImageIcon(getClass()
+                                                                 .getResource(
+                                                                 "/aurora/V1/resources/"
+                                                                 + ImgUp));
+                btnOver = new ImageIcon(getClass()
+                                                               .getResource(
+                                                               "/aurora/V1/resources/"
+                                                               + ImgOvr));
+                btnDown = new ImageIcon(getClass()
+                                                               .getResource(
+                                                               "/aurora/V1/resources/"
+                                                               + ImgDwn));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
 
@@ -100,16 +122,28 @@ public class AButton extends JButton {
         this.urlOver = ImgOvr;
         this.urlDown = ImgDwn;
         try {
-            btnNormal = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgUp));
-            btnOver = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgOvr));
-            btnDown = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgDwn));
+            btnNormal = new ImageIcon(new URL(ressource.getSurfacePath()
+                                              + "/aurora/V1/resources/" + ImgUp));
+            btnOver = new ImageIcon(new URL(ressource.getSurfacePath()
+                                            + "/aurora/V1/resources/" + ImgOvr));
+            btnDown = new ImageIcon(new URL(ressource.getSurfacePath()
+                                            + "/aurora/V1/resources/" + ImgDwn));
         } catch (MalformedURLException ex) {
-          try {
-                btnNormal = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgUp));
-                btnOver = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + ImgOvr));
-                btnDown = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgDwn));
+            try {
+                btnNormal = new ImageIcon(getClass()
+                                                                 .getResource(
+                                                                 "/aurora/V1/resources/"
+                                                                 + ImgUp));
+                btnOver = new ImageIcon(getClass()
+                                                               .getResource(
+                                                               "/aurora/V1/resources/"
+                                                               + ImgOvr));
+                btnDown = new ImageIcon(getClass()
+                                                               .getResource(
+                                                               "/aurora/V1/resources/"
+                                                               + ImgDwn));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
 
@@ -126,7 +160,8 @@ public class AButton extends JButton {
      * @param ImgOvr
      *
      */
-    public AButton(String ImgUp, String ImgDwn, String ImgOvr, int width, int height) {
+    public AButton(String ImgUp, String ImgDwn, String ImgOvr, int width,
+                   int height) {
 
         this.w = width;
         this.h = height;
@@ -137,16 +172,28 @@ public class AButton extends JButton {
         this.urlOver = ImgOvr;
         this.urlDown = ImgDwn;
         try {
-            btnNormal = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgUp));
-            btnOver = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgOvr));
-            btnDown = new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + ImgDwn));
+            btnNormal = new ImageIcon(new URL(ressource.getSurfacePath()
+                                              + "/aurora/V1/resources/" + ImgUp));
+            btnOver = new ImageIcon(new URL(ressource.getSurfacePath()
+                                            + "/aurora/V1/resources/" + ImgOvr));
+            btnDown = new ImageIcon(new URL(ressource.getSurfacePath()
+                                            + "/aurora/V1/resources/" + ImgDwn));
         } catch (MalformedURLException ex) {
             try {
-                btnNormal = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgUp));
-                btnOver = new ImageIcon(getClass().getResource("/aurora/V1/resources/" + ImgOvr));
-                btnDown = new ImageIcon(getClass().getResource( "/aurora/V1/resources/" + ImgDwn));
+                btnNormal = new ImageIcon(getClass()
+                                                                 .getResource(
+                                                                 "/aurora/V1/resources/"
+                                                                 + ImgUp));
+                btnOver = new ImageIcon(getClass()
+                                                               .getResource(
+                                                               "/aurora/V1/resources/"
+                                                               + ImgOvr));
+                btnDown = new ImageIcon(getClass()
+                                                               .getResource(
+                                                               "/aurora/V1/resources/"
+                                                               + ImgDwn));
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
 
@@ -164,23 +211,58 @@ public class AButton extends JButton {
         }
         try {
             //System.out.println("BUTTON "  + ressource.getSurfacePath() + "/aurora/V1/resources/"+ urlDown);
-            btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlDown)).getImage()), w, h));
-            btnOver.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlOver)).getImage()), w, h));
-            btnNormal.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlNormal)).getImage()), w, h));
+            btnDown.setImage(AImage
+                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .getSurfacePath() + "/aurora/V1/resources/" + urlDown))
+                    .getImage()), w, h));
+            btnOver.setImage(AImage
+                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .getSurfacePath() + "/aurora/V1/resources/" + urlOver))
+                    .getImage()), w, h));
+            btnNormal.setImage(AImage
+                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .getSurfacePath() + "/aurora/V1/resources/" + urlNormal))
+                    .getImage()), w, h));
 
 
         } catch (MalformedURLException ex) {
             try {
-                btnOver.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlOver)).getImage()), w, h));
-                btnNormal.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlNormal)).getImage()), w, h));
-                btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlDown)).getImage()), w, h));
+                btnOver.setImage(AImage
+                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .getResource("/aurora/V1/resources/" + urlOver))
+                        .getImage()), w, h));
+                btnNormal.setImage(AImage
+                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .getResource("/aurora/V1/resources/" + urlNormal))
+                        .getImage()), w, h));
+                btnDown.setImage(AImage
+                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .getResource("/aurora/V1/resources/" + urlDown))
+                        .getImage()), w, h));
 
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
 
         setButton();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        super.paintComponent(g2d);
     }
 
     /**
@@ -212,18 +294,36 @@ public class AButton extends JButton {
         this.w = width;
         this.h = height;
         try {
-            btnOver.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlOver)).getImage()), w, h));
-            btnNormal.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlNormal)).getImage()), w, h));
-            btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(new URL(ressource.getSurfacePath() + "/aurora/V1/resources/" + urlDown)).getImage()), w, h));
+            btnOver.setImage(AImage
+                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .getSurfacePath() + "/aurora/V1/resources/" + urlOver))
+                    .getImage()), w, h));
+            btnNormal.setImage(AImage
+                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .getSurfacePath() + "/aurora/V1/resources/" + urlNormal))
+                    .getImage()), w, h));
+            btnDown.setImage(AImage
+                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .getSurfacePath() + "/aurora/V1/resources/" + urlDown))
+                    .getImage()), w, h));
 
         } catch (MalformedURLException ex) {
             try {
-                btnOver.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlOver)).getImage()), w, h));
-                btnNormal.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlNormal)).getImage()), w, h));
-                btnDown.setImage(AImage.resizeBufferedImg((new ImageIcon(getClass().getResource("/aurora/V1/resources/" + urlDown)).getImage()), w, h));
+                btnOver.setImage(AImage
+                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .getResource("/aurora/V1/resources/" + urlOver))
+                        .getImage()), w, h));
+                btnNormal.setImage(AImage
+                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .getResource("/aurora/V1/resources/" + urlNormal))
+                        .getImage()), w, h));
+                btnDown.setImage(AImage
+                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .getResource("/aurora/V1/resources/" + urlDown))
+                        .getImage()), w, h));
 
             } catch (Exception exx) {
-            	logger.error(exx);
+                logger.error(exx);
             }
         }
 

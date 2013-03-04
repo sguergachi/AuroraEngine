@@ -59,7 +59,7 @@ public class AImagePane extends JPanel {
     //Constructors
     //////////////
     public AImagePane(String path, int W, int H) {
-
+        super(true);
         ressource = new ASurface("");
         ImageURL = path;
         imageHeight = H;
@@ -75,6 +75,7 @@ public class AImagePane extends JPanel {
     }
 
     public AImagePane(String path) {
+        super(true);
         ressource = new ASurface("");
         ImageURL = path;
         imageHeight = 0;
@@ -151,13 +152,13 @@ public class AImagePane extends JPanel {
         //  Dispaly  image on Panel
         Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-
+//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+//                RenderingHints.VALUE_RENDER_QUALITY);
+//
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                 RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 
-         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         if (image != null) {
