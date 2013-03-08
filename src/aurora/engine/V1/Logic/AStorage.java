@@ -40,7 +40,7 @@ public abstract class AStorage {
     public abstract void storeToDatabase();
 
     public abstract void setUpDatabase(Boolean FirstTime, String Path);
-    
+
     static final Logger logger = Logger.getLogger(AStorage.class);
 
     protected ArrayList getDatabaseArray(String TableName, String ColumnName) {
@@ -49,7 +49,7 @@ public abstract class AStorage {
 
             ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
                                         + TableName);
-            
+
             if (logger.isDebugEnabled()) {
             	logger.debug("RS " + rs);
             }

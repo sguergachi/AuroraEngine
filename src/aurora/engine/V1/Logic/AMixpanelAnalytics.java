@@ -37,7 +37,7 @@ public class AMixpanelAnalytics {
     private final LinkedHashMap<Object, Object> propertiesMap;
 
     private final String computerName;
-    
+
     static final Logger logger = Logger.getLogger(AMixpanelAnalytics.class);
 
     public AMixpanelAnalytics(String Token) {
@@ -82,8 +82,6 @@ public class AMixpanelAnalytics {
         JSONObject propertiesMessage;
         JSONObject userMessage;
         MessageBuilder builder = new MessageBuilder(PROJECT_TOKEN);
-
-
 
 
         try {
@@ -133,7 +131,7 @@ public class AMixpanelAnalytics {
                 try {
                     mixpanelAPI.deliver(delivery);
                     logger.info(" >> Sent Property Events to Mixpanel <<");
-                    
+
                 } catch (IOException ex) {
                 	logger.error(ex);
                 }
@@ -169,7 +167,7 @@ public class AMixpanelAnalytics {
         } catch (JSONException ex) {
         	logger.error(ex);
         }
-        
+
         delivery.addMessage(message);
         message = builder.set(computerID, userProperties);
         delivery.addMessage(message);
