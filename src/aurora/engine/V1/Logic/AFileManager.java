@@ -474,7 +474,7 @@ public class AFileManager {
 
     }
 
-    public static boolean deleteFile(File resource) throws IOException {
+    public boolean deleteFile(File resource) throws IOException {
         if (resource.isDirectory()) {
             File[] childFiles = resource.listFiles();
             for (File child : childFiles) {
@@ -506,7 +506,7 @@ public class AFileManager {
     /*
      * Determine if Folder or File Already exists
      */
-    public boolean checkFile(String fileName) {
+    public static boolean checkFile(String fileName) {
 
         File file = new File(fileName);
         logger.info("Checking if " + file + " exists");
