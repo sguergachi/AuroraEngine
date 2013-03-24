@@ -26,13 +26,12 @@ import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 
-
 /**
  *
  * @author Sammy
  * @version 0.2
  */
-public final class ATimeLabel extends JLabel implements Runnable {
+public class ATimeLabel extends JLabel implements Runnable {
 
     private Thread runner;
 
@@ -44,7 +43,7 @@ public final class ATimeLabel extends JLabel implements Runnable {
 
     public static final String DATE_NUM = "MMddyy";
 
-     public static final String DATE_LETTERS = "EEEEE, MMMMM dd";
+    public static final String DATE_LETTERS = "EEEEE, MMMMM dd";
 
     public static final String YEAR = "yyyy";
 
@@ -55,14 +54,15 @@ public final class ATimeLabel extends JLabel implements Runnable {
     private static String[] WEEK_ARRAY = {"Sunday", "Monday", "Tuesday",
         "Wednesday", "Thursday", "Friday", "Saturday"};
 
-    public static final String[] MONTH_ARRAY = {" January", " February", " March",
+    public static final String[] MONTH_ARRAY = {" January", " February",
+        " March",
         " April", " May", " June", " July", " August", " September", " October",
         " November", " December"};
 
     public String DATE;
 
     private final String timeType;
-    
+
     static final Logger logger = Logger.getLogger(ATimeLabel.class);
 
     public ATimeLabel() {
@@ -97,24 +97,22 @@ public final class ATimeLabel extends JLabel implements Runnable {
     public void run() {
         while (runner == Thread.currentThread()) {
 
-
-
             setText(current(timeType) + "   ");
-
-
             try {
                 Thread.sleep(600);
             } catch (InterruptedException e) {
-            	logger.error("Time thread failed");
+                logger.error("Time thread failed");
             }
+
+            break;
 
         }
     }
 
-        @Override
+    @Override
     protected void paintComponent(Graphics g) {
 
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g.create();
 
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -127,5 +125,4 @@ public final class ATimeLabel extends JLabel implements Runnable {
 
         super.paintComponent(g2d);
     }
-
 }

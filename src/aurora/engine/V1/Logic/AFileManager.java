@@ -539,7 +539,8 @@ public class AFileManager {
 
         //Detect Path for My Doc on Windows 7 Windows Vista Mac and XP
         if (System.getProperty("os.name").equals("Windows 7") || System
-                .getProperty("os.name").equals("Windows Vista")) {
+                .getProperty("os.name").equals("Windows Vista") ||System
+                .getProperty("os.name").equals("Windows 8") ) {
             docPath = System.getProperty("user.home") + "/Documents/";
         } else if (System.getProperty("os.name").equals("Windows XP")) {
             docPath = System.getProperty("user.home") + "/My Documents/";

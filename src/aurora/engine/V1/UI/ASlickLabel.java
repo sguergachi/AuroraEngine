@@ -33,11 +33,11 @@ public class ASlickLabel extends JLabel implements MouseListener{
     static final Logger logger = Logger.getLogger(ASlickLabel.class);
 
     public ASlickLabel(String text) {
-        super(text + "  ");
+        super(text + "");
     }
 
     public ASlickLabel(String text, int horizontalAlignment) {
-        super(text + "  ", horizontalAlignment);
+        super(text + "", horizontalAlignment);
     }
 
     public ASlickLabel() {
@@ -60,7 +60,7 @@ public class ASlickLabel extends JLabel implements MouseListener{
     @Override
     protected void paintComponent(Graphics g) {
 
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g.create();
 
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);

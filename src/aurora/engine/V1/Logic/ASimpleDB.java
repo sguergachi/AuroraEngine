@@ -111,7 +111,7 @@ public class ASimpleDB {
         //Connect and create new Database
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName);
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName);
@@ -123,7 +123,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName);
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName);
@@ -167,7 +167,7 @@ public class ASimpleDB {
 
             try {
                 String osName = System.getProperty("os.name");
-                if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+                if (osName.contains("Windows")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName );
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName );
@@ -179,7 +179,7 @@ public class ASimpleDB {
 
             } catch (Exception exx) {
                 String osName = System.getProperty("os.name");
-                if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+                if (osName.contains("Windows")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName );
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName );
@@ -220,7 +220,7 @@ public class ASimpleDB {
             throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName );
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName );
@@ -232,7 +232,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName );
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName );
@@ -272,7 +272,7 @@ public class ASimpleDB {
     public void addColumn(String TableName, String ColumnName, String ColumnType) throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -284,7 +284,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -323,7 +323,7 @@ public class ASimpleDB {
     public void addRow(String TableName, String CSV) throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -335,7 +335,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -377,7 +377,7 @@ public class ASimpleDB {
     public void addRowFlex(String TableName, String[] ColumnNames, String CSV) throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -389,7 +389,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -441,7 +441,7 @@ public class ASimpleDB {
             throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -453,7 +453,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -501,7 +501,7 @@ public class ASimpleDB {
             throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -513,7 +513,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -557,7 +557,7 @@ public class ASimpleDB {
 
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista"))  {
+            if (osName.contains("Windows"))  {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -569,7 +569,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -626,7 +626,7 @@ public class ASimpleDB {
             throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + "\\lib\\" + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -638,7 +638,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + "//" + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -708,9 +708,7 @@ public class ASimpleDB {
 
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7")
-                || osName.equals("Windows XP")
-                || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:"
                                                          + databasePath
                                                          + DatabaseName
@@ -729,9 +727,7 @@ public class ASimpleDB {
             //Dev Mode
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7")
-                || osName.equals("Windows XP")
-                || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:"
                                                          + databasePath_DEV
                                                          + DatabaseName
@@ -838,7 +834,7 @@ public class ASimpleDB {
 
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -850,7 +846,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -901,7 +897,7 @@ public class ASimpleDB {
     public Object[] searchAprox(String TableName, String ColumnNameSelect, String ColumnNameWhere, String aproxString) throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -914,7 +910,7 @@ public class ASimpleDB {
         } catch (Exception exx) {
             try{
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -968,7 +964,7 @@ public class ASimpleDB {
     public void flexExecute(String SQL) throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -980,7 +976,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -1016,7 +1012,7 @@ public class ASimpleDB {
     public ResultSet flexQuery(String SQL) throws SQLException {
         try {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
@@ -1028,7 +1024,7 @@ public class ASimpleDB {
 
         } catch (Exception exx) {
             String osName = System.getProperty("os.name");
-            if (osName.equals("Windows 7") || osName.equals("Windows XP") || osName.equals("Windows Vista")) {
+            if (osName.contains("Windows")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV + DatabaseName + ";IFEXISTS=TRUE");
             } else if (osName.equals("Mac OS X")) {
                 connection = DriverManager.getConnection("jdbc:h2:file:" + databasePath_DEV.replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
