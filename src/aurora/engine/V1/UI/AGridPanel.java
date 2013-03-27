@@ -88,6 +88,28 @@ public class AGridPanel extends JPanel {
             }
         }
     }
+    
+    /**
+     * Add a component to the GridArray As well as the Panel
+     *
+     * @param comp an Image to be added to the grid panel
+     *
+     */
+    public void addToGrid(JComponent comp, int index) {
+        if (!isGridFull()) {
+            if (!componentList.contains(comp)) {
+                //componentList.add(comp);
+                componentList.add(index, comp);
+                this.add(componentList.get(componentList.indexOf(comp)), index);
+                numberOfComponentsAdded++;
+                if (logger.isDebugEnabled()) {
+                	logger.debug("Adding to grid... Size = " + componentList.size());
+                }
+            }
+        }
+    }
+    
+    
 
     /**
      * Updates Whole Panel with all entities inside the GridArray
