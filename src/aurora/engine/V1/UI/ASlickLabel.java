@@ -20,16 +20,19 @@ import javax.swing.JLabel;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * A Better Rendered Label
  * <p/>
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class ASlickLabel extends JLabel implements MouseListener{
+public class ASlickLabel extends JLabel implements MouseListener {
+
     private String url;
+
     private Color prevColor;
+
     private Cursor prevCursor;
+
     static final Logger logger = Logger.getLogger(ASlickLabel.class);
 
     public ASlickLabel(String text) {
@@ -48,14 +51,12 @@ public class ASlickLabel extends JLabel implements MouseListener{
         super.setText(text + "  ");
     }
 
-    public void setLink(String URL){
+    public void setLink(String URL) {
         this.url = URL;
         this.setToolTipText(URL);
         this.addMouseListener(this);
 
     }
-
-
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -76,15 +77,15 @@ public class ASlickLabel extends JLabel implements MouseListener{
 
     public void mouseClicked(MouseEvent e) {
 
-        if(url != null){
+        if (url != null) {
             try {
                 try {
                     Desktop.getDesktop().browse(new URI(url));
                 } catch (URISyntaxException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
             } catch (IOException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
         }
     }
@@ -98,19 +99,22 @@ public class ASlickLabel extends JLabel implements MouseListener{
 
     public void mouseEntered(MouseEvent e) {
 
-        if(url != null){
+        if (url != null) {
             prevColor = this.getForeground();
             prevCursor = this.getCursor();
-            setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+            ACursor selectCursor = new ACursor(new AImage("cursor_select.png"));
+//            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setCursor(selectCursor.getCursor());
             this.setForeground(Color.green);
         }
 
     }
 
     public void mouseExited(MouseEvent e) {
-        if(url!=null){
+        if (url != null) {
             this.setForeground(prevColor);
-             setCursor(prevCursor);
+            setCursor(prevCursor);
         }
     }
 }

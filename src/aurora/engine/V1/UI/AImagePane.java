@@ -150,16 +150,19 @@ public class AImagePane extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         //  Dispaly  image on Panel
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g.create();
 
-//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-//                RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_DEFAULT);
 //
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                 RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
+
+         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_NORMALIZE);
 
         if (image != null) {
             if (imageWidth == 0) {
@@ -292,6 +295,7 @@ public class AImagePane extends JPanel {
 
     public void clearImage() {
         this.image = null;
+        this.setOpaque(false);
         this.revalidate();
         this.repaint();
     }

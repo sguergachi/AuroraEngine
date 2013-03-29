@@ -8,7 +8,6 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 
-
 public class AThreadWorker implements Runnable {
 
     private Thread runner;
@@ -20,14 +19,16 @@ public class AThreadWorker implements Runnable {
     private boolean canRun = true;
 
     private boolean once;
-    private  ActionListener doAfter;
-    
+
+    private ActionListener doAfter;
+
     static final Logger logger = Logger.getLogger(AThreadWorker.class);
 
     public AThreadWorker(ActionListener act) {
         this.toDo = act;
 
     }
+
     public AThreadWorker(ActionListener act, ActionListener after) {
         this.toDo = act;
         this.doAfter = after;
@@ -39,7 +40,8 @@ public class AThreadWorker implements Runnable {
 
 
     }
-    public AThreadWorker(ActionListener act,ActionListener after, int sleep) {
+
+    public AThreadWorker(ActionListener act, ActionListener after, int sleep) {
         this.toDo = act;
         this.doAfter = after;
         this.sleep = sleep;
@@ -48,10 +50,10 @@ public class AThreadWorker implements Runnable {
     }
 
     public void start() {
-    	
-    	if (logger.isDebugEnabled()) {
-    		logger.debug("Starting New Background Thread...");
-    	}
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Starting New Background Thread...");
+        }
 
         if (!canRun) {
             runner = null;
