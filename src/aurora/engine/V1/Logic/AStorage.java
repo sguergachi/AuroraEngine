@@ -23,7 +23,6 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 
-
 /**
  * A Store is an Object that contains data from a database
  *
@@ -40,18 +39,17 @@ public abstract class AStorage {
     public abstract void storeToDatabase();
 
     public abstract void setUpDatabase(Boolean FirstTime, String Path);
-
     static final Logger logger = Logger.getLogger(AStorage.class);
 
     protected ArrayList getDatabaseArray(String TableName, String ColumnName) {
-        database = new ArrayList();
+        database = new ArrayList<Object>();
         try {
 
             ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
                                         + TableName);
 
             if (logger.isDebugEnabled()) {
-            	logger.debug("RS " + rs);
+                logger.debug("RS " + rs);
             }
 
 
@@ -59,20 +57,19 @@ public abstract class AStorage {
 
             if (rs != null) {
                 rs.beforeFirst();
-                if (rs.next()) {
-                    rs.first();
-                    do {
-                        database.add(rs.getObject(ColumnName));
-                    } while (rs.next());
+
+                while (rs.next()) {
+                    database.add(rs.getObject(ColumnName));
                 }
+
                 return database;
-            }else{
+            } else {
                 return null;
             }
 
 
         } catch (SQLException ex) {
-        	logger.error(ex);
+            logger.error(ex);
             return database;
         } finally {
             db.CloseConnection();
