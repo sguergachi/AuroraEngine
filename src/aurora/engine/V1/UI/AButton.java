@@ -87,13 +87,13 @@ public class AButton extends JButton {
      * placed on top of the button
      *
      * @param name
-     * @param ImgUp
+     * @param ImgNorm
      * @param ImgDwn
      * @param ImgOvr
      *
      */
-    public AButton(String ImgUp, String ImgDwn, String ImgOvr) {
-        this.urlNorm = ImgUp;
+    public AButton(String ImgNorm, String ImgDwn, String ImgOvr) {
+        this.urlNorm = ImgNorm;
         this.urlOver = ImgOvr;
         this.urlDown = ImgDwn;
 
