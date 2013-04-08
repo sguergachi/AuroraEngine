@@ -43,6 +43,8 @@ public class ATimeLabel extends JLabel implements Runnable {
 
     public static final String DATE_NUM = "MMddyy";
 
+    public static final String DATE = "MM/dd/yy";
+
     public static final String DATE_LETTERS = "EEEEE, MMMMM dd";
 
     public static final String YEAR = "yyyy";
@@ -59,7 +61,6 @@ public class ATimeLabel extends JLabel implements Runnable {
         " April", " May", " June", " July", " August", " September", " October",
         " November", " December"};
 
-    public String DATE;
 
     private final String timeType;
 

@@ -126,10 +126,7 @@ public class ASound implements Runnable {
      * @param URL String, loop boolean
      *
      */
-    public ASound(String URL, boolean loop) throws MalformedURLException,
-                                                   UnsupportedAudioFileException,
-                                                   IOException,
-                                                   LineUnavailableException {
+    public ASound(String URL, boolean loop)  {
         this.URL = URL;
 
         this.loop = loop;
@@ -149,13 +146,12 @@ public class ASound implements Runnable {
      * .........................................................................
      *
      */
-    public void Play() throws UnsupportedAudioFileException, IOException,
-                              LineUnavailableException, InterruptedException {
+    public void Play()  {
         if (runner == null) {
             runner = new Thread(this);
             runner.start();
 
-        } 
+        }
     }
 
     /**

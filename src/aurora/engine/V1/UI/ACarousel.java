@@ -17,6 +17,7 @@
  */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.APostHandler;
 import aurora.engine.V1.UI.ACarouselTitle.TitleType;
 import java.awt.Point;
 import java.awt.geom.Point2D.Double;
@@ -97,6 +98,9 @@ public class ACarousel extends JPanel implements Runnable {
 
     static final Logger logger = Logger.getLogger(ACarousel.class);
 
+    private APostHandler postLeftAnimate;
+    private APostHandler postRightAnimate;
+
     public ACarousel(double panelWidth, int panelHeight, int totalWidth) {
         this.setLayout(null);
         this.setOpaque(false);
@@ -150,7 +154,7 @@ public class ACarousel extends JPanel implements Runnable {
             point.y = MAX_Y_POINT;
             leftX = point.x;
             if (logger.isDebugEnabled()) {
-            	logger.debug("leftX = " + leftX);
+                logger.debug("leftX = " + leftX);
             }
         } else if (numberOfPanes == 1) {
             double prevPointX = ((ACarouselPane) this.getComponent(0))
@@ -159,7 +163,7 @@ public class ACarousel extends JPanel implements Runnable {
             point.y = MIN_Y_POINT;
             centX = point.x;
             if (logger.isDebugEnabled()) {
-            	logger.debug("centX = " + centX);
+                logger.debug("centX = " + centX);
             }
         } else if (numberOfPanes == 2) {
             double prevPointX = ((ACarouselPane) this.getComponent(1))
@@ -168,7 +172,7 @@ public class ACarousel extends JPanel implements Runnable {
             point.y = MAX_Y_POINT;
             rightX = point.x;
             if (logger.isDebugEnabled()) {
-            	logger.debug("rightX = " + rightX);
+                logger.debug("rightX = " + rightX);
             }
         } else if (numberOfPanes == 3) {
             double prevPointX = ((ACarouselPane) this.getComponent(0))
@@ -245,8 +249,8 @@ public class ACarousel extends JPanel implements Runnable {
             isRunningRight = true;
             runLeft = null;
             try {
-            	if (logger.isDebugEnabled()) {
-                	logger.debug("RUNNING RIGHT");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("RUNNING RIGHT");
                 }
                 isRunningLeft = false;
                 isRunningRight = true;
@@ -256,10 +260,14 @@ public class ACarousel extends JPanel implements Runnable {
                         "Animation Error!");
                 err.setVisible(true);
             }
+             if (postRightAnimate != null) {
+                postRightAnimate.postAction();
+            }
         }
     }
 
     public void MoveLeft() {
+
 
         if (runRight == null && runLeft == null) {
             if (runLeft == null) {
@@ -269,7 +277,7 @@ public class ACarousel extends JPanel implements Runnable {
             runRight = null;
             try {
                 if (logger.isDebugEnabled()) {
-                	logger.debug("RUNNING LEFT");
+                    logger.debug("RUNNING LEFT");
                 }
                 isRunningLeft = true;
                 isRunningRight = false;
@@ -278,8 +286,20 @@ public class ACarousel extends JPanel implements Runnable {
                 err = new ADialog(ADialog.aDIALOG_ERROR, "Animation Error!");
                 err.setVisible(true);
             }
+            if (postLeftAnimate != null) {
+                postLeftAnimate.postAction();
+            }
         }
     }
+
+    public void setPostLeftAnimation(APostHandler leftAction) {
+        this.postLeftAnimate = leftAction;
+    }
+    public void setPostRightAnimation(APostHandler  rightAction) {
+        this.postRightAnimate = rightAction;
+    }
+
+
 
     private void resetPanePositions() {
 
@@ -291,7 +311,7 @@ public class ACarousel extends JPanel implements Runnable {
             p = cp.getPoint();
             cp.setBounds((int) p.x, (int) p.y, (int) panelWidth, panelHeight);
             if (logger.isDebugEnabled()) {
-            	logger.debug(p.toString());
+                logger.debug(p.toString());
             }
 
             if (p.x == leftX) {
@@ -388,15 +408,15 @@ public class ACarousel extends JPanel implements Runnable {
 
                 //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
                 if ((panelWidth % 14.5) == 0) {
-                    increment =  14.5;
+                    increment = 14.5;
                 } else if ((panelWidth % 16.0) == 0) {
-                    increment = ( 16.0);
+                    increment = (16.0);
                 }
 
                 if (isOdd(i)) {
                     cPane.setPoint(point.x - (increment), point.y + (Incr1));
                 } else {
-                    cPane.setPoint(point.x - (increment), point.y + ( Incr2));
+                    cPane.setPoint(point.x - (increment), point.y + (Incr2));
                 }
             }
 
@@ -435,13 +455,13 @@ public class ACarousel extends JPanel implements Runnable {
                 if ((panelWidth % 14.5) == 0) {
                     increment = 14.5;
                 } else if ((panelWidth % 16.0) == 0) {
-                    increment = ( 16.0);
+                    increment = (16.0);
                 }
 
                 if (isOdd(i)) {
-                    cPane.setPoint(point.x + (increment), point.y + ( Incr1));
+                    cPane.setPoint(point.x + (increment), point.y + (Incr1));
                 } else {
-                    cPane.setPoint(point.x + (increment), point.y + ( Incr2));
+                    cPane.setPoint(point.x + (increment), point.y + (Incr2));
                 }
             }
 
@@ -450,6 +470,7 @@ public class ACarousel extends JPanel implements Runnable {
         }
 
         ///....Done
+
         resetPanePositions();
         centerPane = getCenterPane();
         centerPane.changeTitle(TitleType.GLOW);
@@ -660,9 +681,9 @@ public class ACarousel extends JPanel implements Runnable {
             counter++;
 
             if (logger.isDebugEnabled()) {
-            	logger.debug(" --------- " + counter + " --------------");
-            	logger.debug("cent X (def) : " + centX);
-            	logger.debug("cent Y (def) : " + centY);
+                logger.debug(" --------- " + counter + " --------------");
+                logger.debug("cent X (def) : " + centX);
+                logger.debug("cent Y (def) : " + centY);
                 logger.debug("centerPoint.x (chg) : " + centerPoint.x);
                 logger.debug("centerPoint.y (chg) : " + centerPoint.y);
                 logger.debug("rightX (def) : " + rightX);
