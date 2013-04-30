@@ -23,6 +23,10 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -79,15 +83,15 @@ public class AFileManager {
      */
     public ArrayList<String> readFile(String fileName) {
 
-    	if (logger.isDebugEnabled()) {
-        	logger.debug(this.path + fileName);
+        if (logger.isDebugEnabled()) {
+            logger.debug(this.path + fileName);
         }
 
         File file = null;
         try {
             file = new File(new URI(this.path + fileName));
         } catch (URISyntaxException ex) {
-        	logger.error(ex);
+            logger.error(ex);
         }
 
         ArrayList<String> fileList = new ArrayList<String>();
@@ -114,7 +118,7 @@ public class AFileManager {
                 input.close();
             }
         } catch (IOException ex) {
-        	logger.error(ex);
+            logger.error(ex);
             return null;
 
         }
@@ -156,7 +160,7 @@ public class AFileManager {
                     }
 
                 } catch (IOException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
 
                 ImageIcon img = new ImageIcon(bImage);
@@ -182,7 +186,7 @@ public class AFileManager {
                                            + fileName);
                 ImageIO.write(bi, "png", outputfile);
             } catch (IOException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
         } else {
             try {
@@ -190,7 +194,7 @@ public class AFileManager {
                 File outputfile = new File(path + "/" + fileName);
                 ImageIO.write(bi, "png", outputfile);
             } catch (IOException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
 
         }
@@ -224,7 +228,7 @@ public class AFileManager {
             try {
                 Folder.createNewFile();
             } catch (IOException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
         } else {
             //Check if Folder Exists
@@ -233,7 +237,7 @@ public class AFileManager {
                 try {
                     Folder.createNewFile();
                 } catch (IOException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
 
                 // If Does Not Exists make the Folder then Make the File
@@ -243,7 +247,7 @@ public class AFileManager {
                 try {
                     Folder.createNewFile();
                 } catch (IOException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
             }
 
@@ -268,10 +272,10 @@ public class AFileManager {
                     oOutStream.writeObject(obj);
                     oOutStream.close();
                 } catch (IOException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
             } catch (FileNotFoundException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
         } else {
             //Check if Folder Exists
@@ -285,10 +289,10 @@ public class AFileManager {
                         oOutStream.writeObject(obj);
                         oOutStream.close();
                     } catch (IOException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
 
                 //Create Folder if does not Exist
@@ -303,10 +307,10 @@ public class AFileManager {
                         oOutStream.writeObject(obj);
                         oOutStream.close();
                     } catch (IOException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
             }
 
@@ -334,13 +338,13 @@ public class AFileManager {
                     try {
                         Obj = oInStream.readObject();
                     } catch (ClassNotFoundException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 } catch (IOException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
             } catch (FileNotFoundException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
 
             return Obj;
@@ -358,13 +362,13 @@ public class AFileManager {
                         try {
                             Obj = oInStream.readObject();
                         } catch (ClassNotFoundException ex) {
-                        	logger.error(ex);
+                            logger.error(ex);
                         }
                     } catch (IOException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
 
                 return Obj;
@@ -381,13 +385,13 @@ public class AFileManager {
                         try {
                             Obj = oInStream.readObject();
                         } catch (ClassNotFoundException ex) {
-                        	logger.error(ex);
+                            logger.error(ex);
                         }
                     } catch (IOException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
 
                 return Obj;
@@ -418,7 +422,7 @@ public class AFileManager {
                 throw new IOException("Unable to delete original folder");
             }
         } catch (IOException ex) {
-        	logger.error(ex);
+            logger.error(ex);
         }
     }
 
@@ -440,7 +444,7 @@ public class AFileManager {
                     try {
                         copyFile(sourceChild, destChild);
                     } catch (IOException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 }
             }
@@ -450,13 +454,13 @@ public class AFileManager {
     public void copyFile(File source, File dest) throws IOException {
 
         if (!dest.exists()) {
-           logger.info("Creating new file " +  dest);
+            logger.info("Creating new file " + dest);
             dest.createNewFile();
         }
         InputStream in = null;
         OutputStream out = null;
 
-         logger.info("Copying " + source + " to " + dest );
+        logger.info("Copying " + source + " to " + dest);
         try {
             in = new FileInputStream(source);
             out = new FileOutputStream(dest);
@@ -471,6 +475,37 @@ public class AFileManager {
             in.close();
             out.close();
         }
+
+    }
+
+    public void downloadFile(URL location, File dest) throws IOException {
+
+
+//        try {
+//            URLConnection urlConn = location.openConnection();
+//            BufferedInputStream is = new BufferedInputStream(urlConn
+//                    .getInputStream());
+//            File out = dest;
+//            BufferedOutputStream bout = new BufferedOutputStream(
+//                    new FileOutputStream(dest));
+//            byte[] b = new byte[8 * 1024];
+//            int read = 0;
+//            while ((read = is.read(b)) > -1) {
+//                bout.write(b, 0, read);
+//            }
+//            bout.flush();
+//            bout.close();
+//            is.close();
+//
+//        } catch (IOException mfu) {
+//            mfu.printStackTrace();
+//        }
+
+        ReadableByteChannel rbc = Channels.newChannel(location.openStream());
+        FileOutputStream fos = new FileOutputStream(dest);
+        fos.getChannel().transferFrom(rbc, 0, 1 << 24);
+
+
 
     }
 
@@ -515,7 +550,7 @@ public class AFileManager {
             logger.info(file + " Exists!");
             return true;
         } else {
-             logger.info(file + " Does Not Exist!");
+            logger.info(file + " Does Not Exist!");
             return false;
         }
     }
@@ -539,8 +574,8 @@ public class AFileManager {
 
         //Detect Path for My Doc on Windows 7 Windows Vista Mac and XP
         if (System.getProperty("os.name").equals("Windows 7") || System
-                .getProperty("os.name").equals("Windows Vista") ||System
-                .getProperty("os.name").equals("Windows 8") ) {
+                .getProperty("os.name").equals("Windows Vista") || System
+                .getProperty("os.name").equals("Windows 8")) {
             docPath = System.getProperty("user.home") + "/Documents/";
         } else if (System.getProperty("os.name").equals("Windows XP")) {
             docPath = System.getProperty("user.home") + "/My Documents/";
