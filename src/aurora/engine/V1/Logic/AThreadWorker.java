@@ -11,18 +11,24 @@ import org.apache.log4j.Logger;
 public class AThreadWorker implements Runnable {
 
     private Thread runner;
-
     private ActionListener toDo;
-
     private int sleep = 0;
-
     private boolean canRun = true;
-
     private boolean once;
-
     private ActionListener doAfter;
-
     static final Logger logger = Logger.getLogger(AThreadWorker.class);
+
+    public AThreadWorker() {
+    }
+
+    public void setAction(ActionListener act) {
+        this.toDo = act;
+    }
+    
+     public void setAction(ActionListener act, int sleep) {
+        this.toDo = act;
+        this.sleep = sleep;
+    }
 
     public AThreadWorker(ActionListener act) {
         this.toDo = act;
