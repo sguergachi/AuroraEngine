@@ -35,12 +35,10 @@ public class ARadioButton extends AImagePane {
     private String btnNormal;
     private String btnOver;
     public boolean isSelected = false;
-    private JFrame frame;
     static final Logger logger = Logger.getLogger(ARadioButton.class);
 
-    public ARadioButton(String ImgUp, String ImgOvr, JFrame frame) {
+    public ARadioButton(String ImgUp, String ImgOvr) {
 
-        this.frame = frame; //frame to repaint
         btnNormal = ImgUp; //Normal State of Radio button
         btnOver = ImgOvr; // Selected state of radio button
 
@@ -53,13 +51,11 @@ public class ARadioButton extends AImagePane {
     public void setSelected() {
         isSelected = true;
         setImage(btnOver);
-        frame.repaint();
     }
 
     public void setUnSelected() {
         isSelected = false;
         setImage(btnNormal);
-        frame.repaint();
     }
 
     private class Click implements MouseListener {
