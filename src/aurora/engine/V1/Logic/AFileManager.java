@@ -23,11 +23,15 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -37,13 +41,22 @@ import javax.swing.ImageIcon;
 public class AFileManager {
 
     private boolean userExist;
+
     private String USER_NAME = System.getProperty("user.name");
+
     private String path;
+
     private FileOutputStream fOutStream;
+
     private ObjectOutputStream oOutStream;
+
     private FileInputStream fInStream;
+
     private ObjectInputStream oInStream;
+
     private Object Obj;
+
+    static final Logger logger = Logger.getLogger(AFileManager.class);
 
     public AFileManager() {
     }
@@ -54,50 +67,31 @@ public class AFileManager {
      *
      * @param RootfolderName
      */
-    public AFileManager(String RootfolderName) {
+    public AFileManager(String currentPath) {
+
+        this.path = currentPath;
 
 
-        //Detect Path for Windows 7 Windows Vista Mac and XP
-        if (System.getProperty("os.name").equals("Windows 7") || System.getProperty("os.name").equals("Windows Vista")) {
-            this.path = System.getProperty("user.home") + "/Documents/" + RootfolderName;
-        } else if (System.getProperty("os.name").equals("Windows XP")) {
-            this.path = System.getProperty("user.home") + "/My Documents/" + RootfolderName;
-        } else if (System.getProperty("os.name").equals("Mac OS X")) {
-            this.path = "//Users//" + USER_NAME + "//Documents//" + RootfolderName;
-        }
-        System.out.println(path);
-
-        //make folder
-        //File Root = new File(path);
-        //Root.mkdir();
-    }
-
-    /**
-     * Uses Custom path to get to any Directory
-     *
-     * @param pathDir
-     * @param on : any value will work
-     */
-    public AFileManager(String pathDir, Boolean on) {
-        this.path = pathDir;
     }
 
     /**
      * Reads a text File and returns each line in an Array List
      *
      * @param fileName : File Name containing the text
+     * <p/>
      * @return : ArrayList containing each record
      */
     public ArrayList<String> readFile(String fileName) {
 
-
-        System.out.println(this.path + fileName);
+        if (logger.isDebugEnabled()) {
+            logger.debug(this.path + fileName);
+        }
 
         File file = null;
         try {
             file = new File(new URI(this.path + fileName));
         } catch (URISyntaxException ex) {
-            Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+            logger.error(ex);
         }
 
         ArrayList<String> fileList = new ArrayList<String>();
@@ -124,8 +118,7 @@ public class AFileManager {
                 input.close();
             }
         } catch (IOException ex) {
-
-            System.err.println(ex);
+            logger.error(ex);
             return null;
 
         }
@@ -143,7 +136,7 @@ public class AFileManager {
                     bImage.setAccelerationPriority(1);
                 } catch (IOException ex) {
                     bImage.flush();
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 ImageIcon img = new ImageIcon(bImage);
@@ -163,11 +156,11 @@ public class AFileManager {
                         bImage.setAccelerationPriority(1);
                     } catch (InterruptedException ex) {
                         bImage.flush();
-                        Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
 
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 ImageIcon img = new ImageIcon(bImage);
@@ -180,20 +173,20 @@ public class AFileManager {
 
         }
 
-
-
-
     }
 
     public void writeImage(AImagePane img, String fileName, String folderName) {
 
         if (folderName != null) {
             try {
-                BufferedImage bi = AImage.resizeBufferedImg(img.getImgIcon().getImage(), img.getImgIcon().getIconWidth(), img.getImgIcon().getIconHeight()); // retrieve image
-                File outputfile = new File(path + "/" + folderName + "/" + fileName);
+                BufferedImage bi = AImage.resizeBufferedImg(img.getImgIcon()
+                        .getImage(), img.getImgIcon().getIconWidth(), img
+                        .getImgIcon().getIconHeight()); // retrieve image
+                File outputfile = new File(path + "/" + folderName + "/"
+                                           + fileName);
                 ImageIO.write(bi, "png", outputfile);
             } catch (IOException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
         } else {
             try {
@@ -201,7 +194,7 @@ public class AFileManager {
                 File outputfile = new File(path + "/" + fileName);
                 ImageIO.write(bi, "png", outputfile);
             } catch (IOException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
 
         }
@@ -213,7 +206,9 @@ public class AFileManager {
      */
     public void createFolder(String FolderName) {
         File Folder = new File(path + "/" + FolderName);
-        Folder.mkdir();
+        if (!Folder.exists()) {
+            Folder.mkdir();
+        }
     }
 
     /**
@@ -228,11 +223,12 @@ public class AFileManager {
         //If No Folder Name Given Make File In Path
         if (FolderName == null) {
             File Folder = new File(path + "/" + FileName);
-            System.out.println("Creating file " + path + "/" + FileName);
+            logger.info("Creating file " + path + "/" + FileName);
+
             try {
                 Folder.createNewFile();
             } catch (IOException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
         } else {
             //Check if Folder Exists
@@ -241,7 +237,7 @@ public class AFileManager {
                 try {
                     Folder.createNewFile();
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 // If Does Not Exists make the Folder then Make the File
@@ -251,7 +247,7 @@ public class AFileManager {
                 try {
                     Folder.createNewFile();
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
             }
 
@@ -267,7 +263,8 @@ public class AFileManager {
     public void serializeObject(String FolderName, Object obj) {
         //If No Folder name given
         if (FolderName == null) {
-            File ObjFile = new File(path + "/" + obj.getClass().getSimpleName() + ".obj");
+            File ObjFile = new File(path + "/" + obj.getClass().getSimpleName()
+                                    + ".obj");
             try {
                 fOutStream = new FileOutputStream(ObjFile);
                 try {
@@ -275,15 +272,16 @@ public class AFileManager {
                     oOutStream.writeObject(obj);
                     oOutStream.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
         } else {
             //Check if Folder Exists
             if (checkFile(path + "/" + FolderName)) {
-                File ObjFile = new File(path + "/" + FolderName + "/" + obj.getClass().getSimpleName() + ".obj");
+                File ObjFile = new File(path + "/" + FolderName + "/" + obj
+                        .getClass().getSimpleName() + ".obj");
                 try {
                     fOutStream = new FileOutputStream(ObjFile);
                     try {
@@ -291,16 +289,17 @@ public class AFileManager {
                         oOutStream.writeObject(obj);
                         oOutStream.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 //Create Folder if does not Exist
             } else {
                 createFolder(FolderName);
-                File ObjFile = new File(path + "/" + FolderName + "/" + obj.getClass().getSimpleName() + ".obj");
+                File ObjFile = new File(path + "/" + FolderName + "/" + obj
+                        .getClass().getSimpleName() + ".obj");
                 try {
                     fOutStream = new FileOutputStream(ObjFile);
                     try {
@@ -308,10 +307,10 @@ public class AFileManager {
                         oOutStream.writeObject(obj);
                         oOutStream.close();
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
             }
 
@@ -324,6 +323,9 @@ public class AFileManager {
      *
      * @param FolderName
      * @param ObjectName
+     *                   <
+     *                   p/>
+     * <p/>
      * @return deserialized Object
      */
     public Object deserializeObject(String FolderName, String ObjectName) {
@@ -336,13 +338,13 @@ public class AFileManager {
                     try {
                         Obj = oInStream.readObject();
                     } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
                 } catch (IOException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                logger.error(ex);
             }
 
             return Obj;
@@ -351,7 +353,8 @@ public class AFileManager {
 
             //Check if Folder Exists
             if (checkFile(path + "/" + FolderName)) {
-                File ObjFile = new File(path + "/" + FolderName + "/" + ObjectName + ".obj");
+                File ObjFile = new File(path + "/" + FolderName + "/"
+                                        + ObjectName + ".obj");
                 try {
                     fInStream = new FileInputStream(ObjFile);
                     try {
@@ -359,13 +362,13 @@ public class AFileManager {
                         try {
                             Obj = oInStream.readObject();
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.error(ex);
                         }
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 return Obj;
@@ -373,7 +376,8 @@ public class AFileManager {
                 //Create Folder if does not Exist
             } else {
                 createFolder(FolderName);
-                File ObjFile = new File(path + "/" + FolderName + "/" + ObjectName + ".obj");
+                File ObjFile = new File(path + "/" + FolderName + "/"
+                                        + ObjectName + ".obj");
                 try {
                     fInStream = new FileInputStream(ObjFile);
                     try {
@@ -381,13 +385,13 @@ public class AFileManager {
                         try {
                             Obj = oInStream.readObject();
                         } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                            logger.error(ex);
                         }
                     } catch (IOException ex) {
-                        Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                        logger.error(ex);
                     }
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(AFileManager.class.getName()).log(Level.SEVERE, null, ex);
+                    logger.error(ex);
                 }
 
                 return Obj;
@@ -404,6 +408,116 @@ public class AFileManager {
                 return filename.contains(endsWith);
             }
         });
+
+    }
+
+    public void moveFolder(String source, String destination) {
+        File sourceFile = new File(source);
+        File destinationFile = new File(destination);
+
+
+        copyDirectory(sourceFile, destinationFile);
+        try {
+            if (!deleteFile(sourceFile)) {
+                throw new IOException("Unable to delete original folder");
+            }
+        } catch (IOException ex) {
+            logger.error(ex);
+        }
+    }
+
+    public void copyDirectory(File sourceDir, File destDir) {
+
+        if (sourceDir.exists()) {
+            if (!destDir.exists()) {
+                destDir.mkdir();
+            }
+
+            File[] children = sourceDir.listFiles();
+
+            for (File sourceChild : children) {
+                String name = sourceChild.getName();
+                File destChild = new File(destDir, name);
+                if (sourceChild.isDirectory()) {
+                    copyDirectory(sourceChild, destChild);
+                } else {
+                    try {
+                        copyFile(sourceChild, destChild);
+                    } catch (IOException ex) {
+                        logger.error(ex);
+                    }
+                }
+            }
+        }
+    }
+
+    public void copyFile(File source, File dest) throws IOException {
+
+        if (!dest.exists()) {
+            logger.info("Creating new file " + dest);
+            dest.createNewFile();
+        }
+        InputStream in = null;
+        OutputStream out = null;
+
+        logger.info("Copying " + source + " to " + dest);
+        try {
+            in = new FileInputStream(source);
+            out = new FileOutputStream(dest);
+
+            // Transfer bytes from in to out
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } finally {
+            in.close();
+            out.close();
+        }
+
+    }
+
+    public void downloadFile(URL location, File dest) throws IOException {
+
+
+//        try {
+//            URLConnection urlConn = location.openConnection();
+//            BufferedInputStream is = new BufferedInputStream(urlConn
+//                    .getInputStream());
+//            File out = dest;
+//            BufferedOutputStream bout = new BufferedOutputStream(
+//                    new FileOutputStream(dest));
+//            byte[] b = new byte[8 * 1024];
+//            int read = 0;
+//            while ((read = is.read(b)) > -1) {
+//                bout.write(b, 0, read);
+//            }
+//            bout.flush();
+//            bout.close();
+//            is.close();
+//
+//        } catch (IOException mfu) {
+//            mfu.printStackTrace();
+//        }
+
+        ReadableByteChannel rbc = Channels.newChannel(location.openStream());
+        FileOutputStream fos = new FileOutputStream(dest);
+        fos.getChannel().transferFrom(rbc, 0, 1 << 24);
+
+
+
+    }
+
+    public boolean deleteFile(File resource) throws IOException {
+        if (resource.isDirectory()) {
+            File[] childFiles = resource.listFiles();
+            for (File child : childFiles) {
+                deleteFile(child);
+            }
+
+        }
+        return resource.delete();
 
     }
 
@@ -427,19 +541,49 @@ public class AFileManager {
     /*
      * Determine if Folder or File Already exists
      */
-    public boolean checkFile(String fileName) {
-        System.out.println(fileName);
-        File f = new File(fileName);
-        if (f.exists()) {
+    public static boolean checkFile(String fileName) {
+
+        File file = new File(fileName);
+        logger.info("Checking if " + file + " exists");
+
+        if (file.exists()) {
+            logger.info(file + " Exists!");
             return true;
         } else {
+            logger.info(file + " Does Not Exist!");
             return false;
         }
     }
 
-///Getter & Setters
+    /**
+     * get current working path
+     * <p/>
+     * @return string of path
+     */
     public String getPath() {
         return path;
+    }
+
+    /**
+     * get my document path for windows and mac
+     * <p/>
+     * @return string of MyDocuments folder path
+     */
+    public String getMyDocPath() {
+        String docPath = System.getProperty("user.home");
+
+        //Detect Path for My Doc on Windows 7 Windows Vista Mac and XP
+        if (System.getProperty("os.name").equals("Windows 7") || System
+                .getProperty("os.name").equals("Windows Vista") || System
+                .getProperty("os.name").equals("Windows 8")) {
+            docPath = System.getProperty("user.home") + "/Documents/";
+        } else if (System.getProperty("os.name").equals("Windows XP")) {
+            docPath = System.getProperty("user.home") + "/My Documents/";
+        } else if (System.getProperty("os.name").equals("Mac OS X")) {
+            docPath = "//Users//" + USER_NAME + "//Documents//";
+        }
+
+        return docPath;
     }
 
     public String getUserName() {

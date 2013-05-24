@@ -5,6 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+import org.apache.log4j.Logger;
+
+
 public class ATimeKeeper extends Timer {
 
 	private int seconds;
@@ -14,6 +17,7 @@ public class ATimeKeeper extends Timer {
 	private int sec;
 	private long start;
 	private String timeString;
+	static final Logger logger = Logger.getLogger(ATimeKeeper.class);
 
 	public ATimeKeeper(long startTime) {
 
@@ -35,7 +39,6 @@ public class ATimeKeeper extends Timer {
 				sec = seconds % 60;
 				timeString = new String("" + hours + " hours " + min + " min "
 						+ sec + " sec");
-
 			}
 
 		});

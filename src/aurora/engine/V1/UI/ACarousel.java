@@ -17,11 +17,14 @@
  */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.APostHandler;
 import aurora.engine.V1.UI.ACarouselTitle.TitleType;
 import java.awt.Point;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -93,6 +96,11 @@ public class ACarousel extends JPanel implements Runnable {
 
     private final static double MIN_Y_POINT = 0;	// minimum y-point for any pane
 
+    static final Logger logger = Logger.getLogger(ACarousel.class);
+
+    private APostHandler postLeftAnimate;
+    private APostHandler postRightAnimate;
+
     public ACarousel(double panelWidth, int panelHeight, int totalWidth) {
         this.setLayout(null);
         this.setOpaque(false);
@@ -145,21 +153,27 @@ public class ACarousel extends JPanel implements Runnable {
             point.x = ((totalWidth - ((int) panelWidth * 3 + 25)) / 2) + 2;
             point.y = MAX_Y_POINT;
             leftX = point.x;
-            System.out.println("leftX = " + leftX);
+            if (logger.isDebugEnabled()) {
+                logger.debug("leftX = " + leftX);
+            }
         } else if (numberOfPanes == 1) {
             double prevPointX = ((ACarouselPane) this.getComponent(0))
                     .getPointX(); //getting previously added pane
             point.x = prevPointX + panelWidth;
             point.y = MIN_Y_POINT;
             centX = point.x;
-            System.out.println("centX = " + centX);
+            if (logger.isDebugEnabled()) {
+                logger.debug("centX = " + centX);
+            }
         } else if (numberOfPanes == 2) {
             double prevPointX = ((ACarouselPane) this.getComponent(1))
                     .getPointX();
             point.x = prevPointX + panelWidth;
             point.y = MAX_Y_POINT;
             rightX = point.x;
-            System.out.println("rightX = " + rightX);
+            if (logger.isDebugEnabled()) {
+                logger.debug("rightX = " + rightX);
+            }
         } else if (numberOfPanes == 3) {
             double prevPointX = ((ACarouselPane) this.getComponent(0))
                     .getPointX();
@@ -235,7 +249,9 @@ public class ACarousel extends JPanel implements Runnable {
             isRunningRight = true;
             runLeft = null;
             try {
-                System.out.println("RUNNING RIGHT");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("RUNNING RIGHT");
+                }
                 isRunningLeft = false;
                 isRunningRight = true;
                 runRight.start();
@@ -244,10 +260,14 @@ public class ACarousel extends JPanel implements Runnable {
                         "Animation Error!");
                 err.setVisible(true);
             }
+             if (postRightAnimate != null) {
+                postRightAnimate.postAction();
+            }
         }
     }
 
     public void MoveLeft() {
+
 
         if (runRight == null && runLeft == null) {
             if (runLeft == null) {
@@ -256,7 +276,9 @@ public class ACarousel extends JPanel implements Runnable {
 
             runRight = null;
             try {
-                System.out.println("RUNNING LEFT");
+                if (logger.isDebugEnabled()) {
+                    logger.debug("RUNNING LEFT");
+                }
                 isRunningLeft = true;
                 isRunningRight = false;
                 runLeft.start();
@@ -264,8 +286,20 @@ public class ACarousel extends JPanel implements Runnable {
                 err = new ADialog(ADialog.aDIALOG_ERROR, "Animation Error!");
                 err.setVisible(true);
             }
+            if (postLeftAnimate != null) {
+                postLeftAnimate.postAction();
+            }
         }
     }
+
+    public void setPostLeftAnimation(APostHandler leftAction) {
+        this.postLeftAnimate = leftAction;
+    }
+    public void setPostRightAnimation(APostHandler  rightAction) {
+        this.postRightAnimate = rightAction;
+    }
+
+
 
     private void resetPanePositions() {
 
@@ -276,7 +310,9 @@ public class ACarousel extends JPanel implements Runnable {
             cp = (ACarouselPane) this.getComponent(i);
             p = cp.getPoint();
             cp.setBounds((int) p.x, (int) p.y, (int) panelWidth, panelHeight);
-            System.out.println(p.toString());
+            if (logger.isDebugEnabled()) {
+                logger.debug(p.toString());
+            }
 
             if (p.x == leftX) {
                 cp.setAsLeftPane();
@@ -350,7 +386,7 @@ public class ACarousel extends JPanel implements Runnable {
             centerPane.changeTitle(TitleType.NORMAL);
 
             try {
-                Thread.sleep(16);
+                Thread.sleep(6);
             } catch (InterruptedException ex) {
                 err.setVisible(true);
                 counter = 0;
@@ -372,17 +408,15 @@ public class ACarousel extends JPanel implements Runnable {
 
                 //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
                 if ((panelWidth % 14.5) == 0) {
-                    increment = 2 * 14.5;
+                    increment = 14.5;
                 } else if ((panelWidth % 16.0) == 0) {
-                    increment = (2 * 16.0);
+                    increment = (16.0);
                 }
 
                 if (isOdd(i)) {
-                    cPane.setPoint(point.x - (increment), point.y + (2
-                                                                     * Incr1));
+                    cPane.setPoint(point.x - (increment), point.y + (Incr1));
                 } else {
-                    cPane.setPoint(point.x - (increment), point.y + (2
-                                                                     * Incr2));
+                    cPane.setPoint(point.x - (increment), point.y + (Incr2));
                 }
             }
 
@@ -402,7 +436,7 @@ public class ACarousel extends JPanel implements Runnable {
 
             try {
                 //* 60 fps for smoothness *//
-                Thread.sleep(16);
+                Thread.sleep(6);
             } catch (InterruptedException ex) {
                 err.setVisible(true);
                 break;
@@ -419,15 +453,15 @@ public class ACarousel extends JPanel implements Runnable {
 
                 //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
                 if ((panelWidth % 14.5) == 0) {
-                    increment = 2 * 14.5;
+                    increment = 14.5;
                 } else if ((panelWidth % 16.0) == 0) {
-                    increment = (2 * 16.0);
+                    increment = (16.0);
                 }
 
                 if (isOdd(i)) {
-                    cPane.setPoint(point.x + (increment), point.y + (2 * Incr1));
+                    cPane.setPoint(point.x + (increment), point.y + (Incr1));
                 } else {
-                    cPane.setPoint(point.x + (increment), point.y + (2 * Incr2));
+                    cPane.setPoint(point.x + (increment), point.y + (Incr2));
                 }
             }
 
@@ -436,6 +470,7 @@ public class ACarousel extends JPanel implements Runnable {
         }
 
         ///....Done
+
         resetPanePositions();
         centerPane = getCenterPane();
         centerPane.changeTitle(TitleType.GLOW);
@@ -644,36 +679,28 @@ public class ACarousel extends JPanel implements Runnable {
         if (DEBUG) {
 
             counter++;
-            System.out.println(" --------- " + counter + " --------------");
+
+            if (logger.isDebugEnabled()) {
+                logger.debug(" --------- " + counter + " --------------");
+                logger.debug("cent X (def) : " + centX);
+                logger.debug("cent Y (def) : " + centY);
+                logger.debug("centerPoint.x (chg) : " + centerPoint.x);
+                logger.debug("centerPoint.y (chg) : " + centerPoint.y);
+                logger.debug("rightX (def) : " + rightX);
+                logger.debug("rightY (def) : " + rightY);
+                logger.debug("rightPoint.x (chg) : " + rightPoint.x);
+                logger.debug("rightPoint.y (chg) : " + rightPoint.y);
+                logger.debug(" leftX (def) : " + leftX);
+                logger.debug(" leftY (def) : " + leftY);
+                logger.debug("leftPoint.x (chg) : " + leftPoint.x);
+                logger.debug("leftPoint.y (chg) : " + leftPoint.y);
+                logger.debug("sPoint.x (chg) : " + sPoint.x);
+                logger.debug("sPoint.y (chg) : " + sPoint.y);
+                logger.debug("this.height " + this.getHeight());
+                logger.debug("this.width " + this.getWidth());
+            }
 
 
-            System.out.println("cent X (def) : " + centX);
-            System.out.println("cent Y (def) : " + centY);
-
-            System.out.println("centerPoint.x (chg) : " + centerPoint.x);
-            System.out.println("centerPoint.y (chg) : " + centerPoint.y);
-
-            System.out.println("rightX (def) : " + rightX);
-            System.out.println("rightY (def) : " + rightY);
-
-            System.out.println("rightPoint.x (chg) : " + rightPoint.x);
-            System.out.println("rightPoint.y (chg) : " + rightPoint.y);
-
-            System.out.println(" leftX (def) : " + leftX);
-            System.out.println(" leftY (def) : " + leftY);
-
-            System.out.println("leftPoint.x (chg) : " + leftPoint.x);
-            System.out.println("leftPoint.y (chg) : " + leftPoint.y);
-
-            // System.out.println(" sX (def) : " + sX);
-            // System.out.println(" sY (def) : " + sY);
-
-            System.out.println("sPoint.x (chg) : " + sPoint.x);
-            System.out.println("sPoint.y (chg) : " + sPoint.y);
-
-
-            System.out.println("this.height " + this.getHeight());
-            System.out.println("this.width " + this.getWidth());
         }
     }
 }

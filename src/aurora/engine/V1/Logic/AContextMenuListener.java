@@ -12,6 +12,7 @@ import javax.swing.Action;
 import javax.swing.JPopupMenu;
 import javax.swing.text.JTextComponent;
 
+import org.apache.log4j.Logger;
 
 	public class AContextMenuListener extends MouseAdapter {
 	    private JPopupMenu popup = new JPopupMenu();
@@ -27,6 +28,8 @@ import javax.swing.text.JTextComponent;
 	    private Actions lastActionSelected;
 
 	    private enum Actions { UNDO, CUT, COPY, PASTE, SELECT_ALL };
+	    
+	    static final Logger logger = Logger.getLogger(AContextMenuListener.class);
 
 	    public AContextMenuListener() {
 	        undoAction = new AbstractAction("Undo") {

@@ -20,8 +20,9 @@ package aurora.engine.V1.UI;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 /**
  *
@@ -42,11 +43,14 @@ public class AHoverButton extends AImage implements Runnable {
     private boolean hovering = false;
     private MouseListener handler;
     private boolean done = false;
+    static final Logger logger = Logger.getLogger(AHoverButton.class);
 
     public AHoverButton(MouseListener handler, int miliseconds, String imgNorm, String imgOver) {
         super(imgNorm);
         super.addMouseListener(handler);
-        System.out.println("Added Listener");
+        if (logger.isDebugEnabled()) {
+        	logger.debug("Added Listener");
+        }
         this.handler = handler;
         this.time = miliseconds;
         this.imgNorm = imgNorm;
@@ -101,32 +105,40 @@ public class AHoverButton extends AImage implements Runnable {
     public void run() {
         int counter = 0;
         while (runner == Thread.currentThread()) {
-            System.out.println(counter);
+        	if (logger.isDebugEnabled()) {
+            	logger.debug(counter);
+            }
             if (counter < time) {
                 counter++;
 
             } else {
-                System.out.println("DONE!");
+            	if (logger.isDebugEnabled()) {
+                	logger.debug("DONE!");
+                }
 
                 handler.mouseClicked(e);
 
                 break;
             }
             if (!hovering) {
-                System.out.println("STOPED!");
+            	if (logger.isDebugEnabled()) {
+                	logger.debug("STOPPED!");
+                }
                 break;
             }
 
             try {
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                Logger.getLogger(AHoverButton.class.getName()).log(Level.SEVERE, null, ex);
+            	logger.error(ex);
             }
         }
 
         runner = null;
         if (hovering) {
-            System.out.println(hovering);
+        	if (logger.isDebugEnabled()) {
+            	logger.debug(hovering);
+            }
             runner = null;
             if (runner == null) {
                 runner = new Thread(this);

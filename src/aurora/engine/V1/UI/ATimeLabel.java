@@ -24,16 +24,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JLabel;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author Sammy
  * @version 0.2
  */
-public final class ATimeLabel extends ASlickLabel implements Runnable {
+public class ATimeLabel extends JLabel implements Runnable {
 
     private Thread runner;
 
-    public static final String FULL_DATE = "EEEEE, MMMMM dd \n hh:mm a";
+    public static final String FULL_DATE = "EEEEE, MMMMM dd hh:mm:ss a";
 
     public static final String TIME = "hh:mm a";
 
@@ -41,7 +43,9 @@ public final class ATimeLabel extends ASlickLabel implements Runnable {
 
     public static final String DATE_NUM = "MMddyy";
 
-     public static final String DATE_LETTERS = "EEEEE, MMMMM dd";
+    public static final String DATE = "MM/dd/yy";
+
+    public static final String DATE_LETTERS = "EEEEE, MMMMM dd";
 
     public static final String YEAR = "yyyy";
 
@@ -49,16 +53,18 @@ public final class ATimeLabel extends ASlickLabel implements Runnable {
 
     public static final String MONTH = "MM-dd";
 
-    private static String[] WEEK_DATE = {"Sunday", "Monday", "Tuesday",
+    private static String[] WEEK_ARRAY = {"Sunday", "Monday", "Tuesday",
         "Wednesday", "Thursday", "Friday", "Saturday"};
 
-    public static final String[] MONTH_DATE = {" January", " February", " March",
+    public static final String[] MONTH_ARRAY = {" January", " February",
+        " March",
         " April", " May", " June", " July", " August", " September", " October",
         " November", " December"};
 
-    public String DATE;
 
     private final String timeType;
+
+    static final Logger logger = Logger.getLogger(ATimeLabel.class);
 
     public ATimeLabel() {
         timeType = ATimeLabel.FULL_DATE;
@@ -92,17 +98,32 @@ public final class ATimeLabel extends ASlickLabel implements Runnable {
     public void run() {
         while (runner == Thread.currentThread()) {
 
-
-
             setText(current(timeType) + "   ");
-
-
             try {
                 Thread.sleep(600);
             } catch (InterruptedException e) {
-                System.out.println("Time Thread failed");
+                logger.error("Time thread failed");
             }
 
+            break;
+
         }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
+                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+
+        super.paintComponent(g2d);
     }
 }

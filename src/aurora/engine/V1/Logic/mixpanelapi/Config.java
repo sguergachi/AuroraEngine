@@ -1,4 +1,4 @@
-package com.mixpanel.mixpanelapi;
+package aurora.engine.V1.Logic.mixpanelapi;
 
 /* package */ class Config {
     public static final String BASE_ENDPOINT = "http://api.mixpanel.com";

@@ -18,11 +18,15 @@
 
 package aurora.engine.V1.Logic;
 
+import org.apache.log4j.Logger;
+
 /**
  * Contains sorting algorithms used on arrays
  * @author Sammy
  */
 public class ASort {
+	
+	static final Logger logger = Logger.getLogger(ASort.class);
 
     public void Sort_Logic() {
     }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 /**
  * .------------------------------------------------------------------------.
  * | AParser
@@ -14,12 +16,12 @@ import java.util.ArrayList;
  * |
  * | This class reads a File and stores the content of this file line by line
  * | in an ArrayList.
- * | 
+ * |
  * |
  * .........................................................................
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
- * 
+ *
  */
 
 public class AParser {
@@ -28,13 +30,15 @@ public class AParser {
 	 * Content of File
 	 */
 	private ArrayList<String> parrsedArray;
-	
+
 	/**
 	 * File Manager
 	 */
 	private AFileManager mngr;
-
 	
+	static final Logger logger = Logger.getLogger(AParser.class);
+
+
     /**
      * .-----------------------------------------------------------------------.
      * | AParser(String RootPath)
@@ -43,17 +47,17 @@ public class AParser {
      * | This constructor prepares the AFileManager to read the file from the
      * | correct path.
      * | It also ensures that the ArrayList is initialized.
-     * | 
+     * |
      * .........................................................................
      *
      * @param RootPath path to the directory containing the file(s) you want to parse
      *
      */
 	public AParser(String RootPath) {
-		this.mngr = new AFileManager(RootPath, true);
+		this.mngr = new AFileManager(RootPath);
 		this.parrsedArray = new ArrayList<String>();
 	}
-	
+
     /**
      * .-----------------------------------------------------------------------.
      * | parseFile(String fileName)
@@ -61,9 +65,9 @@ public class AParser {
      * |
      * | This function reades the given File in the directory specified in the
      * | constructor AParser and stores the contents of the File in an ArrayList.
-     * | 
-     * | This function returns this ArrayList 
-     * | 
+     * |
+     * | This function returns this ArrayList
+     * |
      * .........................................................................
      *
      * @param fileName name of the File to be parsed

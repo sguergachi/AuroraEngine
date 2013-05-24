@@ -24,6 +24,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
 /**
  * Manages a list of radio buttons to have only one
  * selected at a time
@@ -32,6 +34,7 @@ import java.util.ArrayList;
 public class ARadioButtonManager {
 
     private ArrayList<ARadioButton> buttonList;
+    static final Logger logger = Logger.getLogger(ARadioButtonManager.class);
 
     public ARadioButtonManager() {
 

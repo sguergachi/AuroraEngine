@@ -19,10 +19,16 @@
 
 package aurora.engine.V1.Logic;
 
+import org.apache.log4j.Logger;
+
+
 /**
- * Component Containing Engine Components in a single package
+ * single object Containing Engine Components to be initialized for specific
+ * core app and to be used through out the app.
  * @author Sammy
  */
 public class AEngine {
+	
+	static final Logger logger = Logger.getLogger(AEngine.class);
 
 }

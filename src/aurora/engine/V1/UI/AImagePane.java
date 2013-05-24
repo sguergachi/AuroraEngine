@@ -19,13 +19,15 @@ package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.ASurface;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.LayoutManager;
+import java.awt.RenderingHints;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 
 /**
  * Image on a panel
@@ -43,15 +45,21 @@ public class AImagePane extends JPanel {
 
     private int imageWidth = 0;
 
+    private float heightRatio = 1;
+
+    private float widthRatio = 1;
+
     private ASurface ressource;
 
     private String SurfaceName;
+
+    static final Logger logger = Logger.getLogger(AImagePane.class);
 
     //////////////
     //Constructors
     //////////////
     public AImagePane(String path, int W, int H) {
-
+        super(true);
         ressource = new ASurface("");
         ImageURL = path;
         imageHeight = H;
@@ -67,6 +75,7 @@ public class AImagePane extends JPanel {
     }
 
     public AImagePane(String path) {
+        super(true);
         ressource = new ASurface("");
         ImageURL = path;
         imageHeight = 0;
@@ -133,8 +142,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
+                logger.error(exx);
             }
         }
     }
@@ -142,23 +150,32 @@ public class AImagePane extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         //  Dispaly  image on Panel
+        Graphics2D g2d = (Graphics2D) g.create();
+
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_DEFAULT);
+//
+        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_NORMALIZE);
 
         if (image != null) {
             if (imageWidth == 0) {
                 imageWidth = image.getIconWidth();
-
             }
 
             if (imageHeight == 0) {
                 imageHeight = image.getIconHeight();
             }
-            g.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
+            g2d.drawImage(image.getImage(), 0, 0, imageWidth, imageHeight, this);
         } else {
-            g.clearRect(0, 0, imageWidth, imageHeight);
-
+            g2d.clearRect(0, 0, imageWidth, imageHeight);
         }
-
-
     }
 
     public void setURL(String URL) {
@@ -211,8 +228,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
+                logger.error(exx);
             }
         }
         this.revalidate();
@@ -235,8 +251,7 @@ public class AImagePane extends JPanel {
                         "/aurora/V1/resources/"
                         + ImageURL));
             } catch (Exception exx) {
-                Logger.getLogger(AImagePane.class.getName()).log(Level.SEVERE,
-                        null, exx);
+                logger.error(exx);
             }
         }
         imageWidth = image.getIconWidth();
@@ -264,8 +279,9 @@ public class AImagePane extends JPanel {
     public void setImageURL(String ImageURL) throws MalformedURLException {
         this.image = null;
 
-
-        System.out.println("URL " + ImageURL);
+        if (logger.isDebugEnabled()) {
+            logger.debug("URL " + ImageURL);
+        }
         this.ImageURL = ImageURL;
         setImage(ImageURL);
 
@@ -279,6 +295,7 @@ public class AImagePane extends JPanel {
 
     public void clearImage() {
         this.image = null;
+        this.setOpaque(false);
         this.revalidate();
         this.repaint();
     }
@@ -291,11 +308,11 @@ public class AImagePane extends JPanel {
         return ImageURL;
     }
 
-    public int getRealImageWidth(){
+    public int getRealImageWidth() {
         return this.getImgIcon().getIconWidth();
     }
 
-    public int getRealImageHeight(){
+    public int getRealImageHeight() {
         return this.getImgIcon().getIconHeight();
     }
 
@@ -317,6 +334,22 @@ public class AImagePane extends JPanel {
 
     public int getImageWidth() {
         return imageWidth;
+    }
+
+    public void setHeightRatio(float heightRatio) {
+        this.heightRatio = heightRatio;
+    }
+
+    public float getHeightRatio() {
+        return heightRatio;
+    }
+
+    public void setWidthRatio(float widthRatio) {
+        this.widthRatio = widthRatio;
+    }
+
+    public float getWidthRatio() {
+        return widthRatio;
     }
 
     public void setSurface(String SurfaceName) {

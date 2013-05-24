@@ -23,6 +23,8 @@ import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
 import java.awt.Point;
 
+import org.apache.log4j.Logger;
+
 /**
  * This class is a sub class of the AImagePane class to include additional
  * attributes associated with aCarousel
@@ -41,6 +43,8 @@ public class ACarouselPane extends AImagePane {
     private boolean isLeftPane;
 
     private boolean isRightPane;
+    
+    static final Logger logger = Logger.getLogger(ACarouselPane.class);
 
     public ACarouselPane(String path, int W, int H, boolean DoubleBuffered,
                          ACarouselTitle title, String name) {

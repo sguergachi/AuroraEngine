@@ -1,10 +1,10 @@
-package com.mixpanel.mixpanelapi;
+package aurora.engine.V1.Logic.mixpanelapi;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import aurora.engine.V1.Logic.JSON.JSONException;
+import aurora.engine.V1.Logic.JSON.JSONObject;
 
 /**
  * A ClientDelivery can be used to send multiple messages to Mixpanel.

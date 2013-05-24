@@ -13,11 +13,16 @@ import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 
+import org.apache.log4j.Logger;
+
+
 public class AScrollBar extends BasicScrollBarUI {
 
     private final Image imageThumb;
 
     private final Image imageTrack;
+
+    static final Logger logger = Logger.getLogger(AScrollBar.class);
 
     public AScrollBar(String thumb, String track) {
 
@@ -32,8 +37,6 @@ public class AScrollBar extends BasicScrollBarUI {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.translate(thumbBounds.x, thumbBounds.y);
-//        g2d.setColor(Color.black);
-//        g2d.drawRect(0, 0, thumbBounds.width - 2, thumbBounds.height - 1);
         AffineTransform transform = AffineTransform.getScaleInstance(
                 (double) thumbBounds.width / imageThumb.getWidth(null),
                 (double) thumbBounds.height / imageThumb.getHeight(null));
@@ -44,6 +47,7 @@ public class AScrollBar extends BasicScrollBarUI {
     @Override
     protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
         Graphics2D g2d = (Graphics2D) g;
+        g.setColor(new Color(0,0,0,0));
         g2d.translate(trackBounds.x, trackBounds.y);
         ((Graphics2D) g).drawImage(
                 imageTrack,

@@ -27,6 +27,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
 
+import org.apache.log4j.Logger;
+
+
 /**
  *
  * @author Sammy
@@ -70,7 +73,6 @@ public class ANuance {
         "Scram", "Flee", "Terminate"};
 
     public static final int inx_Exit = 6;
-//added by Carlos
 
     private String[] fld_WelcomeBack = {"Welcome Back!", "How Was Your Day!",
         "Let Me Finish Loading Your Games", "Good To See You!",
@@ -97,6 +99,8 @@ public class ANuance {
     private File file;
 
     private boolean useInternal;
+    
+    static final Logger logger = Logger.getLogger(ANuance.class);
 
     public ANuance() {
         randomGenerator = new Random();
@@ -125,20 +129,28 @@ public class ANuance {
     }
 
     //use existing file on local hard drive
-    public ANuance(String localFile) throws IOException {
+    public ANuance(String localFile) {
         randomGenerator = new Random();
-        lineLength = new int[64];
-        file = new File(localFile);
+        try {
 
-        AParser parser = new AParser(file.getCanonicalPath()
-                .substring(0, file.getCanonicalPath().length() - file.getName()
-                .length()));
-        System.out.println("Path: " + file.getCanonicalPath()
-                .substring(0, file.getCanonicalPath().length() - file.getName()
-                .length()));
-        fileContent = parser.parseFile(file.getName());
+            lineLength = new int[64];
+            file = new File(localFile);
 
-        nuanceDict = parse(fileContent, 64);
+            AParser parser = new AParser(file.getCanonicalPath()
+                    .substring(0, file.getCanonicalPath().length() - file
+                    .getName()
+                    .length()));
+            logger.info("Path: " + file.getCanonicalPath()
+                    .substring(0, file.getCanonicalPath().length() - file
+                    .getName()
+                    .length()));
+            fileContent = parser.parseFile(file.getName());
+
+            nuanceDict = parse(fileContent, 64);
+        } catch (Exception e) {
+            useInternal = true;
+            logger.error(e);
+        }
     }
 
     private void writeFileFromURL(String FileURL, String localFile) {
@@ -159,7 +171,8 @@ public class ANuance {
             in.close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            useInternal = true;
+            logger.error(e);
         }
     }
 

@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import org.apache.log4j.Logger;
+
 /**
  * Made By Sardonix Creative.
  *
@@ -59,6 +61,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private int orgScrollAmount = 0;
 
     private boolean isHovering = false;
+    
+    private ActionListener postCycleListener = null;
+    
+    static final Logger logger = Logger.getLogger(AMarqueePanel.class);
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
@@ -70,7 +76,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      *                  the Icons to be painted as part of the animation
      */
     public AMarqueePanel(int width, int height, String backgroundImage) {
-
         super(backgroundImage, width, height);
 
         setScrollFrequency(frequency);
@@ -83,7 +88,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         ttm.setInitialDelay(0);
         ttm.setReshowDelay(0);
         ttm.setDismissDelay(1000);
-
     }
 
     /**
@@ -97,7 +101,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      */
     public AMarqueePanel(int scrollSpeed, int width, int height,
                          String backgroundImage) {
-
         super(backgroundImage, width, height);
         this.setOpaque(true);
 
@@ -111,7 +114,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         ttm.setInitialDelay(0);
         ttm.setReshowDelay(0);
         ttm.setDismissDelay(1000);
-
     }
 
     /*
@@ -129,6 +131,16 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         // Normal painting as the components scroll right to left
         Graphics2D g2d = (Graphics2D) g;
+        
+        // The scrolling data ends up writing over the borders of the
+        // background image  to use the aspect ratio data to try to
+        // clip the display area reasonably
+        Rectangle rect = g2d.getClip().getBounds();
+        int relationalX = Math.round(6 * getWidthRatio());
+        int relationalWidth = Math.round( 15 * getWidthRatio());
+        rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width - relationalWidth, rect.height));
+        g2d.setClip(rect);
+        
         g2d.translate(-scrollOffset, 0);
         super.paintChildren(g);
         g2d.translate(scrollOffset, 0);
@@ -141,6 +153,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
+            
             g2d.translate(-wrapOffset, 0);
             super.paintChildren(g);
             g2d.translate(wrapOffset, 0);
@@ -154,19 +167,24 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      * are scrolling from right to left.
      */
     public void actionPerformed(ActionEvent ae) {
-
-
         scrollOffset = scrollOffset + scrollAmount;
         int width = getPreferredSize().width;
 
         if (scrollOffset > width) {
+        	if (postCycleListener != null) {
+        		postCycleListener.actionPerformed(null);	
+        		this.revalidate();
+        	}
+        	
             scrollOffset = isWrap() ? wrapOffset + scrollAmount :
                     -getSize().width;
         }
-
+        
         repaint();
-
-
+    }
+    
+    public void setPostCycleListener(ActionListener listener) {
+    	this.postCycleListener = listener;    
     }
 
     /*
@@ -348,6 +366,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (timer.isRunning()) {
             timer.stop();
             scrollingPaused = true;
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Paused scrolling");
+            }
         }
     }
 
@@ -358,6 +379,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (scrollingPaused) {
             timer.restart();
             scrollingPaused = false;
+            if (logger.isDebugEnabled()) {
+            	logger.debug("Resume scrolling");
+            }
         }
     }
 
@@ -376,7 +400,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     @Override
     public Point getToolTipLocation(MouseEvent e) {
        if (isHovering && e.getLocationOnScreen() != null) {
-            return new Point(e.getX() - this.getToolTipText().length(),
+            return new Point(e.getX() - (this.getToolTipText().length() * 3),
                     - 10);
         }
         return null;
@@ -490,17 +514,18 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
                     int width = label.getWidth();
 
                     if (labelClicked >= xPos && labelClicked <= (xPos + width)) {
-                        System.out.println("URL = "
-                                           + label.getUrl());
+                    	if (logger.isDebugEnabled()) {
+                    		logger.debug("URL = " + label.getUrl());
+                    	}
                         Desktop myNewBrowserDesktop = Desktop.getDesktop();
                         URI myNewLocation;
                         try {
                             myNewLocation = new URI(label.getUrl());
                             myNewBrowserDesktop.browse(myNewLocation);
                         } catch (URISyntaxException e) {
-                            e.printStackTrace();
+                        	logger.error(e, e);
                         } catch (IOException e) {
-                            e.printStackTrace();
+                        	logger.error(e, e);
                         }
 
                         componentFound = true;

@@ -6,23 +6,35 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
 
+import org.apache.log4j.Logger;
+
 public class AThreadWorker implements Runnable {
 
     private Thread runner;
-
     private ActionListener toDo;
-
     private int sleep = 0;
-
     private boolean canRun = true;
-
     private boolean once;
-    private  ActionListener doAfter;
+    private ActionListener doAfter;
+    static final Logger logger = Logger.getLogger(AThreadWorker.class);
+
+    public AThreadWorker() {
+    }
+
+    public void setAction(ActionListener act) {
+        this.toDo = act;
+    }
+    
+     public void setAction(ActionListener act, int sleep) {
+        this.toDo = act;
+        this.sleep = sleep;
+    }
 
     public AThreadWorker(ActionListener act) {
         this.toDo = act;
 
     }
+
     public AThreadWorker(ActionListener act, ActionListener after) {
         this.toDo = act;
         this.doAfter = after;
@@ -34,7 +46,8 @@ public class AThreadWorker implements Runnable {
 
 
     }
-    public AThreadWorker(ActionListener act,ActionListener after, int sleep) {
+
+    public AThreadWorker(ActionListener act, ActionListener after, int sleep) {
         this.toDo = act;
         this.doAfter = after;
         this.sleep = sleep;
@@ -43,7 +56,11 @@ public class AThreadWorker implements Runnable {
     }
 
     public void start() {
-        System.out.println("Starting New Background Thread...");
+
+        if (logger.isDebugEnabled()) {
+            logger.debug("Starting New Background Thread...");
+        }
+
         if (!canRun) {
             runner = null;
         }
@@ -78,8 +95,7 @@ public class AThreadWorker implements Runnable {
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
+                logger.error(e, e);
             }
 
             if (once) {

@@ -33,6 +33,8 @@ import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import org.apache.log4j.Logger;
+
 /**
  * .------------------------------------------------------------------------.
  * | ASound
@@ -103,6 +105,8 @@ public class ASound implements Runnable {
 
     private boolean paused;
 
+    static final Logger logger = Logger.getLogger(ASound.class);
+
     /**
      * .-----------------------------------------------------------------------.
      * | ASound(String, boolean)
@@ -122,10 +126,7 @@ public class ASound implements Runnable {
      * @param URL String, loop boolean
      *
      */
-    public ASound(String URL, boolean loop) throws MalformedURLException,
-                                                   UnsupportedAudioFileException,
-                                                   IOException,
-                                                   LineUnavailableException {
+    public ASound(String URL, boolean loop)  {
         this.URL = URL;
 
         this.loop = loop;
@@ -145,14 +146,11 @@ public class ASound implements Runnable {
      * .........................................................................
      *
      */
-    public void Play() throws UnsupportedAudioFileException, IOException,
-                              LineUnavailableException, InterruptedException {
+    public void Play()  {
         if (runner == null) {
             runner = new Thread(this);
             runner.start();
 
-        } else {
-            //runner.notify();
         }
     }
 
@@ -228,7 +226,10 @@ public class ASound implements Runnable {
         path = new URL(getClass().getResource("/aurora/V1/resources/Sound/"
                                               + URL).toString());
         sound = Applet.newAudioClip(path );
-        System.out.println("Playing Sound " + path);
+        if (logger.isDebugEnabled()) {
+        	logger.debug("Playing Sound " + path);
+        }
+
         if (loop) {
             sound.loop();
         } else {
@@ -252,7 +253,8 @@ public class ASound implements Runnable {
         try {
             playSound();
         } catch (Exception e) {
-            e.printStackTrace();
+        	logger.error(e, e);
+
         }
         runner = null;
     }

@@ -19,8 +19,9 @@ package aurora.engine.V1.Logic;
 
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
+
 
 /**
  * Aurora Surface Implementation through the Engine
@@ -39,6 +40,8 @@ public class ASurface {
     private File[] list;
 
     private StringBuffer s;
+    
+    static final Logger logger = Logger.getLogger(ASurface.class);
 
     /**
      * Used as part of the Aurora Surface technology the Resource SMnager finds
@@ -85,8 +88,7 @@ public class ASurface {
             s = new StringBuffer(this.getClass().getProtectionDomain()
                     .getCodeSource().getLocation().toURI().getPath().toString());
         } catch (URISyntaxException ex) {
-            Logger.getLogger(ASurface.class.getName()).log(Level.SEVERE, null,
-                    ex);
+        	logger.error(ex);
         }
 
         s.delete(0, 1);
@@ -94,7 +96,7 @@ public class ASurface {
         s.append(locationPath);
 
 
-        AFileManager mngr = new AFileManager(s.toString(), true);
+        AFileManager mngr = new AFileManager(s.toString());
 
 
 
