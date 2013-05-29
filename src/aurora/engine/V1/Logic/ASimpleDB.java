@@ -18,6 +18,7 @@
 package aurora.engine.V1.Logic;
 
 import java.sql.*;
+import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 
@@ -117,7 +118,8 @@ public class ASimpleDB {
      * @param InitialTableName
      * @param ColumnID
      *                         <
-     * p/>
+     *                         p/>
+     * <p/>
      * @throws SQLException
      */
     private void prepDatabase(String InitialTableName, String ColumnID)
@@ -636,7 +638,8 @@ public class ASimpleDB {
      * @param ColumnName1
      * @param ColumnName2
      *                    <
-     * p/>
+     *                    p/>
+     * <p/>
      * @throws SQLException
      */
     //TODO Test this
@@ -715,7 +718,8 @@ public class ASimpleDB {
      * @param NewValue
      * @param UniqueRowValue
      *                       <
-     * p/>
+     *                       p/>
+     * <p/>
      * @throws SQLException
      */
     public void setColValue(String TableName, String ColumnName,
@@ -1221,7 +1225,8 @@ public class ASimpleDB {
      *
      * @param SQL
      *            <
-     * p/>
+     *            p/>
+     * <p/>
      * @throws SQLException
      */
     public void flexExecute(String SQL) throws SQLException {
@@ -1355,5 +1360,19 @@ public class ASimpleDB {
 
     public void setDatabasePath_DEV(String Path) {
         databasePath_DEV = Path;
+    }
+
+    public Boolean checkTable(String table) {
+        try {
+            this.flexExecute("SELECT * FROM " + table);
+            return true;
+        } catch (SQLException ex) {
+
+            java.util.logging.Logger.getLogger(ASimpleDB.class.getName()).
+                    log(Level.SEVERE, null, ex);
+            return false;
+        }
+
+
     }
 }
