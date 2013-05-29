@@ -41,16 +41,18 @@ public abstract class AStorage {
     public abstract void setUpDatabase(Boolean FirstTime, String Path);
     static final Logger logger = Logger.getLogger(AStorage.class);
 
-    protected ArrayList getDatabaseArray(String TableName, String ColumnName) {
+    protected ArrayList getDatabaseArray(String TableName, String ColumnName) throws SQLException {
         database = new ArrayList<Object>();
-        try {
 
             ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
                                         + TableName);
 
+
             if (logger.isDebugEnabled()) {
                 logger.debug("RS " + rs);
             }
+
+
 
 
             //Check if db is still empty
@@ -62,18 +64,14 @@ public abstract class AStorage {
                     database.add(rs.getObject(ColumnName));
                 }
 
+                db.CloseConnection();
                 return database;
             } else {
+                db.CloseConnection();
                 return null;
             }
 
 
-        } catch (SQLException ex) {
-            logger.error(ex);
-            return database;
-        } finally {
-            db.CloseConnection();
-        }
 
     }
 }

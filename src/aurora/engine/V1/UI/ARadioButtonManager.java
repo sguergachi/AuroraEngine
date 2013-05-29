@@ -1,13 +1,13 @@
 /*
  * Copyright 2012 Sardonix Creative.
  *
- * This work is licensed under the 
+ * This work is licensed under the
  * Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
- * To view a copy of this license, visit 
+ * To view a copy of this license, visit
  *
  *      http://creativecommons.org/licenses/by-nc-nd/3.0/
  *
- * or send a letter to Creative Commons, 444 Castro Street, Suite 900, 
+ * or send a letter to Creative Commons, 444 Castro Street, Suite 900,
  * Mountain View, California, 94041, USA.
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,21 +18,21 @@
 
 package aurora.engine.V1.UI;
 
-import aurora.engine.V1.UI.aRadioButton;
+import aurora.engine.V1.UI.ARadioButton;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
 /**
  * Manages a list of radio buttons to have only one selected at a time
- * 
+ *
  * @author Sammy
  */
-public class aRadioButtonManager {
+public class ARadioButtonManager {
 
-	private ArrayList<aRadioButton> buttonList;
+	private ArrayList<ARadioButton> buttonList;
 
-	public aRadioButtonManager() {
+	public ARadioButtonManager() {
 
 		buttonList = new ArrayList();
 
@@ -41,7 +41,7 @@ public class aRadioButtonManager {
 	/*
 	 * Adds radio Button to list of Radio buttons
 	 */
-	public void addButton(aRadioButton radioButton) {
+	public void addButton(ARadioButton radioButton) {
 		buttonList.add(radioButton);
 	}
 
@@ -57,9 +57,9 @@ public class aRadioButtonManager {
 
 	}
 
-	public aRadioButton getSelected() {
+	public ARadioButton getSelected() {
 
-		aRadioButton btn = null;
+		ARadioButton btn = null;
 		for (int i = 0; i < buttonList.size(); i++) {
 			if (buttonList.get(i).isSelected) {
 				btn = buttonList.get(i);
@@ -68,14 +68,14 @@ public class aRadioButtonManager {
 
 		return btn;
 	}
-	
+
 	public void reset() {
 		for (int i = 0; i < buttonList.size(); i++) {
 				buttonList.get(i).setUnSelected();
 		}
 	}
 
-	public ArrayList<aRadioButton> getButtonList() {
+	public ArrayList<ARadioButton> getButtonList() {
 		return buttonList;
 	}
 
@@ -86,7 +86,7 @@ public class aRadioButtonManager {
 		}
 
 		public void mousePressed(MouseEvent e) {
-			aRadioButton btn = (aRadioButton) e.getSource();
+			ARadioButton btn = (ARadioButton) e.getSource();
 			if (btn.getIsEnabled()) {
 				if (btn.isSelected) {
 					for (int i = 0; i < buttonList.size(); i++) {

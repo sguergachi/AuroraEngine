@@ -1,13 +1,13 @@
 /*
  * Copyright 2012 Sardonix Creative.
  *
- * This work is licensed under the 
+ * This work is licensed under the
  * Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
- * To view a copy of this license, visit 
+ * To view a copy of this license, visit
  *
  *      http://creativecommons.org/licenses/by-nc-nd/3.0/
  *
- * or send a letter to Creative Commons, 444 Castro Street, Suite 900, 
+ * or send a letter to Creative Commons, 444 Castro Street, Suite 900,
  * Mountain View, California, 94041, USA.
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,10 +28,10 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 /**
- * 
+ *
  * @author Sammy
  */
-public class aRadioButton extends aImagePane {
+public class ARadioButton extends AImagePane {
 
 	private String btnNormal;
 	private String btnOver;
@@ -44,7 +44,7 @@ public class aRadioButton extends aImagePane {
 	private int Height = 0;
 	private Boolean isEnabled = true;
 
-	public aRadioButton(String ImgUp, String ImgOvr) {
+	public ARadioButton(String ImgUp, String ImgOvr) {
 
 		btnNormal = ImgUp; // Normal State of Radio button
 		btnOver = ImgOvr; // Selected state of radio button
@@ -57,19 +57,6 @@ public class aRadioButton extends aImagePane {
 
 	}
 
-	public aRadioButton(String ImgUp, String ImgOvr, String SurfaceName) {
-		this.SurfaceName = SurfaceName;
-		btnNormal = ImgUp; // Normal State of Radio button
-		btnOver = ImgOvr; // Selected state of radio button
-
-		this.setSurfaceName(SurfaceName);
-		this.setImage(btnNormal); // Set initial image as normal
-		// Set size and add mouse handler
-		setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
-		addMouseListener(new Click());
-		this.setOpaque(false);
-
-	}
 
 	public void setSelectedHandler(ActionListener action) {
 		onSelectHander = action;
@@ -131,7 +118,7 @@ public class aRadioButton extends aImagePane {
 		this.setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
 
 	}
-	
+
 
 	public class Click implements MouseListener {
 
