@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
  * @author Sammy
  */
 public class AImage extends JLabel implements MouseListener {
+    private static final long serialVersionUID = 1L;
 
     private String ImageURl;
 
@@ -106,7 +107,6 @@ public class AImage extends JLabel implements MouseListener {
 
     public AImage(String ImgURL) {
         ressource = new ASurface("");
-        //System.out.println(ressource.getSurfacePath());
         this.ImageURl = ImgURL;
         this.setOpaque(false);
 
@@ -115,7 +115,6 @@ public class AImage extends JLabel implements MouseListener {
 
     public AImage(String ImgURL, int Width, int Height) {
         ressource = new ASurface("");
-        //System.out.println(ressource.getSurfacePath());
         this.ImageURl = ImgURL;
         this.w = Width;
         this.h = Height;
@@ -150,8 +149,10 @@ public class AImage extends JLabel implements MouseListener {
 
 
         Image img = (AImage.resizeImage(image.getImage(), w, h));
+        img.setAccelerationPriority(1);
         image.setImage(img);
         img.flush();
+
 
         this.setIcon(image);
     }
@@ -160,10 +161,7 @@ public class AImage extends JLabel implements MouseListener {
     protected void paintComponent(Graphics g) {
 
         Graphics2D g2d = (Graphics2D) g;
-//
-//        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-//                RenderingHints.VALUE_RENDER_QUALITY);
-//
+
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                 RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 
@@ -186,10 +184,10 @@ public class AImage extends JLabel implements MouseListener {
                 RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+//        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
+//                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+//        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
+//                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
@@ -210,10 +208,7 @@ public class AImage extends JLabel implements MouseListener {
                 RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-//        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-//                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-//        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-//                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+
 
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();

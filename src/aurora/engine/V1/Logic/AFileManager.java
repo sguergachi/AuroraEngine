@@ -140,9 +140,12 @@ public class AFileManager {
                 }
 
                 ImageIcon img = new ImageIcon(bImage);
+
                 bImage.flush();
+                bImage = null;
                 return img;
             } else {
+                bImage.flush();
                 return null;
             }
         } else {
