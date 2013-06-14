@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.UI;
 
 import java.awt.Dimension;
@@ -33,127 +32,134 @@ import javax.swing.JFrame;
  */
 public class ARadioButton extends AImagePane {
 
-	private String btnNormal;
-	private String btnOver;
-	public boolean isSelected = false;
-	private JComponent comp;
-	private String SurfaceName;
-	private ActionListener onSelectHander;
-	private ActionListener onUnSelectHander;
-	private int Width = 0;
-	private int Height = 0;
-	private Boolean isEnabled = true;
+    private String btnNormal;
 
-	public ARadioButton(String ImgUp, String ImgOvr) {
+    private String btnOver;
 
-		btnNormal = ImgUp; // Normal State of Radio button
-		btnOver = ImgOvr; // Selected state of radio button
+    public boolean isSelected = false;
 
-		setImage(btnNormal); // Set initial image as normal
-		// Set size and add mouse handler
-		setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
-		addMouseListener(new Click());
-		this.setOpaque(false);
+    private JComponent comp;
 
-	}
+    private String SurfaceName;
 
+    private ActionListener onSelectHander;
 
-	public void setSelectedHandler(ActionListener action) {
-		onSelectHander = action;
-	}
+    private ActionListener onUnSelectHander;
 
-	public void setUnSelectedHandler(ActionListener action) {
-		onUnSelectHander = action;
-	}
+    private int Width = 0;
 
-	public void setSelected() {
-		isSelected = true;
-		setImage(btnOver);
+    private int Height = 0;
 
-		if (Width != 0 || Height != 0) {
-			this.setImageSize(Width, Height);
-		}
+    private Boolean isEnabled = true;
 
-		repaint();
-		revalidate();
+    public ARadioButton(String ImgUp, String ImgOvr) {
 
-		// try {
-		// Thread.sleep(20);
-		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+        btnNormal = ImgUp; // Normal State of Radio button
+        btnOver = ImgOvr; // Selected state of radio button
 
-		this.requestFocus();
-		if (onSelectHander != null) {
+        setImage(btnNormal); // Set initial image as normal
+        // Set size and add mouse handler
+        setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
+        addMouseListener(new Click());
+        this.setOpaque(false);
 
-			onSelectHander.actionPerformed(new ActionEvent(this, 0, ""));
-		}
+    }
 
-		System.out.println("Checkbox SELECTED " + isSelected);
+    public void setSelectedHandler(ActionListener action) {
+        onSelectHander = action;
+    }
 
-	}
+    public void setUnSelectedHandler(ActionListener action) {
+        onUnSelectHander = action;
+    }
 
-	public void setUnSelected() {
-		isSelected = false;
-		setImage(btnNormal);
-		if (Width != 0 || Height != 0) {
-			this.setImageSize(Width, Height);
-		}
-		repaint();
-		this.requestFocus();
-		if (onUnSelectHander != null) {
-			onUnSelectHander.actionPerformed(new ActionEvent(this, 0, ""));
-		}
+    public void setSelected() {
+        isSelected = true;
+        setImage(btnOver);
 
-		System.out.println("Checkbox SELECTED " + isSelected);
+        if (Width != 0 || Height != 0) {
+            this.setImageSize(Width, Height);
+        }
 
-	}
+        repaint();
+        revalidate();
 
-	public void setButtonSize(int width, int height) {
-		this.Width = width;
-		this.Height = height;
+        // try {
+        // Thread.sleep(20);
+        // } catch (InterruptedException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
 
-		this.setImageSize(width, height);
-		this.setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
+        this.requestFocus();
+        if (onSelectHander != null) {
 
-	}
+            onSelectHander.actionPerformed(new ActionEvent(this, 0, ""));
+        }
 
+        System.out.println("Checkbox SELECTED " + isSelected);
 
-	public class Click implements MouseListener {
+    }
 
-		public void mouseClicked(MouseEvent e) {
-		}
+    public void setUnSelected() {
+        isSelected = false;
+        setImage(btnNormal);
+        if (Width != 0 || Height != 0) {
+            this.setImageSize(Width, Height);
+        }
+        repaint();
+        this.requestFocus();
+        if (onUnSelectHander != null) {
+            onUnSelectHander.actionPerformed(new ActionEvent(this, 0, ""));
+        }
 
-		public void mousePressed(MouseEvent e) {
-			if (isEnabled) {
-				if (isSelected)
-					setUnSelected();
-				else if (!isSelected)
-					setSelected();
-			}
-		}
+        System.out.println("Checkbox SELECTED " + isSelected);
 
-		public void mouseReleased(MouseEvent e) {
+    }
 
-		}
+    public void setButtonSize(int width, int height) {
+        this.Width = width;
+        this.Height = height;
 
-		public void mouseEntered(MouseEvent e) {
-		}
+        this.setImageSize(width, height);
+        this.setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
 
-		public void mouseExited(MouseEvent e) {
-		}
-	}
+    }
 
-	public Boolean getIsEnabled() {
-		return isEnabled;
-	}
+    public class Click implements MouseListener {
 
-	public void setIsEnabled(Boolean isEnabled) {
-		this.isEnabled = isEnabled;
-	}
+        public void mouseClicked(MouseEvent e) {
+        }
 
-	public boolean isSelected() {
-		return isSelected;
-	}
+        public void mousePressed(MouseEvent e) {
+            if (isEnabled) {
+                if (isSelected) {
+                    setUnSelected();
+                } else if (!isSelected) {
+                    setSelected();
+                }
+            }
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+    }
+
+    public Boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Boolean isEnabled) {
+        this.isEnabled = isEnabled;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
 }

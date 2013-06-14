@@ -95,9 +95,10 @@ public class AGridPanel extends JPanel {
 
     /**
      * Add a component to the GridArray As well as the Panel
-     *
-     * @param comp an Image to be added to the grid panel
-     *
+     * Using a specific Index
+     * <p/>
+     * @param comp  an Image to be added to the grid panel
+     * @param index index of where in the grid to add component
      */
     public void addToGrid(JComponent comp, int index) {
         if (!isGridFull()) {
@@ -136,7 +137,7 @@ public class AGridPanel extends JPanel {
      *
      */
     public boolean isGridFull() {
-    	System.out.println("componentList.size() = " + componentList.size());
+        System.out.println("componentList.size() = " + componentList.size());
         if (componentList.size() < (row * col)) {
             return false;
         }
@@ -146,35 +147,35 @@ public class AGridPanel extends JPanel {
     public void setToFull() {
         full = true;
     }
-    
+
     public int getNumberOfComponents() {
-    	return numberOfComponentsAdded;
+        return numberOfComponentsAdded;
     }
 
     public int getLastIndexOf(Object o) {
         return componentList.lastIndexOf(o);
     }
-    
+
     public int getLastIndexOf(Class<?> clazz) {
-            
-    	int index = -1;
-    	
+
+        int index = -1;
+
         for (int i = 0; i < componentList.size(); i++) {
-        
-        	Object o = componentList.get(i);
-        	Class<?> c = o.getClass();
-        	
-        	if (c.getSimpleName().equals(clazz.getSimpleName())) {
-        		index = i;
-        	}
-                      
+
+            Object o = componentList.get(i);
+            Class<?> c = o.getClass();
+
+            if (c.getSimpleName().equals(clazz.getSimpleName())) {
+                index = i;
+            }
+
         }
-        
+
         return index;
     }
-    
+
     public Object getLastComponent() {
-    	return componentList.get(numberOfComponentsAdded-1);
+        return componentList.get(numberOfComponentsAdded - 1);
     }
 
     public Object getFirstComponent() {
@@ -252,5 +253,4 @@ public class AGridPanel extends JPanel {
     public void setRow(int row) {
         this.row = row;
     }
-    
 }
