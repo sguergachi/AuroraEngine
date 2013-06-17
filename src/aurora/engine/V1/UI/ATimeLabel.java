@@ -17,9 +17,12 @@
  */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.AThreadWorker;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.JLabel;
@@ -31,7 +34,7 @@ import org.apache.log4j.Logger;
  * @author Sammy
  * @version 0.2
  */
-public class ATimeLabel extends JLabel implements Runnable {
+public class ATimeLabel extends ASlickLabel {
 
     private Thread runner;
 
@@ -61,7 +64,6 @@ public class ATimeLabel extends JLabel implements Runnable {
         " April", " May", " June", " July", " August", " September", " October",
         " November", " December"};
 
-
     private final String timeType;
 
     static final Logger logger = Logger.getLogger(ATimeLabel.class);
@@ -84,46 +86,19 @@ public class ATimeLabel extends JLabel implements Runnable {
     }
 
     public void start() {
-        repaint();
-        if (runner == null) {
-            runner = new Thread(this);
-        }
-        runner.start();
-        runner.setName("Time Checker Thread");
 
-
-    }
-
-    @Override
-    public void run() {
-        while (runner == Thread.currentThread()) {
-
-            setText(current(timeType) + "   ");
-            try {
-                Thread.sleep(600);
-            } catch (InterruptedException e) {
-                logger.error("Time thread failed");
+        AThreadWorker time = new AThreadWorker(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                setText(current(timeType) + "   ");
+                repaint();
+                logger.info("Time thread refhreshing");
             }
+        }, 60000);
 
-            break;
+        time.start();
 
-        }
+
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
 
-        Graphics2D g2d = (Graphics2D) g.create();
-
-        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-
-        super.paintComponent(g2d);
-    }
 }
