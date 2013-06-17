@@ -93,7 +93,7 @@ public class ATimeLabel extends ASlickLabel {
                 repaint();
                 logger.info("Time thread refhreshing");
             }
-        }, 60000);
+        }, 30000);
 
         time.start();
 
