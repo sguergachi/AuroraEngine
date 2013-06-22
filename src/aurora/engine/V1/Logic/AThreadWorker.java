@@ -1,11 +1,6 @@
 package aurora.engine.V1.Logic;
 
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListener;
-
-import javax.swing.Action;
-
 import org.apache.log4j.Logger;
 
 public class AThreadWorker implements Runnable {
@@ -103,7 +98,7 @@ public class AThreadWorker implements Runnable {
             }
 
         }
-        if (doAfter != null) {
+        if (doAfter != null ) {
             doAfter.actionPerformed(null);
         }
     }
