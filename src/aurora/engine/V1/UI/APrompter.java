@@ -21,6 +21,7 @@ import aurora.engine.V1.Logic.APostHandler;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import javax.swing.JPanel;
 
@@ -33,45 +34,29 @@ import org.apache.log4j.Logger;
 public class APrompter extends JPanel implements Runnable {
 
     private Thread runner;
-
     private ArrayList<String> toDisplayList;
-
     private ArrayList<String> updateList;
-
     private float Alpha = 0.0F;
-
     private int Ypos;
-
     private int Xpos;
     //private int Size = 25;
-
     private int Counter = 0;
-
     private Color color;
-
     private boolean stop = false;
-
     private FontMetrics fm;
-
     private Rectangle2D rect;
-
     private int textWidth;
-
     private boolean running = true;
-
     private Font font;
-
     private int arrayIndex = 0;
-
     private boolean needUpdate;
-
     private APostHandler postHandler;
-
     private ArrayList<Color> listUpdateColor;
-
     private boolean done;
-    
+    Boolean visible = false;
     static final Logger logger = Logger.getLogger(APrompter.class);
+    private boolean cleared = true;
+    private boolean singlePause;
 
     public APrompter(Font font) {
         super(true);
@@ -93,7 +78,6 @@ public class APrompter extends JPanel implements Runnable {
         updateList = new ArrayList();
         toDisplayList = new ArrayList();
         listUpdateColor = new ArrayList();
-        //add(initial);
         start();
     }
 
@@ -102,7 +86,10 @@ public class APrompter extends JPanel implements Runnable {
      */
     public void add(String text) {
         updateList.add(text);
-        listUpdateColor.add(color);
+        if (listUpdateColor != null) {
+            listUpdateColor.add(color);
+        }
+
     }
 
     public void add(String text, Color clr) {
@@ -122,7 +109,11 @@ public class APrompter extends JPanel implements Runnable {
         this.Ypos = Ypos * 2;
         this.Xpos = Xpos / 2;
 
-//        start();
+
+        this.setPreferredSize(
+                new Dimension(Ypos, Xpos));
+        
+        
 
     }
 
@@ -135,9 +126,9 @@ public class APrompter extends JPanel implements Runnable {
         if (!updateList.isEmpty() && !toDisplayList.containsAll(updateList)) {
             //Transfer updateList to Display List
             //Then Clear updateList
-        	if (logger.isDebugEnabled()) {
-        		logger.debug("Updating prompt...");
-        	}
+            if (logger.isDebugEnabled()) {
+                logger.debug("Updating prompt...");
+            }
             toDisplayList = (ArrayList<String>) updateList.clone();
             updateList.clear();
 
@@ -147,6 +138,12 @@ public class APrompter extends JPanel implements Runnable {
         } else if (updateList.size() == toDisplayList.size()) {
             needUpdate = true;
         }
+    }
+
+    public void enableSinglePause() {
+
+        singlePause = true;
+
     }
 
     private void start() {
@@ -177,29 +174,38 @@ public class APrompter extends JPanel implements Runnable {
 
             if (!stop) {
 
-
+                this.repaint();
 
                 if (Counter == 1) {
                     //Wait Longer for first text
-
+                    logger.info("first pause");
                     try {
                         Thread.sleep(900);
                     } catch (InterruptedException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
                 }
-                if (Ypos == (this.getHeight() / 2)) {
+                else if (Ypos == (this.getHeight() / 2) + 8 && Counter > 1) {
                     //Wait to allow for reading
 
+                    logger.info("text pause");
+
+                    visible = true;
 
                     try {
                         Thread.sleep(600);
                     } catch (InterruptedException ex) {
-                    	logger.error(ex);
+                        logger.error(ex);
                     }
+
+
+                } else {
+                    visible = false;
                 }
 
-                this.repaint();
+
+
+
 
             } else {
 
@@ -223,16 +229,22 @@ public class APrompter extends JPanel implements Runnable {
             }
 
             while (updateList.size() == toDisplayList.size()) {
+                try {
+                    updateList();
 
-
-                updateList();
+                    Thread.sleep(200);
+                } catch (InterruptedException ex) {
+                    java.util.logging.Logger
+                            .getLogger(APrompter.class.getName()).
+                            log(Level.SEVERE, null, ex);
+                }
 
             }
 
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
         }
 
@@ -255,7 +267,12 @@ public class APrompter extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
 
-        g2d.setColor(listUpdateColor.get(arrayIndex));
+        if (listUpdateColor != null) {
+            g2d.setColor(listUpdateColor.get(arrayIndex));
+        } else {
+            g2d.setColor(Color.darkGray);
+        }
+
 
         //Make Text Render Beautifuly
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -273,19 +290,13 @@ public class APrompter extends JPanel implements Runnable {
 
 
         //If Already Fully trans, Turn Opaque first
-        //System.out.println("Alpha1 " + Alpha);
-
-
-//        if (Size == 0) {
-//            Size = 35;
-//        }
 
         //Animate the Text
         paintText(g2d);
-        //System.out.println("Alpha2 " + Alpha);
 
         //Count the number of updates
         Counter++;
+
 
         if (Alpha != 0.0F) {
             Alpha -= 0.05F;
@@ -293,7 +304,6 @@ public class APrompter extends JPanel implements Runnable {
             Alpha = 1.0F;
         }
 
-        //System.out.println("Alpha3 " + Alpha);
 
     }
 
@@ -307,20 +317,21 @@ public class APrompter extends JPanel implements Runnable {
         //When Opacity is Close to 0 Then Move On To Next Text To Display
         if (Alpha <= 0.05F) {
 
-            Alpha = 0.0F;
 
+
+            Alpha = 0.0F;
+            cleared = true;
             try {
                 Thread.sleep(20);
             } catch (InterruptedException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
 
             Xpos = this.getWidth() / 2;
-            Ypos = this.getHeight() / 2 + 6;
+
+            Ypos = this.getHeight() / 2 + 10;
 
             //If no more to add then check for more
-            // System.out.println("size " + toDisplayList.size());
-            // System.out.println("size arry " + (String.valueOf(arrayIndex + 1)));
 
             if (arrayIndex + 1 > toDisplayList.size() - 1) {
                 stop = true;
@@ -329,6 +340,8 @@ public class APrompter extends JPanel implements Runnable {
             } else {
                 arrayIndex++;
             }
+        } else {
+            cleared = false;
         }
 
         //This Is Where The Animation Really Happens
@@ -337,16 +350,44 @@ public class APrompter extends JPanel implements Runnable {
             //Get Width Of Text
             rect = fm.getStringBounds(toDisplayList.get(arrayIndex), g2d);
             textWidth = (int) rect.getWidth();
-            //Move
-            Ypos--;
+
             //Constant X
             Xpos = (this.getWidth() - textWidth) / 2;
             g2d.setFont(font);
-            //Set Opacity
-            g2d.setComposite(makeComposite(Alpha));
+
+
+            if (!visible || !singlePause) {
+                //Move up
+                Ypos--;
+                //Set Opacity
+                g2d.setComposite(makeComposite(Alpha));
+                g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
+                        Ypos);
+            } else if (visible && singlePause) {
+
+                if (!needUpdate) {
+                    //Move up
+                    Ypos--;
+                    //Set Opacity
+                    g2d.setComposite(makeComposite(Alpha));
+                    if(arrayIndex > 0){
+                        g2d.drawString(toDisplayList.get(arrayIndex - 1), Xpos,
+                            Ypos);
+                    }else{
+                        g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
+                            Ypos);
+                    }
+                } else {
+                    g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
+                            Ypos);
+                }
+
+            }
+
             //And DRAW!!
 
-            g2d.drawString(toDisplayList.get(arrayIndex), Xpos, Ypos);
+
+
         }
     }
 
