@@ -33,7 +33,7 @@ import org.apache.log4j.Logger;
  * @author Sammy, Carlos
  * @version 0.4
  */
-public class ACarousel extends JPanel implements Runnable {
+public class ACarousel2 extends JPanel implements Runnable {
 
     private String URL;
 
@@ -98,12 +98,13 @@ public class ACarousel extends JPanel implements Runnable {
 
     private final static double MIN_Y_POINT = 0;	// minimum y-point for any pane
 
-    static final Logger logger = Logger.getLogger(ACarousel.class);
+    static final Logger logger = Logger.getLogger(ACarousel2.class);
 
     private APostHandler postLeftAnimate;
+
     private APostHandler postRightAnimate;
 
-    public ACarousel(double panelWidth, int panelHeight, int totalWidth) {
+    public ACarousel2(double panelWidth, int panelHeight, int totalWidth) {
         this.setLayout(null);
         this.setOpaque(false);
         this.setDoubleBuffered(true);
@@ -199,8 +200,9 @@ public class ACarousel extends JPanel implements Runnable {
                 point.y = MAX_Y_POINT;
             }
 
-            Point.Double rightOffsetPoint = new Point.Double(lastRightOffsetPoint.x
-                                                             + panelWidth,
+            Point.Double rightOffsetPoint = new Point.Double(
+                    lastRightOffsetPoint.x
+                    + panelWidth,
                     point.y);
             leftOffsets.add(point);
             rightOffsets.add(rightOffsetPoint);
@@ -263,7 +265,7 @@ public class ACarousel extends JPanel implements Runnable {
                         "Animation Error!");
                 err.setVisible(true);
             }
-             if (postRightAnimate != null) {
+            if (postRightAnimate != null) {
                 postRightAnimate.postAction();
             }
         }
@@ -298,11 +300,10 @@ public class ACarousel extends JPanel implements Runnable {
     public void setPostLeftAnimation(APostHandler leftAction) {
         this.postLeftAnimate = leftAction;
     }
-    public void setPostRightAnimation(APostHandler  rightAction) {
+
+    public void setPostRightAnimation(APostHandler rightAction) {
         this.postRightAnimate = rightAction;
     }
-
-
 
     private void resetPanePositions() {
 
@@ -326,10 +327,161 @@ public class ACarousel extends JPanel implements Runnable {
             }
         }
     }
-
     double Incr1;
+
     double Incr2;
 
+    //TODO Use this with a TIMER to use Swing EDT Thread instead
+    public class RunAction implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+            counter = 0;
+
+            ACarouselPane centerPane = getCenterPane();
+
+            if (centerPane.equals(originalCenterPane)) {
+                Incr1 = MAX_INCREMENT;
+                Incr2 = MIN_INCREMENT;
+            } else if (centerPane.equals(originalLeftPane) || centerPane.equals(
+                    originalRightPane)) {
+                Incr1 = MIN_INCREMENT;
+                Incr2 = MAX_INCREMENT;
+            } else {
+                Incr1 = MAX_INCREMENT;
+                Incr2 = MIN_INCREMENT;
+            }
+
+            if (isRunningLeft) {
+                int index = rightOffsets.size() - 1; //getting last index in the rightOffsets array list
+
+                ACarouselPane pane;
+
+                for (int i = 0; i < numberOfPanes; i++) {
+                    pane = (ACarouselPane) getComponent(i);
+                    if (pane.getPointX() < leftX) { //check to see if there are any panes to the left of the left pane
+                        Point.Double rightOffsetPoint = rightOffsets.get(index);
+                        setOffPane(pane, rightOffsetPoint.x, rightOffsetPoint.y);
+                        index = index - 1;
+                    }
+                }
+            }
+
+            if (isRunningRight) {
+                int index = leftOffsets.size() - 1; //getting last index in the leftOffsets array list
+
+                ACarouselPane pane;
+
+                for (int i = 0; i < numberOfPanes; i++) {
+                    pane = (ACarouselPane) getComponent(i);
+                    if (pane.getPointX() > rightX) { //check to see if there are any panes to the left of the left pane
+                        Point.Double leftOffsetPoint = leftOffsets.get(index);
+                        setOffPane(pane, leftOffsetPoint.x, leftOffsetPoint.y);
+                        index = index - 1;
+                    }
+                }
+            }
+
+
+
+            ///////.....LEFT
+            boolean isCarouselMoving = false;
+
+            while (runLeft == Thread.currentThread()) {
+                centerPane = getCenterPane();
+                centerPane.changeTitle(TitleType.NORMAL);
+
+                try {
+                    Thread.sleep(6);
+                } catch (InterruptedException ex) {
+                    err.setVisible(true);
+                    counter = 0;
+                    break;
+                }
+
+
+                DEBUG();
+
+                if (isCenterPointReached(0, isCarouselMoving)) {
+                    break;
+                }
+
+                // go through and set the new points for each pane
+                for (int i = 0; i < getComponentCount(); i++) {
+                    ACarouselPane cPane = (ACarouselPane) getComponent(i);
+                    Point.Double point = cPane.getPoint();
+                    double increment = 0.0;
+
+                    //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
+                    if ((panelWidth % 14.5) == 0) {
+                        increment = 14.5;
+                    } else if ((panelWidth % 16.0) == 0) {
+                        increment = (16.0);
+                    }
+
+                    if (isOdd(i)) {
+                        cPane.setPoint(point.x - (increment), point.y + (Incr1));
+                    } else {
+                        cPane.setPoint(point.x - (increment), point.y + (Incr2));
+                    }
+                }
+
+                isCarouselMoving = true;
+                paint();
+
+            }
+
+            ///....Done
+            //
+
+
+            ///////.....RIGHT
+            while (runRight == Thread.currentThread()) {
+                centerPane = getCenterPane();
+                centerPane.changeTitle(TitleType.NORMAL);
+
+                try {
+                    //* 60 fps for smoothness *//
+                    Thread.sleep(6);
+                } catch (InterruptedException ex) {
+                    err.setVisible(true);
+                    break;
+                }
+
+                if (isCenterPointReached(1, isCarouselMoving)) {
+                    break;
+                }
+
+                for (int i = 0; i < getComponentCount(); i++) {
+                    ACarouselPane cPane = (ACarouselPane) getComponent(i);
+                    Point.Double point = cPane.getPoint();
+                    double increment = 0.0;
+
+                    //use increment of 14.5 for low resolutions else increment by 16 for high resolutions
+                    if ((panelWidth % 14.5) == 0) {
+                        increment = 14.5;
+                    } else if ((panelWidth % 16.0) == 0) {
+                        increment = (16.0);
+                    }
+
+                    if (isOdd(i)) {
+                        cPane.setPoint(point.x + (increment), point.y + (Incr1));
+                    } else {
+                        cPane.setPoint(point.x + (increment), point.y + (Incr2));
+                    }
+                }
+
+                isCarouselMoving = true;
+                paint();
+            }
+
+            ///....Done
+
+            resetPanePositions();
+            centerPane = getCenterPane();
+            centerPane.changeTitle(TitleType.GLOW);
+
+        }
+    }
 
     @Override
     public void run() {
