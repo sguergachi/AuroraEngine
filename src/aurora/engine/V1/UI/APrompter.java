@@ -112,8 +112,8 @@ public class APrompter extends JPanel implements Runnable {
 
         this.setPreferredSize(
                 new Dimension(Ypos, Xpos));
-        
-        
+
+
 
     }
 
@@ -264,7 +264,7 @@ public class APrompter extends JPanel implements Runnable {
 
 
         //User JAVA 2D Graphics not just Graphics
-        Graphics2D g2d = (Graphics2D) g;
+        Graphics2D g2d = (Graphics2D) g.create();
 
 
         if (listUpdateColor != null) {

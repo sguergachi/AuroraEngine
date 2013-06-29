@@ -1,5 +1,6 @@
 package aurora.engine.V1.Logic;
 
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.apache.log4j.Logger;
 
@@ -19,7 +20,7 @@ public class AThreadWorker implements Runnable {
     public void setAction(ActionListener act) {
         this.toDo = act;
     }
-    
+
      public void setAction(ActionListener act, int sleep) {
         this.toDo = act;
         this.sleep = sleep;
@@ -86,7 +87,7 @@ public class AThreadWorker implements Runnable {
     public void run() {
         while (runner == Thread.currentThread() && canRun) {
 
-            toDo.actionPerformed(null);
+            toDo.actionPerformed(new ActionEvent(this, 0, "ThreadWorker"));
             try {
                 Thread.sleep(sleep);
             } catch (InterruptedException e) {

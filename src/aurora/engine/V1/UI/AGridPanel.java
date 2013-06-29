@@ -27,6 +27,9 @@ import org.apache.log4j.Logger;
 
 /**
  *
+ * A Panel that contains JPanels using the GridLayout and allows for better
+ * management of multiple JPanels and the components in each panel. 
+ *
  * @version 0.1
  * @author Sammy
  */
