@@ -185,7 +185,7 @@ public class APrompter extends JPanel implements Runnable {
                         logger.error(ex);
                     }
                 }
-                else if (Ypos == (this.getHeight() / 2) + 8 && Counter > 1) {
+                else if (Ypos == (this.getHeight() / 2) + 5 && Counter > 1) {
                     //Wait to allow for reading
 
                     logger.info("text pause");
@@ -329,7 +329,7 @@ public class APrompter extends JPanel implements Runnable {
 
             Xpos = this.getWidth() / 2;
 
-            Ypos = this.getHeight() / 2 + 10;
+            Ypos = this.getHeight() / 2 + 8;
 
             //If no more to add then check for more
 

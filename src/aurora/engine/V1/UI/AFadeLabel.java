@@ -17,7 +17,6 @@
  */
 package aurora.engine.V1.UI;
 
-import aurora.engine.V1.Logic.AThreadWorker;
 import java.awt.AlphaComposite;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -26,8 +25,6 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.Timer;
 
 /**
@@ -88,13 +85,11 @@ public class AFadeLabel extends ASlickLabel {
 
                     // If currentString is still visible then repaint
                     if (fadedOut && !fadedIn) {
-//                        System.out.println("Fadding out " + currentString);
                     } else {
                         System.out.println("Fadding In " + currentString);
                     }
 
                     if (!fadedOut) {
-//                        System.out.println("Fadding In " + currentString);
 
                         if (Alpha > 0.09F && count > 0) {
 //                            System.out.println("Stop");
@@ -166,10 +161,8 @@ public class AFadeLabel extends ASlickLabel {
 
         if (Alpha > 0.05F && !faded) {
             Alpha -= 0.05F;
-//            System.out.println("Fadding Out: " + Alpha);
         } else if (Alpha <= 0.9F && faded) {
             Alpha += 0.015F;
-//            System.out.println("Fadding IN: " + Alpha);
         }
 
         if (Alpha < 0.05F && !faded) {
@@ -179,7 +172,6 @@ public class AFadeLabel extends ASlickLabel {
 
             setFadedOut();
 
-//            System.out.println("Completely Faded Out " + Alpha);
         }
 
 
@@ -190,7 +182,6 @@ public class AFadeLabel extends ASlickLabel {
 
             setFadedIn();
 
-//            System.out.println("Completely Faded In " + Alpha);
         }
 
 
