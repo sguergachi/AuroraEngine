@@ -18,6 +18,7 @@
 package aurora.engine.V1.UI;
 
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -51,6 +52,10 @@ public class AFadeLabel extends ASlickLabel {
 
     private int count;
 
+    private Color currentColor;
+
+    private Color nextColor;
+
     public AFadeLabel() {
 
         this.setIgnoreRepaint(true);
@@ -74,6 +79,15 @@ public class AFadeLabel extends ASlickLabel {
         }
     }
 
+    @Override
+    public void setForeground(Color clr) {
+        if (currentColor == null) {
+            currentColor = clr;
+        } else {
+            nextColor = clr;
+        }
+    }
+
     private void fade() {
         if (!nextString.equals(currentString)) {
             stop = false;
@@ -92,8 +106,6 @@ public class AFadeLabel extends ASlickLabel {
                     if (!fadedOut) {
 
                         if (Alpha > 0.09F && count > 0) {
-//                            System.out.println("Stop");
-
                             ((Timer) e.getSource()).stop();
                             stop = true;
                             setFadedOut();
@@ -146,10 +158,13 @@ public class AFadeLabel extends ASlickLabel {
         //Constant X
         int Xpos = (this.getWidth() - textWidth) / 2;
 
+        if(currentColor == null){
+            currentColor = this.getForeground();
+        }
 
         g2d.setComposite(makeComposite(Alpha));
         g2d.setFont(this.getFont());
-        g2d.setColor(this.getForeground());
+        g2d.setColor(currentColor);
         g2d.drawString(currentString, Xpos,
                 this.getPreferredSize().height);
 
@@ -202,7 +217,13 @@ public class AFadeLabel extends ASlickLabel {
 
         if (nextString != null || Alpha < 0.05F) {
             currentString = nextString;
+
             nextString = null;
+        }
+
+        if (nextColor != null) {
+            currentColor = nextColor;
+            nextColor = null;
         }
 
     }
