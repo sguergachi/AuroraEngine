@@ -61,9 +61,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private int orgScrollAmount = 0;
 
     private boolean isHovering = false;
-    
+
     private ActionListener postCycleListener = null;
-    
+
     static final Logger logger = Logger.getLogger(AMarqueePanel.class);
 
     /**
@@ -131,7 +131,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         // Normal painting as the components scroll right to left
         Graphics2D g2d = (Graphics2D) g;
-        
+
         // The scrolling data ends up writing over the borders of the
         // background image  to use the aspect ratio data to try to
         // clip the display area reasonably
@@ -140,7 +140,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         int relationalWidth = Math.round( 15 * getWidthRatio());
         rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width - relationalWidth, rect.height));
         g2d.setClip(rect);
-        
+
         g2d.translate(-scrollOffset, 0);
         super.paintChildren(g);
         g2d.translate(scrollOffset, 0);
@@ -153,7 +153,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
-            
+
             g2d.translate(-wrapOffset, 0);
             super.paintChildren(g);
             g2d.translate(wrapOffset, 0);
@@ -172,19 +172,19 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         if (scrollOffset > width) {
         	if (postCycleListener != null) {
-        		postCycleListener.actionPerformed(null);	
+        		postCycleListener.actionPerformed(null);
         		this.revalidate();
         	}
-        	
+
             scrollOffset = isWrap() ? wrapOffset + scrollAmount :
                     -getSize().width;
         }
-        
+
         repaint();
     }
-    
+
     public void setPostCycleListener(ActionListener listener) {
-    	this.postCycleListener = listener;    
+    	this.postCycleListener = listener;
     }
 
     /*
@@ -552,7 +552,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         // get the component at the point the mouse is at
         Component[] components = this.getComponents();
 
-        Component lastComponent = components[components.length - 1];
+//        Component lastComponent = components[components.length - 1];
 
         if (labelClicked >= 0) {
 

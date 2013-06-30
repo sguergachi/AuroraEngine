@@ -98,10 +98,6 @@ public class AFadeLabel extends ASlickLabel {
 
 
                     // If currentString is still visible then repaint
-                    if (fadedOut && !fadedIn) {
-                    } else {
-                        System.out.println("Fadding In " + currentString);
-                    }
 
                     if (!fadedOut) {
 
