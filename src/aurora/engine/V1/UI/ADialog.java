@@ -19,17 +19,10 @@ package aurora.engine.V1.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
-import java.awt.Desktop.Action;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 
 import javax.swing.*;
 
@@ -334,19 +327,23 @@ public final class ADialog extends ADragFrame {
     public void showDialog() {
 
 
-        paneDialogBG = new AImagePane("app_dialog_bg.png");
+        paneDialogBG = new AImagePane("app_dialog_bg.png",555,250);
         paneDialogBG.setLayout(new BorderLayout());
         add(BorderLayout.CENTER, paneDialogBG);
 
         //* Config Dialog *//
         setUndecorated(true);
-        setSize(535, 240);
+        setSize(555, 250);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
 
+        iconImg.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         iconContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        iconContainer.setLayout(new BoxLayout(iconContainer, BoxLayout.Y_AXIS));
         iconContainer.setOpaque(false);
+        iconContainer.add(Box.createVerticalStrut(15));
         iconContainer.add(iconImg);
+        iconContainer.add(Box.createVerticalStrut(10));
         paneDialogBG.add(iconContainer, BorderLayout.NORTH);
 
 
