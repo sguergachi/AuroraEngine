@@ -34,7 +34,7 @@ public class ARadioButton extends AImagePane {
 
     private String btnNormal;
 
-    private String btnOver;
+    private String btnDown;
 
     public boolean isSelected = false;
 
@@ -52,10 +52,10 @@ public class ARadioButton extends AImagePane {
 
     private Boolean isEnabled = true;
 
-    public ARadioButton(String ImgUp, String ImgOvr) {
+    public ARadioButton(String ImgNorm, String ImgDown) {
 
-        btnNormal = ImgUp; // Normal State of Radio button
-        btnOver = ImgOvr; // Selected state of radio button
+        btnNormal = ImgNorm; // Normal State of Radio button
+        btnDown = ImgDown; // Selected state of radio button
 
         setImage(btnNormal); // Set initial image as normal
         // Set size and add mouse handler
@@ -75,7 +75,7 @@ public class ARadioButton extends AImagePane {
 
     public void setSelected() {
         isSelected = true;
-        setImage(btnOver);
+        setImage(btnDown);
 
         if (Width != 0 || Height != 0) {
             this.setImageSize(Width, Height);

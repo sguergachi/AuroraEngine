@@ -91,7 +91,7 @@ public class ATimeLabel extends ASlickLabel {
             public void actionPerformed(ActionEvent e) {
                 setText(current(timeType) + "   ");
                 repaint();
-                logger.info("Time thread refhreshing");
+                logger.info("Time thread refreshing");
             }
         }, 30000);
 
