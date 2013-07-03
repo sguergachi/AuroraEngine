@@ -18,12 +18,19 @@
 
 package aurora.engine.V1.Logic;
 
+import java.awt.event.ActionListener;
+
 /**
  * Handles what happens after animation
  * @author Sammy
  */
-public interface APostHandler {
+public interface APostHandler{
+
+
 
      public abstract void postAction();
+
+
+
 
 }

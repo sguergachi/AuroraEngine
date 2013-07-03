@@ -6,124 +6,152 @@ import java.awt.event.ActionEvent;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.reflect.Field;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPopupMenu;
+import javax.swing.PopupFactory;
 import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
 
-	public class AContextMenuListener extends MouseAdapter {
-	    private JPopupMenu popup = new JPopupMenu();
+public class AContextMenuListener extends MouseAdapter {
 
-	    private AbstractAction cutAction;
-	    private AbstractAction copyAction;
-	    private AbstractAction pasteAction;
-	    private AbstractAction undoAction;
-	    private Action selectAllAction;
+    private JPopupMenu popup = new JPopupMenu();
 
-	    private JTextComponent textComponent;
-	    private String savedString = "";
-	    private Actions lastActionSelected;
+    private AbstractAction cutAction;
 
-	    private enum Actions { UNDO, CUT, COPY, PASTE, SELECT_ALL };
-	    
-	    static final Logger logger = Logger.getLogger(AContextMenuListener.class);
+    private AbstractAction copyAction;
 
-	    public AContextMenuListener() {
-	        undoAction = new AbstractAction("Undo") {
+    private AbstractAction pasteAction;
 
-	            @Override
-	            public void actionPerformed(ActionEvent ae) {
-	                    textComponent.setText("");
-	                    textComponent.replaceSelection(savedString);
+    private AbstractAction undoAction;
 
-	                    lastActionSelected = Actions.UNDO;
-	            }
-	        };
+    private Action selectAllAction;
 
-	        popup.add(undoAction);
-	        popup.addSeparator();
+    private JTextComponent textComponent;
 
-	        cutAction = new AbstractAction("Cut") {
+    private String savedString = "";
 
-	            @Override
-	            public void actionPerformed(ActionEvent ae) {
-	                lastActionSelected = Actions.CUT;
-	                savedString = textComponent.getText();
-	                textComponent.cut();
-	            }
-	        };
+    private Actions lastActionSelected;
 
-	        popup.add(cutAction);
+    private enum Actions {
 
-	        copyAction = new AbstractAction("Copy") {
+        UNDO, CUT, COPY, PASTE, SELECT_ALL
 
-	            @Override
-	            public void actionPerformed(ActionEvent ae) {
-	                lastActionSelected = Actions.COPY;
-	                textComponent.copy();
-	            }
-	        };
+    };
+    static final Logger logger = Logger.getLogger(AContextMenuListener.class);
 
-	        popup.add(copyAction);
+    public AContextMenuListener() {
 
-	        pasteAction = new AbstractAction("Paste") {
+        popup.setLightWeightPopupEnabled(false);
 
-	            @Override
-	            public void actionPerformed(ActionEvent ae) {
-	                lastActionSelected = Actions.PASTE;
-	                savedString = textComponent.getText();
-	                textComponent.paste();
-	            }
-	        };
+        try {
+            Field field = PopupFactory.class.getDeclaredField(
+                    "forceHeavyWeightPopupKey");
+            field.setAccessible(true);
+            popup.putClientProperty(field.get(null), true);
+        } catch (Exception e) {
+            logger.error(e);
+        }
 
-	        popup.add(pasteAction);
-	        popup.addSeparator();
+        undoAction = new AbstractAction("Undo") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                textComponent.setText("");
+                textComponent.replaceSelection(savedString);
 
-	        selectAllAction = new AbstractAction("Select All") {
+                lastActionSelected = Actions.UNDO;
+            }
+        };
 
-	            @Override
-	            public void actionPerformed(ActionEvent ae) {
-	                lastActionSelected = Actions.SELECT_ALL;
-	                textComponent.selectAll();
-	            }
-	        };
+        popup.add(undoAction);
+        popup.addSeparator();
 
-	        popup.add(selectAllAction);
-	    }
+        cutAction = new AbstractAction("Cut") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lastActionSelected = Actions.CUT;
+                savedString = textComponent.getText();
+                textComponent.cut();
+            }
+        };
 
-	    public void mouseClicked(MouseEvent e) {
-	        if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
-	            if (!(e.getSource() instanceof JTextComponent)) {
-	                return;
-	            }
+        popup.add(cutAction);
 
-	            textComponent = (JTextComponent) e.getSource();
-	            textComponent.requestFocus();
+        copyAction = new AbstractAction("Copy") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lastActionSelected = Actions.COPY;
+                textComponent.copy();
+            }
+        };
 
-	            boolean enabled = textComponent.isEnabled();
-	            boolean editable = textComponent.isEditable();
-	            boolean nonempty = !(textComponent.getText() == null || textComponent.getText().equals(""));
-	            boolean marked = textComponent.getSelectedText() != null;
+        popup.add(copyAction);
 
-	            boolean pasteAvailable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null).isDataFlavorSupported(DataFlavor.stringFlavor);
+        pasteAction = new AbstractAction("Paste") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lastActionSelected = Actions.PASTE;
+                savedString = textComponent.getText();
+                textComponent.paste();
+            }
+        };
 
-	            undoAction.setEnabled(enabled && editable && (lastActionSelected == Actions.CUT || lastActionSelected == Actions.PASTE));
-	            cutAction.setEnabled(enabled && editable && marked);
-	            copyAction.setEnabled(enabled && marked);
-	            pasteAction.setEnabled(enabled && editable && pasteAvailable);
-	            selectAllAction.setEnabled(enabled && nonempty);
+        popup.add(pasteAction);
+        popup.addSeparator();
 
-	            int nx = e.getX();
+        selectAllAction = new AbstractAction("Select All") {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                lastActionSelected = Actions.SELECT_ALL;
+                textComponent.selectAll();
+            }
+        };
 
-	            if (nx > 500) {
-	                nx = nx - popup.getSize().width;
-	            }
+        popup.add(selectAllAction);
 
-	            popup.show(e.getComponent(), nx, e.getY() - popup.getSize().height);
-	        }
-	    }
-	}
 
+
+
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        if (e.getModifiers() == InputEvent.BUTTON3_MASK) {
+            if (!(e.getSource() instanceof JTextComponent)) {
+                return;
+            }
+
+            textComponent = (JTextComponent) e.getSource();
+            textComponent.requestFocus();
+
+            boolean enabled = textComponent.isEnabled();
+            boolean editable = textComponent.isEditable();
+            boolean nonempty = !(textComponent.getText() == null
+                                 || textComponent.getText().equals(""));
+            boolean marked = textComponent.getSelectedText() != null;
+
+            boolean pasteAvailable = Toolkit.getDefaultToolkit()
+                    .getSystemClipboard().getContents(null)
+                    .isDataFlavorSupported(DataFlavor.stringFlavor);
+
+            undoAction.setEnabled(enabled && editable && (lastActionSelected
+                                                          == Actions.CUT
+                                                          || lastActionSelected
+                                                             == Actions.PASTE));
+            cutAction.setEnabled(enabled && editable && marked);
+            copyAction.setEnabled(enabled && marked);
+            pasteAction.setEnabled(enabled && editable && pasteAvailable);
+            selectAllAction.setEnabled(enabled && nonempty);
+
+            int nx = e.getX();
+
+            if (nx > 500) {
+                nx = nx - popup.getSize().width;
+            }
+
+            popup.show(e.getComponent(), nx, e.getY() - popup.getSize().height);
+        }
+    }
+}
