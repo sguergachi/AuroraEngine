@@ -310,6 +310,7 @@ public final class ADialog extends ADragFrame {
      */
     public void setOKButtonListener(ActionListener listener) {
         a = listener;
+        btnOk.addActionListener(a);
     }
 
     /**
@@ -365,7 +366,6 @@ public final class ADialog extends ADragFrame {
                 "app_btn_cancelDialog_down.png", "app_btn_cancelDialog_over.png");
         if (a != null) {
             btnOk.addActionListener(a);
-
 
         } else {
             a = new ActionListener() {
