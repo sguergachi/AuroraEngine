@@ -119,7 +119,7 @@ public final class ADialog extends ADragFrame {
      * Text container.
      */
     public JPanel textContainer;
-    
+
     static final Logger logger = Logger.getLogger(ADialog.class);
 
     /**
@@ -347,7 +347,7 @@ public final class ADialog extends ADragFrame {
         paneDialogBG.add(iconContainer, BorderLayout.NORTH);
 
 
-        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER,5,12));
         textContainer.setOpaque(false);
         lblText = new ASlickLabel(Text);
         lblText.setFont(font);

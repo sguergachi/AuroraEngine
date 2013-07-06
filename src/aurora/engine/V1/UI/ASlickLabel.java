@@ -104,7 +104,6 @@ public class ASlickLabel extends JLabel implements MouseListener {
             prevCursor = this.getCursor();
 
             ACursor selectCursor = new ACursor(new AImage("cursor_select.png"));
-//            setCursor(new Cursor(Cursor.HAND_CURSOR));
             setCursor(selectCursor.getCursor());
             this.setForeground(Color.green);
         }
