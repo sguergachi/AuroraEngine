@@ -47,14 +47,6 @@ public class AContextMenuListener extends MouseAdapter {
 
         popup.setLightWeightPopupEnabled(false);
 
-        try {
-            Field field = PopupFactory.class.getDeclaredField(
-                    "forceHeavyWeightPopupKey");
-            field.setAccessible(true);
-            popup.putClientProperty(field.get(null), true);
-        } catch (Exception e) {
-            logger.error(e);
-        }
 
         undoAction = new AbstractAction("Undo") {
             @Override
