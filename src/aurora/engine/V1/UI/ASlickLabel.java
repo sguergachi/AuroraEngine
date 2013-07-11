@@ -17,6 +17,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.swing.Icon;
 import javax.swing.JLabel;
+import javax.swing.ToolTipManager;
 
 import org.apache.log4j.Logger;
 
@@ -34,6 +35,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
     private Cursor prevCursor;
 
     static final Logger logger = Logger.getLogger(ASlickLabel.class);
+    private Color linkColor;
 
     public ASlickLabel(String text) {
         super(text + "");
@@ -55,7 +57,17 @@ public class ASlickLabel extends JLabel implements MouseListener {
         this.url = URL;
         this.setToolTipText(URL);
         this.addMouseListener(this);
+        this.linkColor = Color.green;
+        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
+    }
 
+
+    public void setLink(String URL, Color linkColor) {
+        this.url = URL;
+        this.setToolTipText(URL);
+        this.addMouseListener(this);
+        this.linkColor = linkColor;
+        ToolTipManager.sharedInstance().setLightWeightPopupEnabled(false);
     }
 
     @Override
@@ -105,7 +117,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
             ACursor selectCursor = new ACursor(new AImage("cursor_select.png"));
             setCursor(selectCursor.getCursor());
-            this.setForeground(Color.green);
+            this.setForeground(linkColor);
         }
 
     }
