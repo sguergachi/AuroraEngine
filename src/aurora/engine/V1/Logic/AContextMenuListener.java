@@ -7,11 +7,16 @@ import java.awt.event.InputEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Field;
+import java.util.logging.Level;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JPopupMenu;
+import javax.swing.LookAndFeel;
 import javax.swing.PopupFactory;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.text.JTextComponent;
 
 import org.apache.log4j.Logger;
@@ -36,6 +41,7 @@ public class AContextMenuListener extends MouseAdapter {
 
     private Actions lastActionSelected;
 
+
     private enum Actions {
 
         UNDO, CUT, COPY, PASTE, SELECT_ALL
@@ -44,7 +50,24 @@ public class AContextMenuListener extends MouseAdapter {
     static final Logger logger = Logger.getLogger(AContextMenuListener.class);
 
     public AContextMenuListener() {
+        try {
+            UIManager.setLookAndFeel(UIManager
+                        .getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(AContextMenuListener.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(AContextMenuListener.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(AContextMenuListener.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(AContextMenuListener.class.getName()).
+                    log(Level.SEVERE, null, ex);
+        }
 
+        SwingUtilities.updateComponentTreeUI(popup);
         popup.setLightWeightPopupEnabled(false);
 
 
