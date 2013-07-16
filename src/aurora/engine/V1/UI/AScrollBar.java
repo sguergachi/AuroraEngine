@@ -47,7 +47,7 @@ public class AScrollBar extends BasicScrollBarUI {
     @Override
     protected void paintTrack(Graphics g, JComponent c, Rectangle trackBounds) {
         Graphics2D g2d = (Graphics2D) g;
-        g.setColor(new Color(0,0,0,0));
+        g2d.setColor(new Color(0,0,0,0));
         g2d.translate(trackBounds.x, trackBounds.y);
         ((Graphics2D) g).drawImage(
                 imageTrack,
