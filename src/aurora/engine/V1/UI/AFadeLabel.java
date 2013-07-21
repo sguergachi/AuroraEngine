@@ -19,6 +19,7 @@ package aurora.engine.V1.UI;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -88,6 +89,7 @@ public class AFadeLabel extends ASlickLabel {
         }
     }
 
+
     private void fade() {
         if (!nextString.equals(currentString)) {
             stop = false;
@@ -154,7 +156,7 @@ public class AFadeLabel extends ASlickLabel {
         //Constant X
         int Xpos = (this.getWidth() - textWidth) / 2;
 
-        if(currentColor == null){
+        if (currentColor == null) {
             currentColor = this.getForeground();
         }
 

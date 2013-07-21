@@ -26,7 +26,6 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 
-
 /**
  *
  * @author Sammy
@@ -34,13 +33,20 @@ import org.apache.log4j.Logger;
 public class AProgressWheel extends JPanel implements Runnable {
 
     private Thread runner;
+
     private String URL;
+
     private AImage img;
+
     private int rotate = 0;
+
     private int speed = 15;
+
     private boolean isClockwiseRotating = true;
+
     static final Logger logger = Logger.getLogger(AProgressWheel.class);
-    
+
+    private int savedSpeed;
 
     public AImage getImg() {
         return img;
@@ -52,7 +58,8 @@ public class AProgressWheel extends JPanel implements Runnable {
         img = new AImage(this.URL);
         setOpaque(false);
 
-        this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(), img.getImgIcon().getIconHeight()));
+        this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(), img
+                .getImgIcon().getIconHeight()));
         start();
 
     }
@@ -64,7 +71,8 @@ public class AProgressWheel extends JPanel implements Runnable {
         setOpaque(false);
 
         this.speed = speed;
-        this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(), img.getImgIcon().getIconHeight()));
+        this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(), img
+                .getImgIcon().getIconHeight()));
         start();
 
     }
@@ -77,7 +85,7 @@ public class AProgressWheel extends JPanel implements Runnable {
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
 
         }
@@ -87,7 +95,17 @@ public class AProgressWheel extends JPanel implements Runnable {
 
     public void stop() {
         this.setVisible(false);
+        savedSpeed = speed;
+        speed = 0;
+        this.revalidate();
+        this.repaint();
+    }
 
+    public void resume() {
+        this.setVisible(true);
+        speed = savedSpeed;
+        this.revalidate();
+        this.repaint();
     }
 
     public void setSpeed(int Speed) {
@@ -104,34 +122,37 @@ public class AProgressWheel extends JPanel implements Runnable {
     public void paint(Graphics g) {
         super.paintComponent(g);
 
-        rotate += speed - 8;
+        if (speed > 0) {
+            rotate += speed - 8;
 
-        Graphics2D g2d = (Graphics2D) g;
+            Graphics2D g2d = (Graphics2D) g;
 
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-
-
-        AffineTransform origXform = g2d.getTransform();
-        AffineTransform newXform = (AffineTransform) (origXform.clone());
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                    RenderingHints.VALUE_ANTIALIAS_ON);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                    RenderingHints.VALUE_RENDER_QUALITY);
 
 
-        //center of rotation is center of the panel
-        int xRot = this.getWidth() / 2;
-        int yRot = this.getHeight() / 2;
-        if (isClockwiseRotating && rotate > 0) {
-            newXform.rotate(Math.toRadians(rotate), xRot, yRot);
-        } else if (!isClockwiseRotating && rotate > 0) {
-            newXform.rotate(-Math.toRadians(rotate), xRot, yRot);
+            AffineTransform origXform = g2d.getTransform();
+            AffineTransform newXform = (AffineTransform) (origXform.clone());
+
+
+            //center of rotation is center of the panel
+            int xRot = this.getWidth() / 2;
+            int yRot = this.getHeight() / 2;
+            if (isClockwiseRotating && rotate > 0) {
+                newXform.rotate(Math.toRadians(rotate), xRot, yRot);
+            } else if (!isClockwiseRotating && rotate > 0) {
+                newXform.rotate(-Math.toRadians(rotate), xRot, yRot);
+            }
+            g2d.setTransform(newXform);
+
+            //draw image centered in panel
+            int x = (getWidth() - img.getImgIcon().getIconWidth()) / 2;
+            int y = (getHeight() - img.getImgIcon().getIconHeight()) / 2;
+            g2d.drawImage(img.getImgIcon().getImage(), x, y, this);
+            g2d.setTransform(origXform);
         }
-        g2d.setTransform(newXform);
-
-        //draw image centered in panel
-        int x = (getWidth() - img.getImgIcon().getIconWidth()) / 2;
-        int y = (getHeight() - img.getImgIcon().getIconHeight()) / 2;
-        g2d.drawImage(img.getImgIcon().getImage(), x, y, this);
-        g2d.setTransform(origXform);
-
     }
 
     private void start() {

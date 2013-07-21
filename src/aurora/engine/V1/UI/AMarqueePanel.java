@@ -65,6 +65,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private ActionListener postCycleListener = null;
 
     static final Logger logger = Logger.getLogger(AMarqueePanel.class);
+    private Cursor previousCursor;
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
@@ -137,8 +138,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         // clip the display area reasonably
         Rectangle rect = g2d.getClip().getBounds();
         int relationalX = Math.round(6 * getWidthRatio());
-        int relationalWidth = Math.round( 15 * getWidthRatio());
-        rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width - relationalWidth, rect.height));
+        int relationalWidth = Math.round(15 * getWidthRatio());
+        rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width
+                                                                   - relationalWidth,
+                rect.height));
         g2d.setClip(rect);
 
         g2d.translate(-scrollOffset, 0);
@@ -171,10 +174,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         int width = getPreferredSize().width;
 
         if (scrollOffset > width) {
-        	if (postCycleListener != null) {
-        		postCycleListener.actionPerformed(null);
-        		this.revalidate();
-        	}
+            if (postCycleListener != null) {
+                postCycleListener.actionPerformed(null);
+                this.revalidate();
+            }
 
             scrollOffset = isWrap() ? wrapOffset + scrollAmount :
                     -getSize().width;
@@ -184,7 +187,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     }
 
     public void setPostCycleListener(ActionListener listener) {
-    	this.postCycleListener = listener;
+        this.postCycleListener = listener;
     }
 
     /*
@@ -367,7 +370,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
             timer.stop();
             scrollingPaused = true;
             if (logger.isDebugEnabled()) {
-            	logger.debug("Paused scrolling");
+                logger.debug("Paused scrolling");
             }
         }
     }
@@ -380,7 +383,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
             timer.restart();
             scrollingPaused = false;
             if (logger.isDebugEnabled()) {
-            	logger.debug("Resume scrolling");
+                logger.debug("Resume scrolling");
             }
         }
     }
@@ -399,7 +402,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
     @Override
     public Point getToolTipLocation(MouseEvent e) {
-       if (isHovering && e.getLocationOnScreen() != null) {
+        if (isHovering && e.getLocationOnScreen() != null) {
             return new Point(e.getX() - (this.getToolTipText().length() * 3),
                     - 10);
         }
@@ -466,11 +469,16 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
             orgScrollAmount = (int) getScrollAmount() / 2;
         }
         setScrollAmount(orgScrollAmount);
+
+        previousCursor = this.getCursor();
+
+        ACursor selectCursor = new ACursor(new AImage("cursor_select.png"));
+        setCursor(selectCursor.getCursor());
     }
 
     public void mouseExited(MouseEvent arg0) {
 
-
+        setCursor(previousCursor);
 
         setScrollAmount(orgScrollAmount * 2);
 
@@ -514,18 +522,18 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
                     int width = label.getWidth();
 
                     if (labelClicked >= xPos && labelClicked <= (xPos + width)) {
-                    	if (logger.isDebugEnabled()) {
-                    		logger.debug("URL = " + label.getUrl());
-                    	}
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("URL = " + label.getUrl());
+                        }
                         Desktop myNewBrowserDesktop = Desktop.getDesktop();
                         URI myNewLocation;
                         try {
                             myNewLocation = new URI(label.getUrl());
                             myNewBrowserDesktop.browse(myNewLocation);
                         } catch (URISyntaxException e) {
-                        	logger.error(e, e);
+                            logger.error(e, e);
                         } catch (IOException e) {
-                        	logger.error(e, e);
+                            logger.error(e, e);
                         }
 
                         componentFound = true;

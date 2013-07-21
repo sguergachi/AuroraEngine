@@ -1,8 +1,10 @@
 package aurora.engine.V1.UI;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -21,7 +23,7 @@ import org.apache.log4j.Logger;
  * Changes to the properties are dynamic and will take effect the next time the
  * components are scrolled.
  */
-public class AInfoFeedLabel extends JLabel {
+public class AInfoFeedLabel extends ASlickLabel implements MouseListener{
 
     /*
      * The URL associated with this label text
@@ -38,8 +40,9 @@ public class AInfoFeedLabel extends JLabel {
     private int endPosition;
 
     private String customToolTip;
-    
+
     static final Logger logger = Logger.getLogger(AInfoFeedLabel.class);
+    private Cursor previousCursor;
 
     /**
      *
@@ -107,4 +110,6 @@ public class AInfoFeedLabel extends JLabel {
 
         return "Title:= " + this.getText(); // + " URL:= " + url.toString();
     }
+
+
 }
