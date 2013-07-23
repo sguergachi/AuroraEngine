@@ -101,6 +101,13 @@ public class AProgressWheel extends JPanel implements Runnable {
         this.repaint();
     }
 
+     public void pause() {
+        savedSpeed = speed;
+        speed = 0;
+        this.revalidate();
+        this.repaint();
+    }
+
     public void resume() {
         this.setVisible(true);
         speed = savedSpeed;
