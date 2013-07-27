@@ -57,6 +57,12 @@ public class AFadeLabel extends ASlickLabel {
 
     private Color nextColor;
 
+    private Font labelFont;
+
+    private Font savedFont;
+
+    private int stringCount;
+
     public AFadeLabel() {
 
         this.setIgnoreRepaint(true);
@@ -88,7 +94,6 @@ public class AFadeLabel extends ASlickLabel {
             nextColor = clr;
         }
     }
-
 
     private void fade() {
         if (!nextString.equals(currentString)) {
@@ -129,7 +134,6 @@ public class AFadeLabel extends ASlickLabel {
         Graphics2D g2d = (Graphics2D) g;
 
 
-
         //Make Text Render Beautifuly
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -141,8 +145,6 @@ public class AFadeLabel extends ASlickLabel {
                 RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-
-
 
 
         //Animate the Text
@@ -160,11 +162,33 @@ public class AFadeLabel extends ASlickLabel {
             currentColor = this.getForeground();
         }
 
-        g2d.setComposite(makeComposite(Alpha));
+
         g2d.setFont(this.getFont());
         g2d.setColor(currentColor);
+
+        g2d.setComposite(makeComposite(Alpha));
+
+
+        FontMetrics met = g2d.getFontMetrics(getFont());
+        int labelW = (int) Math
+                .ceil(met.stringWidth(currentString));
+        int maxWidth = (int) Math.floor(this.getWidth());
+
+        if (labelW > maxWidth) {
+
+            for (int k = 1; labelW > maxWidth; k++) {
+                labelFont = this.getFont().deriveFont(this.getFont().getSize()
+                                                      - k * 1.0f);
+                this.setFont(labelFont);
+                g2d.setFont(this.getFont());
+                labelW = (int) Math
+                        .ceil(this.getPreferredSize().getWidth());
+            }
+
+        }
+
         g2d.drawString(currentString, Xpos,
-                this.getPreferredSize().height);
+                    this.getPreferredSize().height);
 
 
 
@@ -190,9 +214,7 @@ public class AFadeLabel extends ASlickLabel {
 
         if (Alpha > 0.85F && faded) {
 
-//            Alpha = 1.0F;
             faded = false;
-
             setFadedIn();
 
         }
@@ -224,6 +246,10 @@ public class AFadeLabel extends ASlickLabel {
             nextColor = null;
         }
 
+        this.setFont(this.getFont());
+        repaint();
+        this.validate();
+
     }
 
     private void setFadedIn() {
@@ -231,6 +257,9 @@ public class AFadeLabel extends ASlickLabel {
         count++;
         fadedIn = true;
         fadedOut = false;
+
+        this.setFont(this.getFont());
+        repaint();
 
 
     }
