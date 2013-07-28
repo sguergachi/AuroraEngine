@@ -17,6 +17,7 @@
  */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.AFileManager;
 import aurora.engine.V1.Logic.ASurface;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,6 +25,7 @@ import java.awt.LayoutManager;
 import java.awt.RenderingHints;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
@@ -161,7 +163,7 @@ public class AImagePane extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
                 RenderingHints.VALUE_STROKE_NORMALIZE);
 
         if (image != null) {
@@ -235,11 +237,23 @@ public class AImagePane extends JPanel {
         this.repaint();
     }
 
+    public Boolean checkImageExists(String ImageURL) {
+
+        if (AFileManager.checkFile(ImageURL)) {
+            return false;
+        } else {
+            return true;
+        }
+
+
+    }
+
     public void setImage(String ImageURL) {
         this.image = null;
 
 
         this.ImageURL = ImageURL;
+
         try {
             this.image = new ImageIcon(new URL(ressource.getSurfacePath()
                                                + "/aurora/V1/resources/"
@@ -254,6 +268,8 @@ public class AImagePane extends JPanel {
                 logger.error(exx);
             }
         }
+
+
         imageWidth = image.getIconWidth();
         imageHeight = image.getIconHeight();
 
@@ -304,7 +320,7 @@ public class AImagePane extends JPanel {
         return image;
     }
 
-    public String getImageName() {
+    public String getImageURL() {
         return ImageURL;
     }
 
