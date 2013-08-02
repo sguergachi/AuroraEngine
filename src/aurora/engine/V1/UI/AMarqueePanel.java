@@ -138,7 +138,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         // clip the display area reasonably
         Rectangle rect = g2d.getClip().getBounds();
         int relationalX = Math.round(6 * getWidthRatio());
-        int relationalWidth = Math.round(15 * getWidthRatio());
+        int relationalWidth = Math.round(12 * getWidthRatio());
         rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width
                                                                    - relationalWidth,
                 rect.height));
