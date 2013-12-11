@@ -28,7 +28,7 @@ import org.apache.log4j.Logger;
 /**
  *
  * A Panel that contains JPanels using the GridLayout and allows for better
- * management of multiple JPanels and the components in each panel. 
+ * management of multiple JPanels and the components in each panel.
  *
  * @version 0.1
  * @author Sammy
@@ -39,8 +39,6 @@ public class AGridPanel extends JPanel {
 
     private int row;
 
-    private boolean full;
-
     private ArrayList<JComponent> componentList = new ArrayList<JComponent>();
 
     private int numberOfComponentsAdded;
@@ -50,7 +48,6 @@ public class AGridPanel extends JPanel {
     public AGridPanel() {
         this.setLayout(new GridLayout());
         numberOfComponentsAdded = 0;
-        full = false;
 
     }
 
@@ -58,7 +55,6 @@ public class AGridPanel extends JPanel {
         this.row = row;
         this.col = col;
         numberOfComponentsAdded = 0;
-        full = false;
 
         this.setLayout(new GridLayout(this.row, this.col, 0, 0));
 
@@ -68,7 +64,6 @@ public class AGridPanel extends JPanel {
         this.row = row;
         this.col = col;
         numberOfComponentsAdded = 0;
-        full = false;
 
         this.setOpaque(!Transparent);
 
@@ -89,8 +84,7 @@ public class AGridPanel extends JPanel {
                 this.add(componentList.get(componentList.indexOf(comp)));
                 numberOfComponentsAdded++;
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Adding to grid... Size = " + componentList
-                            .size());
+                    logger.debug("Adding to grid...");
                 }
             }
         }
@@ -106,13 +100,11 @@ public class AGridPanel extends JPanel {
     public void addToGrid(JComponent comp, int index) {
         if (!isGridFull()) {
             if (!componentList.contains(comp)) {
-                //componentList.add(comp);
                 componentList.add(index, comp);
                 this.add(componentList.get(componentList.indexOf(comp)), index);
                 numberOfComponentsAdded++;
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Adding to grid... Size = " + componentList
-                            .size());
+                    logger.debug("Adding to grid... ");
                 }
             }
         }
@@ -138,17 +130,11 @@ public class AGridPanel extends JPanel {
     /**
      * Checks if Grid is full
      *
+     * @return
      */
     public boolean isGridFull() {
         System.out.println("componentList.size() = " + componentList.size());
-        if (componentList.size() < (row * col)) {
-            return false;
-        }
-        return true;
-    }
-
-    public void setToFull() {
-        full = true;
+        return componentList.size() >= (row * col);
     }
 
     public int getNumberOfComponents() {
@@ -204,8 +190,8 @@ public class AGridPanel extends JPanel {
         double quotient = ((double) 1) / ((double) col);
         double element_divby_cols = ((double) index) / ((double) col);
 
-        int elementRow = (int) (((double) element_divby_cols)
-                                + (((double) quotient) * (((double) col)
+        int elementRow = (int) (element_divby_cols
+                                + (quotient * (((double) col)
                                                           - ((double) elementColumn))));
 
         columnAndRow[0] = elementColumn;
@@ -221,6 +207,8 @@ public class AGridPanel extends JPanel {
     /**
      * Finds element in grid array
      *
+     * @param comp
+     * @return
      */
     public int find(JComponent comp) {
 

@@ -7,11 +7,17 @@ import org.apache.log4j.Logger;
 public class AThreadWorker implements Runnable {
 
     private Thread runner;
+
     private ActionListener toDo;
+
     private int sleep = 0;
-    private boolean canRun = true;
+
+    private boolean canRun = false;
+
     private boolean once;
+
     private ActionListener doAfter;
+
     static final Logger logger = Logger.getLogger(AThreadWorker.class);
 
     public AThreadWorker() {
@@ -21,7 +27,7 @@ public class AThreadWorker implements Runnable {
         this.toDo = act;
     }
 
-     public void setAction(ActionListener act, int sleep) {
+    public void setAction(ActionListener act, int sleep) {
         this.toDo = act;
         this.sleep = sleep;
     }
@@ -40,7 +46,6 @@ public class AThreadWorker implements Runnable {
         this.toDo = act;
         this.sleep = sleep;
 
-
     }
 
     public AThreadWorker(ActionListener act, ActionListener after, int sleep) {
@@ -48,10 +53,9 @@ public class AThreadWorker implements Runnable {
         this.doAfter = after;
         this.sleep = sleep;
 
-
     }
 
-    public void start() {
+    public synchronized void start() {
 
         if (logger.isDebugEnabled()) {
             logger.debug("Starting New Background Thread...");
@@ -99,7 +103,7 @@ public class AThreadWorker implements Runnable {
             }
 
         }
-        if (doAfter != null ) {
+        if (doAfter != null) {
             doAfter.actionPerformed(null);
         }
     }

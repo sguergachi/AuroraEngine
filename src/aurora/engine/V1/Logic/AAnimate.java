@@ -68,7 +68,7 @@ public class AAnimate implements Runnable {
     private boolean Animating = false;
 
     private int acc;
-    
+
     static final Logger logger = Logger.getLogger(AAnimate.class);
 
     public AAnimate(JComponent component) {
@@ -206,7 +206,7 @@ public class AAnimate implements Runnable {
 
         }
         AnimationID = 2;
-        
+
         if (logger.isDebugEnabled()) {
         	logger.debug("move horz with X at: " + x);
         }
@@ -267,7 +267,7 @@ public class AAnimate implements Runnable {
                 Alpha += 0.2F;
 
             } else if (AnimationID == 1) {
-            	
+
             	if (logger.isDebugEnabled()) {
                 	logger.debug("Alpha of Animation: " + Alpha);
                 }
@@ -310,7 +310,7 @@ public class AAnimate implements Runnable {
                     	if (logger.isDebugEnabled()) {
                         	logger.debug("Slow Down Pos!!");
                         }
-                        
+
                         acc--;
                         acc--;
                     } else if (component.getLocation().x < XPos / 2) {
@@ -364,10 +364,7 @@ public class AAnimate implements Runnable {
 
 
                 component.repaint();
-                
-                if (logger.isDebugEnabled()) {
-                	logger.debug("bool : " + (YPos <= component.getLocation().y));
-                }
+
 
                 //DIAGONAL
             } else if (AnimationID == 4) {
@@ -407,8 +404,8 @@ public class AAnimate implements Runnable {
             }
 
             if (logger.isDebugEnabled()) {
-            	logger.debug("X Val: " + x);
-            	logger.debug("Y Val: " + y);
+//            	logger.debug("X Val: " + x);
+//            	logger.debug("Y Val: " + y);
             }
 
             this.component.repaint();
