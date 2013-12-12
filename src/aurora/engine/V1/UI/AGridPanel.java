@@ -86,6 +86,7 @@ public class AGridPanel extends JPanel {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Adding to grid...");
                 }
+                comp.revalidate();
             }
         }
     }
@@ -106,6 +107,7 @@ public class AGridPanel extends JPanel {
                 if (logger.isDebugEnabled()) {
                     logger.debug("Adding to grid... ");
                 }
+                comp.revalidate();
             }
         }
     }
@@ -121,6 +123,7 @@ public class AGridPanel extends JPanel {
             this.setPreferredSize(new Dimension(componentList.get(i).getWidth(),
                     componentList.get(i).getHeight()));
             this.add(componentList.get(i));
+            componentList.get(i).revalidate();
         }
         this.revalidate();
         this.repaint();
