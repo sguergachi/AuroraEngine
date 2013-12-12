@@ -136,7 +136,6 @@ public class AGridPanel extends JPanel {
      * @return
      */
     public boolean isGridFull() {
-        System.out.println("componentList.size() = " + componentList.size());
         return componentList.size() >= (row * col);
     }
 
