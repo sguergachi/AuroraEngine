@@ -21,6 +21,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -43,13 +44,11 @@ public class AAnimate implements Runnable {
 
     private JComponent component;
 
-    private JComponent container;
-
-    private JFrame frame;
-
     private Graphics g;
 
-    private APostHandler e;
+    private APostHandler postAnimate;
+
+    private final ArrayList<APostHandler> postListenerList;
 
     private int x = 0;
 
@@ -72,18 +71,21 @@ public class AAnimate implements Runnable {
     static final Logger logger = Logger.getLogger(AAnimate.class);
 
     public AAnimate(JComponent component) {
+        this.postListenerList = new ArrayList<>();
         this.component = component;
         this.component.setDoubleBuffered(true);
         this.component.setVisible(false);
     }
 
     public AAnimate() {
+        this.postListenerList = new ArrayList<>();
     }
 
     public AAnimate(JComponent component, APostHandler e) {
+        this.postListenerList = new ArrayList<>();
         this.component = component;
         this.component.setDoubleBuffered(true);
-        this.e = e;
+        this.postAnimate = e;
         this.component.setVisible(false);
     }
 
@@ -97,7 +99,10 @@ public class AAnimate implements Runnable {
     }
 
     public void addPostAnimationListener(APostHandler e) {
-        this.e = e;
+        this.postAnimate = e;
+    }
+    public void appendPostAnimationListener(APostHandler e) {
+        postListenerList.add(e);
     }
 
     public boolean isAnimating() {
@@ -110,7 +115,7 @@ public class AAnimate implements Runnable {
     }
 
     /**
-     * Fades in a component
+     * Fades in a component. not functioning
      *
      * EFFECT ID = 0;
      *
@@ -139,34 +144,10 @@ public class AAnimate implements Runnable {
 
     }
 
-    public void fadeIn(JComponent commponent, JFrame container) {
-        this.component = commponent;
-        this.frame = container;
 
-        Alpha = 0.2F;
-
-
-        //Get Graphics from Commponent
-        g = this.component.getGraphics();
-        //
-        g2d = (Graphics2D) g;
-
-
-        //Enable Anti-Alias and quality
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-
-
-        //start fade effect
-        AnimationID = 0;
-        start();
-
-    }
 
     /**
-     * Fades out a component
+     * Fades out a component. not functioning
      *
      * EFFECT ID = 1;
      *
@@ -428,12 +409,20 @@ public class AAnimate implements Runnable {
 
     ///Run when animation is complete
     private void doneAnimation() {
-        if (e != null) {
-            e.postAction();
+        if (postAnimate != null) {
+            postAnimate.postAction();
+        }
+
+        if(postListenerList.size() != 0){
+            for(int i =0; i < postListenerList.size(); i++){
+                postListenerList.get(i).postAction();
+            }
+
+            postListenerList.clear();
         }
     }
 
     public void removeAllListeners() {
-        this.e = null;
+        this.postAnimate = null;
     }
 }
