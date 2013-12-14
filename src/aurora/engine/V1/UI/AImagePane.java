@@ -51,7 +51,7 @@ public class AImagePane extends JPanel {
 
     private float widthRatio = 1;
 
-    private ASurface ressource;
+    private final ASurface ressource;
 
     private String SurfaceName;
 
@@ -375,4 +375,6 @@ public class AImagePane extends JPanel {
         ressource.setSurfaceName(this.SurfaceName);
         this.repaint();
     }
+
+
 }

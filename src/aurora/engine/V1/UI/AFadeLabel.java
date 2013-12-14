@@ -86,6 +86,10 @@ public class AFadeLabel extends ASlickLabel {
         }
     }
 
+    public String getCurrentText() {
+        return currentString;
+    }
+
     @Override
     public void setForeground(Color clr) {
         if (currentColor == null) {
@@ -263,4 +267,6 @@ public class AFadeLabel extends ASlickLabel {
 
 
     }
+
+
 }
