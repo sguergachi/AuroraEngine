@@ -17,9 +17,14 @@
  */
 package aurora.engine.V1.Logic;
 
-import java.sql.*;
+import java.sql.Array;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -102,7 +107,6 @@ public class ASimpleDB {
         this.databasePath = Path;
         this.databasePath_DEV = Path;
 
-
     }
 
     //
@@ -125,42 +129,44 @@ public class ASimpleDB {
     private void prepDatabase(String InitialTableName, String ColumnID)
             throws SQLException {
         //Connect and create new Database
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName);
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName);
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName);
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName);
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(databasePath + DatabaseName);
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(databasePath + DatabaseName);
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName);
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName);
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName);
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName);
+                }
 
+            }
         }
-
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "CREATE TABLE "
-                    + InitialTableName);
+                            "CREATE TABLE "
+                            + InitialTableName);
             statement.execute();
             addColumn(InitialTableName, ColumnID, TYPE_INTEGER);
 
@@ -192,45 +198,45 @@ public class ASimpleDB {
         if (autoPrep) {
             prepDatabase(TableName, "ID");
         } else {
+            if (connection == null || connection.isClosed()) {
+                try {
+                    String osName = System.getProperty("os.name");
+                    if (osName.contains("Windows")) {
+                        connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                                 + databasePath
+                                                                 + DatabaseName);
+                    } else if (osName.equals("Mac OS X")) {
+                        connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                                 + databasePath
+                                .replace("\\", "//") + DatabaseName);
+                    }
 
-            try {
-                String osName = System.getProperty("os.name");
-                if (osName.contains("Windows")) {
-                    connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                             + databasePath
-                                                             + DatabaseName);
-                } else if (osName.equals("Mac OS X")) {
-                    connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                             + databasePath
-                            .replace("\\", "//") + DatabaseName);
+                    if (logger.isDebugEnabled()) {
+                        logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                     + DatabaseName + ";IFEXISTS=TRUE");
+                    }
+
+                } catch (Exception exx) {
+                    String osName = System.getProperty("os.name");
+                    if (osName.contains("Windows")) {
+                        connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                                 + databasePath_DEV
+                                                                 + DatabaseName);
+                    } else if (osName.equals("Mac OS X")) {
+                        connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                                 + databasePath_DEV
+                                .replace("\\", "//") + DatabaseName);
+                    }
+
                 }
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
-                }
-
-            } catch (Exception exx) {
-                String osName = System.getProperty("os.name");
-                if (osName.contains("Windows")) {
-                    connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                             + databasePath_DEV
-                                                             + DatabaseName);
-                } else if (osName.equals("Mac OS X")) {
-                    connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                             + databasePath_DEV
-                            .replace("\\", "//") + DatabaseName);
-                }
-
             }
             try {
 
                 PreparedStatement statement = connection
                         .prepareStatement(
-                        "CREATE TABLE "
-                        + TableName);
+                                "CREATE TABLE "
+                                + TableName);
                 statement.execute();
-
 
             } catch (SQLException ex) {
 
@@ -259,47 +265,49 @@ public class ASimpleDB {
     //TODO Test This
     public void addTableFlex(String TableName, String ColumnCSV)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName);
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName);
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName);
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName);
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName);
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName);
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName);
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName);
+                }
 
+            }
         }
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "CREATE TABLE"
-                    + TableName
-                    + "("
-                    + ColumnCSV
-                    + ")");
+                            "CREATE TABLE"
+                            + TableName
+                            + "("
+                            + ColumnCSV
+                            + ")");
             statement.execute();
-
 
         } catch (SQLException ex) {
 
@@ -327,50 +335,54 @@ public class ASimpleDB {
      */
     public void addColumn(String TableName, String ColumnName, String ColumnType)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "ALTER TABLE "
-                    + TableName
-                    + " ADD "
-                    + ColumnName
-                    + " "
-                    + ColumnType);
+                            "ALTER TABLE "
+                            + TableName
+                            + " ADD "
+                            + ColumnName
+                            + " "
+                            + ColumnType);
             statement.execute();
-
 
         } catch (SQLException ex) {
 
@@ -397,49 +409,53 @@ public class ASimpleDB {
      * @throws SQLException
      */
     public void addRow(String TableName, String CSV) throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "INSERT INTO "
-                    + TableName
-                    + " VALUES("
-                    + CSV
-                    + ")");
+                            "INSERT INTO "
+                            + TableName
+                            + " VALUES("
+                            + CSV
+                            + ")");
             statement.execute();
-
 
         } catch (SQLException ex) {
             connection.rollback();
@@ -469,36 +485,41 @@ public class ASimpleDB {
     //TODO: Need To Test This Method
     public void addRowFlex(String TableName, String[] ColumnNames, String CSV)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
         StringBuilder ColumnCSV = new StringBuilder();
 
@@ -517,16 +538,15 @@ public class ASimpleDB {
             }
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "INSERT INTO "
-                    + TableName
-                    + " ("
-                    + ColumnCSV
-                    .toString()
-                    + ") VALUES("
-                    + CSV
-                    + ")");
+                            "INSERT INTO "
+                            + TableName
+                            + " ("
+                            + ColumnCSV
+                            .toString()
+                            + ") VALUES("
+                            + CSV
+                            + ")");
             statement.execute();
-
 
         } catch (SQLException ex) {
             connection.rollback();
@@ -555,65 +575,68 @@ public class ASimpleDB {
     public void setConstraint(String TableName, String ColumnName,
                               String constraintType)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
         try {
             if (!constraintType.equals(NO_NULLS) || constraintType.equals(
                     FOREIGN_KEY)) {
                 PreparedStatement statement = connection
                         .prepareStatement(
-                        "ALTER TABLE "
-                        + TableName
-                        + " ADD "
-                        + constraintType
-                        + " ("
-                        + ColumnName
-                        + ")");
+                                "ALTER TABLE "
+                                + TableName
+                                + " ADD "
+                                + constraintType
+                                + " ("
+                                + ColumnName
+                                + ")");
                 statement.execute();
             } else if (constraintType.equals(NO_NULLS)) {
                 PreparedStatement statement = connection
                         .prepareStatement(
-                        "ALTER TABLE "
-                        + TableName
-                        + " ALTER "
-                        + ColumnName
-                        + " "
-                        + constraintType);
+                                "ALTER TABLE "
+                                + TableName
+                                + " ALTER "
+                                + ColumnName
+                                + " "
+                                + constraintType);
                 statement.execute();
             } else if (constraintType.equals(FOREIGN_KEY)) {
             }
-
-
 
         } catch (SQLException ex) {
 
@@ -646,52 +669,57 @@ public class ASimpleDB {
     public void setForeginKey(String TableName1, String TableName2,
                               String ColumnName1, String ColumnName2)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "ALTER TABLE "
-                    + TableName1
-                    + " ADD FOREIGN KEY ("
-                    + ColumnName1
-                    + ") "
-                    + "REFERENCES  "
-                    + TableName2
-                    + " ("
-                    + ColumnName2
-                    + ")");
+                            "ALTER TABLE "
+                            + TableName1
+                            + " ADD FOREIGN KEY ("
+                            + ColumnName1
+                            + ") "
+                            + "REFERENCES  "
+                            + TableName2
+                            + " ("
+                            + ColumnName2
+                            + ")");
             statement.execute();
 
         } catch (SQLException ex) {
@@ -727,38 +755,42 @@ public class ASimpleDB {
                             Object NewValue)
             throws SQLException {
 
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
+
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
+
             }
-
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
-
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
-
         }
         try {
 
@@ -793,7 +825,6 @@ public class ASimpleDB {
             }
         }
 
-
     }
 
     //
@@ -820,61 +851,65 @@ public class ASimpleDB {
      */
     public Object[] getRow(String TableName, Integer ID, String ColumnName)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + "\\lib\\"
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + "\\lib\\"
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + "//" + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + "//"
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "//"
-                             + DatabaseName + ";IFEXISTS=TRUE");
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "//"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
             }
         }
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "SELECT ID,"
-                    + ColumnName
-                    + " FROM "
-                    + TableName
-                    + " WHERE ID=?");
+                            "SELECT ID,"
+                            + ColumnName
+                            + " FROM "
+                            + TableName
+                            + " WHERE ID=?");
             statement.setInt(1, ID);
             //System.out.println("SELECT ID," + ColumnName + " FROM " + TableName + " WHERE ID=?");
             ResultSet rs = statement.executeQuery();
             rs.next();
 
-
             Array ar = rs.getArray(ColumnName);
             Object[] arr = (Object[]) ar.getArray();
             return arr;
-
 
         } catch (SQLException ex) {
 
@@ -921,48 +956,52 @@ public class ASimpleDB {
                                String WhereQuery, String getColumnName)
             throws SQLException {
 
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//")
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//")
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "//"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "//"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-            //Dev Mode
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//")
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            }
+                //Dev Mode
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//")
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "//"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "//"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
+
         StringBuilder ColumnCSV = new StringBuilder();
         for (String column : FromColumnNames) {
             if (FromColumnNames[FromColumnNames.length - 1].equals(column)) {
@@ -989,13 +1028,10 @@ public class ASimpleDB {
             ResultSet rs = statement.executeQuery();
             rs.next();
 
-
-//            System.out.println(rs.getString(1));
             Array ar = rs.getArray(getColumnName);
             Object[] arr = (Object[]) ar.getArray();
 
             return arr;
-
 
         } catch (SQLException ex) {
 
@@ -1023,17 +1059,19 @@ public class ASimpleDB {
      * @throws SQLException
      */
     public void deleteRow(String TableName, int ID) throws SQLException {
-        connection = DriverManager.getConnection("jdbc:h2:~/" + DatabaseName);
+        if (connection == null || connection.isClosed()) {
+            connection = DriverManager
+                    .getConnection("jdbc:h2:~/" + DatabaseName);
+        }
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "DELETE FROM"
-                    + TableName
-                    + "WHERE ID=?");
+                            "DELETE FROM"
+                            + TableName
+                            + "WHERE ID=?");
             statement.setInt(1, ID);
             statement.execute();
-
 
         } catch (SQLException ex) {
             connection.rollback();
@@ -1059,52 +1097,53 @@ public class ASimpleDB {
      */
     public void deleteRowFlex(String TableName, String WhereQuery) throws
             SQLException {
-        // connection = DriverManager.getConnection("jdbc:h2:~/" + DatabaseName);
 
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
+
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
+
             }
-
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
-
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
-
         }
-
-
         try {
 
             PreparedStatement statement = connection
                     .prepareStatement(
-                    "DELETE FROM "
-                    + TableName
-                    + " WHERE "
-                    + WhereQuery);
+                            "DELETE FROM "
+                            + TableName
+                            + " WHERE "
+                            + WhereQuery);
             statement.execute();
-
 
         } catch (SQLException ex) {
             connection.rollback();
@@ -1122,10 +1161,12 @@ public class ASimpleDB {
     /**
      * A Simple way of searching the database using characters found in a field.
      *
-     * @param TableName   Name of table you are searching in
-     * @param ColumnName  Column name you want to search in
-     * @param aproxString The characters in the String you are looking for
+     * @param TableName        Name of table you are searching in
+     * @param ColumnNameSelect
+     * @param aproxString      The characters in the String you are looking for
      * <p/>
+     * @param ColumnNameWhere
+     *                         <p>
      * @return an Object Array containing the strings containing the aproxString
      *         key
      *
@@ -1140,43 +1181,47 @@ public class ASimpleDB {
     public Object[] searchAprox(String TableName, String ColumnNameSelect,
                                 String ColumnNameWhere, String aproxString)
             throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
-
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
-
-        } catch (Exception exx) {
+        if (connection == null || connection.isClosed()) {
             try {
                 String osName = System.getProperty("os.name");
                 if (osName.contains("Windows")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                             + databasePath_DEV
+                                                             + databasePath
                                                              + DatabaseName
                                                              + ";IFEXISTS=TRUE");
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                             + databasePath_DEV
-                            .replace("\\", "//") + DatabaseName
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
                                                              + ";IFEXISTS=TRUE");
                 }
-            } catch (Exception exxx) {
-                logger.error(exxx);
-                connection.close();
-            }
 
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
+
+            } catch (Exception exx) {
+                try {
+                    String osName = System.getProperty("os.name");
+                    if (osName.contains("Windows")) {
+                        connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                                 + databasePath_DEV
+                                                                 + DatabaseName
+                                                                 + ";IFEXISTS=TRUE");
+                    } else if (osName.equals("Mac OS X")) {
+                        connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                                 + databasePath_DEV
+                                .replace("\\", "//") + DatabaseName
+                                                                 + ";IFEXISTS=TRUE");
+                    }
+                } catch (Exception exxx) {
+                    logger.error(exxx);
+                    connection.close();
+                }
+
+            }
         }
         try {
 
@@ -1200,14 +1245,11 @@ public class ASimpleDB {
 
             return array;
 
-
         } catch (SQLException ex) {
 
-//            connection.rollback();
             logger.error(ex);
 
         } finally {
-//            connection.close();
             if (logger.isDebugEnabled()) {
                 logger.debug("Closed connection");
             }
@@ -1230,37 +1272,42 @@ public class ASimpleDB {
      * @throws SQLException
      */
     public void flexExecute(String SQL) throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                             + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug(System.getProperty("user.dir") + "\\lib\\"
+                                 + DatabaseName + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
+            }
         }
         try {
 
@@ -1269,7 +1316,6 @@ public class ASimpleDB {
                 logger.debug(SQL);
             }
             statement.execute();
-
 
         } catch (SQLException ex) {
             connection.rollback();
@@ -1291,40 +1337,45 @@ public class ASimpleDB {
      * @throws SQLException
      */
     public ResultSet flexQuery(String SQL) throws SQLException {
-        try {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath.replace(
-                        "\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+        if (connection == null || connection.isClosed()) {
+            try {
+                String osName = System.getProperty("os.name");
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("jdbc:h2:file:" + databasePath + DatabaseName
-                             + ";IFEXISTS=TRUE");
-            }
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath
+                            .replace(
+                                    "\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
 
-        } catch (Exception exx) {
-            String osName = System.getProperty("os.name");
-            if (osName.contains("Windows")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                                                         + DatabaseName
-                                                         + ";IFEXISTS=TRUE");
-            } else if (osName.equals("Mac OS X")) {
-                connection = DriverManager.getConnection("jdbc:h2:file:"
-                                                         + databasePath_DEV
-                        .replace("\\", "//") + DatabaseName + ";IFEXISTS=TRUE");
-            }
+                if (logger.isDebugEnabled()) {
+                    logger.debug("jdbc:h2:file:" + databasePath + DatabaseName
+                                 + ";IFEXISTS=TRUE");
+                }
 
+            } catch (Exception exx) {
+                String osName = System.getProperty("os.name");
+                if (osName.contains("Windows")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                                                             + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                } else if (osName.equals("Mac OS X")) {
+                    connection = DriverManager.getConnection("jdbc:h2:file:"
+                                                             + databasePath_DEV
+                            .replace("\\", "//") + DatabaseName
+                                                             + ";IFEXISTS=TRUE");
+                }
+
+            }
         }
         try {
-
 
             Statement statement = connection.createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -1372,7 +1423,6 @@ public class ASimpleDB {
                     log(Level.SEVERE, null, ex);
             return false;
         }
-
 
     }
 }
