@@ -23,6 +23,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 
 /**
@@ -68,6 +69,8 @@ public class AAnimate implements Runnable {
 
     static final Logger logger = Logger.getLogger(AAnimate.class);
 
+    private JFrame frame;
+
     public AAnimate(JComponent component) {
         this.postListenerList = new ArrayList<>();
         this.component = component;
@@ -87,12 +90,22 @@ public class AAnimate implements Runnable {
         this.component.setVisible(false);
     }
 
+    public AAnimate(JFrame frame) {
+        this.frame = frame;
+        this.postListenerList = new ArrayList<>();
+        this.frame.setVisible(false);
+    }
+
     public void setInitialLocation(int x, int y) {
 
         this.x = x;
         this.y = y;
-        this.component.setBounds(x, y, component.getWidth(), component
-                .getHeight());
+        if (component != null) {
+            this.component.setBounds(x, y, component.getWidth(), component
+                    .getHeight());
+        } else {
+            frame.setLocation(x, y);
+        }
 
     }
 
@@ -146,23 +159,14 @@ public class AAnimate implements Runnable {
      * EFFECT ID = 1;
      *
      */
-    public void fadeOut(JComponent component) {
+    public void fadeOut(JFrame component) {
         //Get Graphics from Commponent
-        //TODO NEED TO SUBCLASS AND OVERRIDE TO MAKE FADE EFFECT
 
-        this.component = component;
+        this.frame = component;
 
-        g = this.component.getGraphics();
-
-        g2d = (Graphics2D) g;
         Alpha = 1.0f;
 
         //Enable Anti-Alias
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                             RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                             RenderingHints.VALUE_RENDER_QUALITY);
-
         AnimationID = 1;
         start();
     }
@@ -225,7 +229,6 @@ public class AAnimate implements Runnable {
             Animating = true;
 
             if (AnimationID == 0) {
-                g2d.setComposite(makeComposite(Alpha));
 
                 if (logger.isDebugEnabled()) {
                     logger.debug("Alpha " + Alpha);
@@ -247,20 +250,17 @@ public class AAnimate implements Runnable {
                     logger.debug("Alpha of Animation: " + Alpha);
                 }
 
-                g2d.setComposite(makeComposite(Alpha));
                 //Decrease Alpha
-                Alpha -= 0.1F;
-                component.repaint();
-                component.revalidate();
+                Alpha -= 0.05F;
+                frame.repaint();
+                frame.revalidate();
 
-                //if alpha is nothing then render invisible
+                frame.setOpacity(Alpha);
+
                 if (Alpha < 0.05F) {
-                    //commponent.setVisible(false);
                     Alpha = 0.0F;
-                    g2d.setComposite(makeComposite(Alpha));
-
+                    frame.setOpacity(Alpha);
                     break;
-
                 }
 
                 //HORIZONTAL
@@ -321,8 +321,13 @@ public class AAnimate implements Runnable {
                     if (YPos <= y) {
                         break;
                     }
-                    component.setBounds(component.getLocation().x, y, component
-                            .getWidth(), component.getHeight());
+                    if (component != null) {
+                        component.setBounds(component.getLocation().x, y,
+                                            component
+                                .getWidth(), component.getHeight());
+                    } else {
+                        frame.setLocation(x, y);
+                    }
                 } else {
                     if (speed < 0) {
                         y = y + speed;
@@ -330,8 +335,13 @@ public class AAnimate implements Runnable {
                         y = y - speed;
                     }
 
-                    component.setBounds(component.getLocation().x, y, component
-                            .getWidth(), component.getHeight());
+                    if (component != null) {
+                        component.setBounds(component.getLocation().x, y,
+                                            component
+                                .getWidth(), component.getHeight());
+                    } else {
+                        frame.setLocation(x, y);
+                    }
 
                     if (YPos >= y) {
                         break;
@@ -348,8 +358,11 @@ public class AAnimate implements Runnable {
                     }
 
                 }
-
-                component.repaint();
+                if (component != null) {
+                    component.repaint();
+                }else{
+                    frame.repaint();
+                }
 
                 //DIAGONAL
             } else if (AnimationID == 4) {
@@ -391,15 +404,23 @@ public class AAnimate implements Runnable {
                 System.out.println("Y Val " + y);
             }
 
-            this.component.repaint();
-            this.component.setVisible(true);
-
+            if (component != null) {
+                this.component.repaint();
+                this.component.setVisible(true);
+            } else {
+                frame.repaint();
+                frame.setVisible(true);
+            }
         }
         Animating = false;
         runner = null;
-        this.component.setLocation(x, y);
-        this.component.revalidate();
-
+        if (component != null) {
+            this.component.setLocation(x, y);
+            this.component.revalidate();
+        } else {
+            this.frame.setLocation(x, y);
+            this.frame.revalidate();
+        }
         doneAnimation();
 
     }
