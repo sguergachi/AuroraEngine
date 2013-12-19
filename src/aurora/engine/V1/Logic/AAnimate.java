@@ -23,8 +23,6 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -101,6 +99,7 @@ public class AAnimate implements Runnable {
     public void addPostAnimationListener(APostHandler e) {
         this.postAnimate = e;
     }
+
     public void appendPostAnimationListener(APostHandler e) {
         postListenerList.add(e);
     }
@@ -123,9 +122,7 @@ public class AAnimate implements Runnable {
     public void fadeIn(JComponent component) {
         this.component = component;
 
-
         Alpha = 0.2F;
-
 
         //Get Graphics from Commponent
         g = this.component.getGraphics();
@@ -133,18 +130,15 @@ public class AAnimate implements Runnable {
 
         //Enable Anti-Alias
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
-
+                             RenderingHints.VALUE_RENDER_QUALITY);
 
         //start fade effect
         AnimationID = 0;
         start();
 
     }
-
-
 
     /**
      * Fades out a component. not functioning
@@ -165,9 +159,9 @@ public class AAnimate implements Runnable {
 
         //Enable Anti-Alias
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                             RenderingHints.VALUE_RENDER_QUALITY);
 
         AnimationID = 1;
         start();
@@ -189,7 +183,7 @@ public class AAnimate implements Runnable {
         AnimationID = 2;
 
         if (logger.isDebugEnabled()) {
-        	logger.debug("move horz with X at: " + x);
+            logger.debug("move horz with X at: " + x);
         }
 
         start();
@@ -220,7 +214,7 @@ public class AAnimate implements Runnable {
         runner.start();
 
         if (logger.isDebugEnabled()) {
-        	logger.debug("Running animation");
+            logger.debug("Running animation");
         }
 
     }
@@ -234,7 +228,7 @@ public class AAnimate implements Runnable {
                 g2d.setComposite(makeComposite(Alpha));
 
                 if (logger.isDebugEnabled()) {
-                	logger.debug("Alpha " + Alpha);
+                    logger.debug("Alpha " + Alpha);
                 }
 
                 component.paintComponents(g2d);
@@ -249,8 +243,8 @@ public class AAnimate implements Runnable {
 
             } else if (AnimationID == 1) {
 
-            	if (logger.isDebugEnabled()) {
-                	logger.debug("Alpha of Animation: " + Alpha);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Alpha of Animation: " + Alpha);
                 }
 
                 g2d.setComposite(makeComposite(Alpha));
@@ -258,8 +252,6 @@ public class AAnimate implements Runnable {
                 Alpha -= 0.1F;
                 component.repaint();
                 component.revalidate();
-
-
 
                 //if alpha is nothing then render invisible
                 if (Alpha < 0.05F) {
@@ -274,12 +266,10 @@ public class AAnimate implements Runnable {
                 //HORIZONTAL
             } else if (AnimationID == 2) {
 
-
                 x += (speed) + acc;
 
                 component.setBounds(x, component.getLocation().y, component
                         .getWidth(), component.getHeight());
-
 
                 if (speed > 0) {
 
@@ -288,16 +278,16 @@ public class AAnimate implements Runnable {
                     }
 
                     if (component.getLocation().x > XPos / 2) {
-                    	if (logger.isDebugEnabled()) {
-                        	logger.debug("Slow Down Pos!!");
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Slow Down Pos!!");
                         }
 
                         acc--;
                         acc--;
                     } else if (component.getLocation().x < XPos / 2) {
-                    	if (logger.isDebugEnabled()) {
-                    		logger.debug("Accelerate Pos!!");
-                    	}
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Accelerate Pos!!");
+                        }
 
                         acc++;
                     }
@@ -308,26 +298,25 @@ public class AAnimate implements Runnable {
                     }
 
                     if (component.getLocation().x <= XPos / 2) {
-                    	if (logger.isDebugEnabled()) {
-                    		logger.debug("Slow Down Neg!!");
-                    	}
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Slow Down Neg!!");
+                        }
 
                         acc++;
                         acc++;
                     } else if (component.getLocation().x >= XPos / 2) {
-                    	if (logger.isDebugEnabled()) {
-                    		logger.debug("Accelerate Neg!!");
-                    	}
+                        if (logger.isDebugEnabled()) {
+                            logger.debug("Accelerate Neg!!");
+                        }
 
                         acc--;
                     }
                 }
                 this.component.setVisible(true);
 
-
                 //VERTICAL
             } else if (AnimationID == 3) {
-                if (YPos >= 0) {
+                if (YPos >= 0 && speed > 0) {
                     y = y + speed;
                     if (YPos <= y) {
                         break;
@@ -335,17 +324,32 @@ public class AAnimate implements Runnable {
                     component.setBounds(component.getLocation().x, y, component
                             .getWidth(), component.getHeight());
                 } else {
-                    y = y - speed;
+                    if (speed < 0) {
+                        y = y + speed;
+                    } else {
+                        y = y - speed;
+                    }
+
+                    component.setBounds(component.getLocation().x, y, component
+                            .getWidth(), component.getHeight());
+
                     if (YPos >= y) {
                         break;
                     }
-                    component.setBounds(component.getLocation().x, y, component
-                            .getWidth(), component.getHeight());
+
+                    if (speed < 0) {
+                        if (YPos >= y + speed) {
+                            speed = y - YPos;
+                        }
+                    } else {
+                        if (YPos >= y - speed) {
+                            speed = YPos - y;
+                        }
+                    }
+
                 }
 
-
                 component.repaint();
-
 
                 //DIAGONAL
             } else if (AnimationID == 4) {
@@ -356,7 +360,6 @@ public class AAnimate implements Runnable {
                     y = y - YSpeed;
                     x = x - XSpeed;
                 }
-
 
                 //if one or the other positions attained wait untill other
                 //axis is attained
@@ -374,19 +377,18 @@ public class AAnimate implements Runnable {
                 component.setBounds(x, y, component.getWidth(), component
                         .getHeight());
 
-
             }
 
             //pause
             try {
                 Thread.sleep(16);
             } catch (InterruptedException ex) {
-            	logger.error(ex);
+                logger.error(ex);
             }
 
             if (logger.isDebugEnabled()) {
-//            	logger.debug("X Val: " + x);
-//            	logger.debug("Y Val: " + y);
+                System.out.println("X Val " + x);
+                System.out.println("Y Val " + y);
             }
 
             this.component.repaint();
@@ -413,8 +415,8 @@ public class AAnimate implements Runnable {
             postAnimate.postAction();
         }
 
-        if(postListenerList.size() != 0){
-            for(int i =0; i < postListenerList.size(); i++){
+        if (postListenerList.size() != 0) {
+            for (int i = 0; i < postListenerList.size(); i++) {
                 postListenerList.get(i).postAction();
             }
 
