@@ -67,7 +67,7 @@ public class AAnimate implements Runnable {
     private boolean Animating = false;
 
     private int acc;
-    
+
     private float alphaAcc;
 
     static final Logger logger = Logger.getLogger(AAnimate.class);
@@ -134,21 +134,14 @@ public class AAnimate implements Runnable {
      *
      * EFFECT ID = 0;
      *
+     * @param component
      */
-    public void fadeIn(JComponent component) {
-        this.component = component;
-
-        Alpha = 0.2F;
-
+    public void fadeIn(Window component) {
         //Get Graphics from Commponent
-        g = this.component.getGraphics();
-        g2d = (Graphics2D) g;
 
-        //Enable Anti-Alias
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+        this.frame = component;
+
+        Alpha = 0.0f;
 
         //start fade effect
         AnimationID = 0;
@@ -161,8 +154,9 @@ public class AAnimate implements Runnable {
      *
      * EFFECT ID = 1;
      *
+     * @param component
      */
-    public void fadeOut(JFrame component) {
+    public void fadeOut(Window component) {
         //Get Graphics from Commponent
 
         this.frame = component;
@@ -234,18 +228,23 @@ public class AAnimate implements Runnable {
             if (AnimationID == 0) {
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug("Alpha " + Alpha);
+                    logger.debug("Alpha of Animation: " + Alpha);
                 }
 
-                component.paintComponents(g2d);
-                component.paint(g2d);
-                component.update(g2d);
-                component.repaint();
-                component.revalidate();
-                if (Alpha == 1.0F) {
+                //Decrease Alpha
+                Alpha += (0.05F + alphaAcc);
+                frame.repaint();
+                frame.revalidate();
+
+                frame.setOpacity(Alpha);
+
+                if (Alpha > 0.9F) {
+                    Alpha = 1F;
+                    frame.setOpacity(Alpha);
                     break;
                 }
-                Alpha += 0.2F;
+
+                alphaAcc = alphaAcc + 0.01f;
 
             } else if (AnimationID == 1) {
 
@@ -254,7 +253,7 @@ public class AAnimate implements Runnable {
                 }
 
                 //Decrease Alpha
-                Alpha -= 0.05F + alphaAcc;
+                Alpha -= (0.05F + alphaAcc);
                 frame.repaint();
                 frame.revalidate();
 
@@ -265,8 +264,6 @@ public class AAnimate implements Runnable {
                     frame.setOpacity(Alpha);
                     break;
                 }
-
-                alphaAcc = alphaAcc + 0.01f;
 
                 //HORIZONTAL
             } else if (AnimationID == 2) {
@@ -403,6 +400,8 @@ public class AAnimate implements Runnable {
             } catch (InterruptedException ex) {
                 logger.error(ex);
             }
+
+            alphaAcc = alphaAcc + 0.01f;
 
             if (logger.isDebugEnabled()) {
                 System.out.println("X Val " + x);
