@@ -21,6 +21,7 @@ import java.awt.AlphaComposite;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -66,10 +67,12 @@ public class AAnimate implements Runnable {
     private boolean Animating = false;
 
     private int acc;
+    
+    private float alphaAcc;
 
     static final Logger logger = Logger.getLogger(AAnimate.class);
 
-    private JFrame frame;
+    private Window frame;
 
     public AAnimate(JComponent component) {
         this.postListenerList = new ArrayList<>();
@@ -90,7 +93,7 @@ public class AAnimate implements Runnable {
         this.component.setVisible(false);
     }
 
-    public AAnimate(JFrame frame) {
+    public AAnimate(Window frame) {
         this.frame = frame;
         this.postListenerList = new ArrayList<>();
         this.frame.setVisible(false);
@@ -143,9 +146,9 @@ public class AAnimate implements Runnable {
 
         //Enable Anti-Alias
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                             RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                             RenderingHints.VALUE_RENDER_QUALITY);
+                RenderingHints.VALUE_RENDER_QUALITY);
 
         //start fade effect
         AnimationID = 0;
@@ -251,7 +254,7 @@ public class AAnimate implements Runnable {
                 }
 
                 //Decrease Alpha
-                Alpha -= 0.05F;
+                Alpha -= 0.05F + alphaAcc;
                 frame.repaint();
                 frame.revalidate();
 
@@ -262,6 +265,8 @@ public class AAnimate implements Runnable {
                     frame.setOpacity(Alpha);
                     break;
                 }
+
+                alphaAcc = alphaAcc + 0.01f;
 
                 //HORIZONTAL
             } else if (AnimationID == 2) {
@@ -323,7 +328,7 @@ public class AAnimate implements Runnable {
                     }
                     if (component != null) {
                         component.setBounds(component.getLocation().x, y,
-                                            component
+                                component
                                 .getWidth(), component.getHeight());
                     } else {
                         frame.setLocation(x, y);
@@ -337,7 +342,7 @@ public class AAnimate implements Runnable {
 
                     if (component != null) {
                         component.setBounds(component.getLocation().x, y,
-                                            component
+                                component
                                 .getWidth(), component.getHeight());
                     } else {
                         frame.setLocation(x, y);
@@ -349,7 +354,7 @@ public class AAnimate implements Runnable {
 
                     if (speed < 0) {
                         if (YPos >= y + speed) {
-                            speed = y - YPos;
+                            speed = -(y - YPos);
                         }
                     } else {
                         if (YPos >= y - speed) {
@@ -360,7 +365,7 @@ public class AAnimate implements Runnable {
                 }
                 if (component != null) {
                     component.repaint();
-                }else{
+                } else {
                     frame.repaint();
                 }
 
