@@ -64,6 +64,7 @@ public class AFileDrop {
 
     private String dragImageName;
     private String initialImageName;
+    private String rejectDragImageName;
 
 
 
@@ -89,6 +90,7 @@ public class AFileDrop {
 
         this.initalComponent = InitialComponent;
         this.dragImageName = DragImageName;
+        this.rejectDragImageName = RejectDragImageName;
         this.initialImageName = InitialComponent.getImageURL();
 
         if (supportsDnD()) {   // Make a drop listener
@@ -106,15 +108,17 @@ public class AFileDrop {
                         evt.acceptDrag(DnDConstants.ACTION_COPY);
                     } // end if: drag ok
                     else {   // Reject the drag event
-                        initalComponent.setImage(dragImageName);
+                        initalComponent.setImage(rejectDragImageName);
                         evt.rejectDrag();
                     }   // end else: drag not ok
                 }   // end dragEnter
 
+                @Override
                 public void dragOver(DropTargetDragEvent evt) {   // This is called continually as long as the mouse is
                     // over the drag target.
                 }   // end dragOver
 
+                @Override
                 public void drop(DropTargetDropEvent evt) {
                     try {   // Get whatever was dropped
                         java.awt.datatransfer.Transferable tr = evt
@@ -219,6 +223,7 @@ public class AFileDrop {
             makeDropTarget(initalComponent,recursive);
         } // end if: supports dnd
         else {
+            initalComponent.setImage(rejectDragImageName);
         }   // end else: does not support DnD
     }   // end constructor
 
@@ -312,7 +317,7 @@ public class AFileDrop {
         boolean ok = false;
 
         // Get data flavors being dragged
-        java.awt.datatransfer.DataFlavor[] flavors = evt.getCurrentDataFlavors();
+        DataFlavor[] flavors = evt.getCurrentDataFlavors();
 
         // See if any of the flavors are a file list
         int i = 0;
@@ -321,9 +326,10 @@ public class AFileDrop {
             // Is the flavor a file list?
             final DataFlavor curFlavor = flavors[i];
             if (curFlavor.equals(
-                    java.awt.datatransfer.DataFlavor.javaFileListFlavor)
+                    DataFlavor.javaFileListFlavor)
                 || curFlavor.isRepresentationClassReader()) {
                 ok = true;
+
             }
             // END 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
             i++;
