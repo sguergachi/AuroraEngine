@@ -1,11 +1,17 @@
 package aurora.engine.V1.Logic;
 
+import aurora.engine.V1.UI.AImagePane;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.List;
 
 /**
  * This class makes it easy to drag and drop files from the operating
@@ -54,74 +60,12 @@ public class AFileDrop {
      */
     private static Boolean supportsDnD;
 
-    // Default border color
-    private static java.awt.Color defaultBorderColor = new java.awt.Color(0f, 0f,
-                                                                          1f,
-                                                                          0.29f);
+    private AImagePane initalComponent;
 
-    /**
-     * Constructs a {@link aFileDrop} with a default light-blue border
-     * and, if <var>c</var> is a {@link java.awt.Container}, recursively
-     * sets all elements contained within as drop targets, though only
-     * the top level container will change borders.
-     *
-     * @param c        Component on which files will be dropped.
-     * @param listener Listens for <tt>filesDropped</tt>.
-     * <p>
-     * @since 1.0
-     */
-    public AFileDrop(
-            final java.awt.Component c,
-            final Listener listener) {
-        this(c, // Drop target
-             javax.swing.BorderFactory.createDashedBorder(defaultBorderColor,
-                                                          2,
-                                                          2, 2, true), // Drag border
-             true, // Recursive
-             listener);
-    }   // end constructor
+    private String dragImageName;
+    private String initialImageName;
 
-    /**
-     * Constructor with a default border and the option to recursively set drop targets.
-     * If your component is a <tt>java.awt.Container</tt>, then each of its children
-     * components will also listen for drops, though only the parent will change borders.
-     *
-     * @param c         Component on which files will be dropped.
-     * @param recursive Recursively set children as drop targets.
-     * @param listener  Listens for <tt>filesDropped</tt>.
-     * <p>
-     * @since 1.0
-     */
-    public AFileDrop(
-            final java.awt.Component c,
-            final boolean recursive,
-            final Listener listener) {
-        this(c, // Drop target
-             javax.swing.BorderFactory.createDashedBorder(defaultBorderColor,
-                                                          2,
-                                                          2, 2, true), // Drag border
-             recursive, // Recursive
-             listener);
-    }   // end constructor
 
-    /**
-     * Constructor with a specified border
-     *
-     * @param c          Component on which files will be dropped.
-     * @param dragBorder Border to use on <tt>JComponent</tt> when dragging occurs.
-     * @param listener   Listens for <tt>filesDropped</tt>.
-     * <p>
-     * @since 1.0
-     */
-    public AFileDrop(
-            final java.awt.Component c,
-            final javax.swing.border.Border dragBorder,
-            final Listener listener) {
-        this(c, // Drop target
-             dragBorder, // Drag border
-             false, // Recursive
-             listener);
-    }   // end constructor
 
     /**
      * Full constructor with a specified border and debugging optionally turned on.
@@ -138,63 +82,62 @@ public class AFileDrop {
      * @since 1.0
      */
     public AFileDrop(
-            final java.awt.Component c,
-            final javax.swing.border.Border dragBorder,
+            AImagePane InitialComponent,
+            String DragImageName, String RejectDragImageName,
             final boolean recursive,
             final Listener listener) {
 
+        this.initalComponent = InitialComponent;
+        this.dragImageName = DragImageName;
+        this.initialImageName = InitialComponent.getImageURL();
+
         if (supportsDnD()) {   // Make a drop listener
-            dropListener = new java.awt.dnd.DropTargetListener() {
+            dropListener = new DropTargetListener() {
                 @Override
                 public void dragEnter(java.awt.dnd.DropTargetDragEvent evt) {
 
                     // Is this an acceptable drag event?
                     if (isDragOk(evt)) {
-                        // If it's a Swing component, set its border
-                        if (c instanceof javax.swing.JComponent) {
-                            javax.swing.JComponent jc = (javax.swing.JComponent) c;
-                            normalBorder = jc.getBorder();
-                            jc.setBorder(dragBorder);
-                        }   // end if: JComponent
+
+                        initalComponent.setImage(dragImageName);
 
                         // Acknowledge that it's okay to enter
                         //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
-                        evt.acceptDrag(java.awt.dnd.DnDConstants.ACTION_COPY);
+                        evt.acceptDrag(DnDConstants.ACTION_COPY);
                     } // end if: drag ok
                     else {   // Reject the drag event
+                        initalComponent.setImage(dragImageName);
                         evt.rejectDrag();
                     }   // end else: drag not ok
                 }   // end dragEnter
 
-                public void dragOver(java.awt.dnd.DropTargetDragEvent evt) {   // This is called continually as long as the mouse is
+                public void dragOver(DropTargetDragEvent evt) {   // This is called continually as long as the mouse is
                     // over the drag target.
                 }   // end dragOver
 
-                public void drop(java.awt.dnd.DropTargetDropEvent evt) {
+                public void drop(DropTargetDropEvent evt) {
                     try {   // Get whatever was dropped
                         java.awt.datatransfer.Transferable tr = evt
                                 .getTransferable();
 
                         // Is it a file list?
                         if (tr.isDataFlavorSupported(
-                                java.awt.datatransfer.DataFlavor.javaFileListFlavor)) {
+                               DataFlavor.javaFileListFlavor)) {
                             // Say we'll take it.
                             //evt.acceptDrop ( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
-                            evt
-                                    .acceptDrop(
-                                            java.awt.dnd.DnDConstants.ACTION_COPY);
+                            evt.acceptDrop(DnDConstants.ACTION_COPY);
 
                             // Get a useful list
-                            java.util.List fileList = (java.util.List) tr
+                            List fileList = (List) tr
                                     .getTransferData(
-                                            java.awt.datatransfer.DataFlavor.javaFileListFlavor);
+                                            DataFlavor.javaFileListFlavor);
                             java.util.Iterator iterator = fileList.iterator();
 
                             // Convert list to array
-                            java.io.File[] filesTemp = new java.io.File[fileList
+                            File[] filesTemp = new File[fileList
                                     .size()];
                             fileList.toArray(filesTemp);
-                            final java.io.File[] files = filesTemp;
+                            final File[] files = filesTemp;
 
                             // Alert listener to drop.
                             if (listener != null) {
@@ -248,20 +191,15 @@ public class AFileDrop {
                         evt.rejectDrop();
                     } // end catch: UnsupportedFlavorException
                     finally {
-                        // If it's a Swing component, reset its border
-                        if (c instanceof javax.swing.JComponent) {
-                            javax.swing.JComponent jc = (javax.swing.JComponent) c;
-                            jc.setBorder(normalBorder);
-                        }   // end if: JComponent
+                        initalComponent.setImage(initialImageName);
                     }   // end finally
                 }   // end drop
 
                 public void dragExit(java.awt.dnd.DropTargetEvent evt) {
-                    // If it's a Swing component, reset its border
-                    if (c instanceof javax.swing.JComponent) {
-                        javax.swing.JComponent jc = (javax.swing.JComponent) c;
-                        jc.setBorder(normalBorder);
-                    }   // end if: JComponent
+
+
+                         initalComponent.setImage(initialImageName);
+
                 }   // end dragExit
 
                 public void dropActionChanged(
@@ -273,11 +211,12 @@ public class AFileDrop {
                     else {
                         evt.rejectDrag();
                     }   // end else: drag not ok
+                     initalComponent.setImage(initialImageName);
                 }   // end dropActionChanged
             }; // end DropTargetListener
 
             // Make the component (and possibly children) drop targets
-            makeDropTarget(c, recursive);
+            makeDropTarget(initalComponent,recursive);
         } // end if: supports dnd
         else {
         }   // end else: does not support DnD
