@@ -17,14 +17,10 @@
  */
 package aurora.engine.V1.Logic;
 
-import java.awt.AlphaComposite;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import org.apache.log4j.Logger;
 
 /**
@@ -39,8 +35,6 @@ public class AAnimate implements Runnable {
     private float Alpha;
 
     private int AnimationID;
-
-    private Graphics2D g2d;
 
     private JComponent component;
 
@@ -429,10 +423,6 @@ public class AAnimate implements Runnable {
 
     }
 
-    private AlphaComposite makeComposite(float alpha) {
-        int type = AlphaComposite.SRC_OVER;
-        return (AlphaComposite.getInstance(type, alpha));
-    }
 
     ///Run when animation is complete
     private void doneAnimation() {
