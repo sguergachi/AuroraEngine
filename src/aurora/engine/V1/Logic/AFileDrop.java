@@ -3,6 +3,8 @@ package aurora.engine.V1.Logic;
 import aurora.engine.V1.UI.AImagePane;
 import java.awt.Component;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DropTargetDragEvent;
 import java.awt.dnd.DropTargetDropEvent;
@@ -12,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * This class makes it easy to drag and drop files from the operating
@@ -60,13 +64,13 @@ public class AFileDrop {
      */
     private static Boolean supportsDnD;
 
-    private AImagePane initalComponent;
+    private AImagePane initialComponent;
 
     private String dragImageName;
+
     private String initialImageName;
+
     private String rejectDragImageName;
-
-
 
     /**
      * Full constructor with a specified border and debugging optionally turned on.
@@ -75,20 +79,23 @@ public class AFileDrop {
      * <tt>System.out</tt> or <tt>System.err</tt>. A <tt>null</tt> value for
      * the parameter <tt>out</tt> will result in no debugging output.
      *
-     * @param c          Component on which files will be dropped.
-     * @param dragBorder Border to use on <tt>JComponent</tt> when dragging occurs.
-     * @param recursive  Recursively set children as drop targets.
-     * @param listener   Listens for <tt>filesDropped</tt>.
+     * @param c              Component on which files will be dropped.
+     * @param dragBorder     Border to use on <tt>JComponent</tt> when dragging occurs.
+     * @param recursive      Recursively set children as drop targets.
+     * @param listener       Listens for <tt>filesDropped</tt>.
      * <p>
+     * @param fileExtensions
+     *                       <p>
      * @since 1.0
      */
     public AFileDrop(
             AImagePane InitialComponent,
             String DragImageName, String RejectDragImageName,
             final boolean recursive,
-            final Listener listener) {
+            final Listener listener,
+            final List<String> fileExtensions) {
 
-        this.initalComponent = InitialComponent;
+        this.initialComponent = InitialComponent;
         this.dragImageName = DragImageName;
         this.rejectDragImageName = RejectDragImageName;
         this.initialImageName = InitialComponent.getImageURL();
@@ -101,14 +108,14 @@ public class AFileDrop {
                     // Is this an acceptable drag event?
                     if (isDragOk(evt)) {
 
-                        initalComponent.setImage(dragImageName);
+                        initialComponent.setImage(dragImageName);
 
                         // Acknowledge that it's okay to enter
                         //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
                         evt.acceptDrag(DnDConstants.ACTION_COPY);
                     } // end if: drag ok
                     else {   // Reject the drag event
-                        initalComponent.setImage(rejectDragImageName);
+                        initialComponent.setImage(rejectDragImageName);
                         evt.rejectDrag();
                     }   // end else: drag not ok
                 }   // end dragEnter
@@ -116,6 +123,67 @@ public class AFileDrop {
                 @Override
                 public void dragOver(DropTargetDragEvent evt) {   // This is called continually as long as the mouse is
                     // over the drag target.
+                    System.out.println(" Waiting @ Transferable...");
+
+                    Transferable tr = evt
+                            .getTransferable();
+
+                    System.out.println(" Finished @ Transferable...");
+                    // Is it a file list?
+                    if (tr.isDataFlavorSupported(
+                            DataFlavor.javaFileListFlavor)) {
+                        // Get a useful list
+                        List fileList = null;
+                        try {
+                            System.out
+                                    .println(" Waiting @ Getting File List...");
+                            fileList = (List) tr
+                                    .getTransferData(
+                                            DataFlavor.javaFileListFlavor);
+                            System.out
+                                    .println(" Finished @ Getting File List...");
+                        } catch (UnsupportedFlavorException ex) {
+                            Logger.getLogger(AFileDrop.class.getName())
+                                    .log(Level.SEVERE, null, ex);
+                        } catch (IOException ex) {
+                            Logger.getLogger(AFileDrop.class.getName())
+                                    .log(Level.SEVERE, null, ex);
+                        }
+
+                        // Check if only 1 file is being draged
+                        if (fileList.size() == 1) {
+
+                            // Check if the file is corerct extension
+                            Boolean correctExt = fileExtensions.contains(
+                                    AFileManager.getExtension(
+                                            (File) fileList.get(
+                                                    0)));
+
+                            if (correctExt) {
+                                if (!initialComponent.getImageURL().equals(
+                                        dragImageName)) {
+                                    initialComponent.setImage(dragImageName);
+                                }
+                            } else {
+                                if (!initialComponent.getImageURL().equals(
+                                        rejectDragImageName)) {
+                                    initialComponent.setImage(
+                                            rejectDragImageName);
+                                }
+                                evt.rejectDrag();
+                            }
+
+                        } else {
+                            if (!initialComponent.getImageURL().equals(
+                                    rejectDragImageName)) {
+                                initialComponent.setImage(
+                                        rejectDragImageName);
+                            }
+                            evt.rejectDrag();
+                        }
+
+                    }
+
                 }   // end dragOver
 
                 @Override
@@ -123,70 +191,75 @@ public class AFileDrop {
                     try {   // Get whatever was dropped
                         java.awt.datatransfer.Transferable tr = evt
                                 .getTransferable();
+                        if (!initialComponent.getImageURL().equals(
+                                rejectDragImageName)) {
+                            // Is it a file list?
+                            if (tr.isDataFlavorSupported(
+                                    DataFlavor.javaFileListFlavor)) {
+                                // Say we'll take it.
+                                //evt.acceptDrop ( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
+                                evt.acceptDrop(DnDConstants.ACTION_COPY);
 
-                        // Is it a file list?
-                        if (tr.isDataFlavorSupported(
-                               DataFlavor.javaFileListFlavor)) {
-                            // Say we'll take it.
-                            //evt.acceptDrop ( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
-                            evt.acceptDrop(DnDConstants.ACTION_COPY);
+                                // Get a useful list
+                                List fileList = (List) tr
+                                        .getTransferData(
+                                                DataFlavor.javaFileListFlavor);
+                                java.util.Iterator iterator = fileList
+                                        .iterator();
 
-                            // Get a useful list
-                            List fileList = (List) tr
-                                    .getTransferData(
-                                            DataFlavor.javaFileListFlavor);
-                            java.util.Iterator iterator = fileList.iterator();
+                                // Convert list to array
+                                File[] filesTemp = new File[fileList
+                                        .size()];
+                                fileList.toArray(filesTemp);
+                                final File[] files = filesTemp;
 
-                            // Convert list to array
-                            File[] filesTemp = new File[fileList
-                                    .size()];
-                            fileList.toArray(filesTemp);
-                            final File[] files = filesTemp;
-
-                            // Alert listener to drop.
-                            if (listener != null) {
-                                listener.filesDropped(files);
-                            }
-
-                            // Mark that drop is completed.
-                            evt.getDropTargetContext().dropComplete(true);
-                        } // end if: file list
-                        else // this section will check for a reader flavor.
-                        {
-                            // Thanks, Nathan!
-                            // BEGIN 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
-                            DataFlavor[] flavors = tr.getTransferDataFlavors();
-                            boolean handled = false;
-                            for (int zz = 0; zz < flavors.length; zz++) {
-                                if (flavors[zz].isRepresentationClassReader()) {
-                                    // Say we'll take it.
-                                    //evt.acceptDrop ( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
-                                    evt.acceptDrop(
-                                            java.awt.dnd.DnDConstants.ACTION_COPY);
-
-                                    Reader reader = flavors[zz]
-                                            .getReaderForText(tr);
-
-                                    BufferedReader br = new BufferedReader(
-                                            reader);
-
-                                    if (listener != null) {
-                                        listener.filesDropped(
-                                                createFileArray(br));
-                                    }
-
-                                    // Mark that drop is completed.
-                                    evt.getDropTargetContext()
-                                            .dropComplete(true);
-                                    handled = true;
-                                    break;
+                                // Alert listener to drop.
+                                if (listener != null) {
+                                    listener.filesDropped(files);
                                 }
-                            }
-                            if (!handled) {
-                                evt.rejectDrop();
-                            }
-                            // END 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
-                        }   // end else: not a file list
+
+                                // Mark that drop is completed.
+                                evt.getDropTargetContext().dropComplete(true);
+                            } // end if: file list
+                            else // this section will check for a reader flavor.
+                            {
+                                // Thanks, Nathan!
+                                // BEGIN 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
+                                DataFlavor[] flavors = tr
+                                        .getTransferDataFlavors();
+                                boolean handled = false;
+                                for (int zz = 0; zz < flavors.length; zz++) {
+                                    if (flavors[zz]
+                                            .isRepresentationClassReader()) {
+                                        // Say we'll take it.
+                                        //evt.acceptDrop ( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
+                                        evt.acceptDrop(
+                                                java.awt.dnd.DnDConstants.ACTION_COPY);
+
+                                        Reader reader = flavors[zz]
+                                                .getReaderForText(tr);
+
+                                        BufferedReader br = new BufferedReader(
+                                                reader);
+
+                                        if (listener != null) {
+                                            listener.filesDropped(
+                                                    createFileArray(br));
+                                        }
+
+                                        // Mark that drop is completed.
+                                        evt.getDropTargetContext()
+                                                .dropComplete(true);
+                                        handled = true;
+                                        break;
+                                    }
+                                }
+                                if (!handled) {
+                                    evt.rejectDrop();
+                                }
+                                // END 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
+                            }   // end else: not a file list
+                        }
                     } // end try
                     catch (java.io.IOException io) {
                         evt.rejectDrop();
@@ -194,36 +267,34 @@ public class AFileDrop {
                     catch (java.awt.datatransfer.UnsupportedFlavorException ufe) {
                         evt.rejectDrop();
                     } // end catch: UnsupportedFlavorException
-                    finally {
-                        initalComponent.setImage(initialImageName);
-                    }   // end finally
+
                 }   // end drop
 
                 public void dragExit(java.awt.dnd.DropTargetEvent evt) {
-
-
-                         initalComponent.setImage(initialImageName);
+                    initialComponent.setImage(initialImageName);
 
                 }   // end dragExit
 
                 public void dropActionChanged(
                         java.awt.dnd.DropTargetDragEvent evt) {
+
                     // Is this an acceptable drag event?
-                    if (isDragOk(evt)) {   //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
+                    if (isDragOk(evt)) {
                         evt.acceptDrag(java.awt.dnd.DnDConstants.ACTION_COPY);
                     } // end if: drag ok
                     else {
                         evt.rejectDrag();
                     }   // end else: drag not ok
-                     initalComponent.setImage(initialImageName);
+                    initialComponent.setImage(initialImageName);
+
                 }   // end dropActionChanged
             }; // end DropTargetListener
 
             // Make the component (and possibly children) drop targets
-            makeDropTarget(initalComponent,recursive);
+            makeDropTarget(initialComponent, recursive);
         } // end if: supports dnd
         else {
-            initalComponent.setImage(rejectDragImageName);
+            initialComponent.setImage(rejectDragImageName);
         }   // end else: does not support DnD
     }   // end constructor
 
