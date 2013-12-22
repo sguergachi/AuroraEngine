@@ -54,6 +54,7 @@ public class AImagePane extends JPanel {
     private String SurfaceName;
 
     static final Logger logger = Logger.getLogger(AImagePane.class);
+    private String ImageFileName;
 
     //////////////
     //Constructors
@@ -139,8 +140,8 @@ public class AImagePane extends JPanel {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
-                        "/aurora/V1/resources/"
-                        + ImageURL));
+                                "/aurora/V1/resources/"
+                                + ImageURL));
             } catch (Exception exx) {
                 logger.error(exx);
             }
@@ -180,11 +181,14 @@ public class AImagePane extends JPanel {
 
     public void setURL(String URL) {
         ImageURL = URL;
+        
+        // Allow size to be from image
         imageWidth = 0;
         imageHeight = 0;
         try {
             image = new ImageIcon(new URL(ImageURL));
         } catch (MalformedURLException ex) {
+            image = new ImageIcon(ImageURL);
         }
         this.revalidate();
         this.repaint();
@@ -225,8 +229,8 @@ public class AImagePane extends JPanel {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
-                        "/aurora/V1/resources/"
-                        + ImageURL));
+                                "/aurora/V1/resources/"
+                                + ImageURL));
             } catch (Exception exx) {
                 logger.error(exx);
             }
@@ -243,12 +247,10 @@ public class AImagePane extends JPanel {
             return true;
         }
 
-
     }
 
     public void setImage(String ImageURL) {
         this.image = null;
-
 
         this.ImageURL = ImageURL;
 
@@ -260,13 +262,12 @@ public class AImagePane extends JPanel {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
-                        "/aurora/V1/resources/"
-                        + ImageURL));
+                                "/aurora/V1/resources/"
+                                + ImageURL));
             } catch (Exception exx) {
                 logger.error(exx);
             }
         }
-
 
         imageWidth = image.getIconWidth();
         imageHeight = image.getIconHeight();
@@ -319,7 +320,15 @@ public class AImagePane extends JPanel {
     }
 
     public String getImageURL() {
-        return ImageURL;
+        if (ImageURL != null) {
+            return ImageURL;
+        } else {
+            return ImageFileName;
+        }
+    }
+
+    public void setImageFileName(String ImageFileName) {
+        this.ImageFileName = ImageFileName;
     }
 
     public int getRealImageWidth() {
@@ -373,6 +382,5 @@ public class AImagePane extends JPanel {
         ressource.setSurfaceName(this.SurfaceName);
         this.repaint();
     }
-
 
 }
