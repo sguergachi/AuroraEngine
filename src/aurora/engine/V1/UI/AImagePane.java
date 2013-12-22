@@ -25,10 +25,8 @@ import java.awt.LayoutManager;
 import java.awt.RenderingHints;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -156,7 +154,7 @@ public class AImagePane extends JPanel {
 
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_DEFAULT);
-//
+
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
                 RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 

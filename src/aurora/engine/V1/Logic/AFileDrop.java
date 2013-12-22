@@ -106,42 +106,40 @@ public class AFileDrop {
                 public void dragEnter(java.awt.dnd.DropTargetDragEvent evt) {
 
                     // Is this an acceptable drag event?
-                    if (isDragOk(evt)) {
+                    if (!listener.isOccupied()) {
+                        if (isDragOk(evt)) {
 
-                        initialComponent.setImage(dragImageName);
+                            initialComponent.setImage(dragImageName);
 
-                        // Acknowledge that it's okay to enter
-                        //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
-                        evt.acceptDrag(DnDConstants.ACTION_COPY);
-                    } // end if: drag ok
-                    else {   // Reject the drag event
-                        initialComponent.setImage(rejectDragImageName);
+                            // Acknowledge that it's okay to enter
+                            //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
+                            evt.acceptDrag(DnDConstants.ACTION_COPY);
+                        } // end if: drag ok
+                        else {   // Reject the drag event
+                            initialComponent.setImage(rejectDragImageName);
+                            evt.rejectDrag();
+                        }   // end else: drag not ok
+                    }else{
                         evt.rejectDrag();
-                    }   // end else: drag not ok
+                    }
                 }   // end dragEnter
 
                 @Override
                 public void dragOver(DropTargetDragEvent evt) {   // This is called continually as long as the mouse is
                     // over the drag target.
-                    System.out.println(" Waiting @ Transferable...");
-
                     Transferable tr = evt
                             .getTransferable();
 
-                    System.out.println(" Finished @ Transferable...");
                     // Is it a file list?
                     if (tr.isDataFlavorSupported(
-                            DataFlavor.javaFileListFlavor)) {
+                            DataFlavor.javaFileListFlavor) && !listener
+                            .isOccupied()) {
                         // Get a useful list
                         List fileList = null;
                         try {
-                            System.out
-                                    .println(" Waiting @ Getting File List...");
                             fileList = (List) tr
                                     .getTransferData(
                                             DataFlavor.javaFileListFlavor);
-                            System.out
-                                    .println(" Finished @ Getting File List...");
                         } catch (UnsupportedFlavorException ex) {
                             Logger.getLogger(AFileDrop.class.getName())
                                     .log(Level.SEVERE, null, ex);
@@ -182,6 +180,8 @@ public class AFileDrop {
                             evt.rejectDrag();
                         }
 
+                    }else{
+                        evt.rejectDrag();
                     }
 
                 }   // end dragOver
@@ -192,7 +192,7 @@ public class AFileDrop {
                         java.awt.datatransfer.Transferable tr = evt
                                 .getTransferable();
                         if (!initialComponent.getImageURL().equals(
-                                rejectDragImageName)) {
+                                rejectDragImageName) && !listener.isOccupied()) {
                             // Is it a file list?
                             if (tr.isDataFlavorSupported(
                                     DataFlavor.javaFileListFlavor)) {
@@ -271,22 +271,29 @@ public class AFileDrop {
                 }   // end drop
 
                 public void dragExit(java.awt.dnd.DropTargetEvent evt) {
-                    initialComponent.setImage(initialImageName);
+                    if (!listener.isOccupied()) {
+                        initialComponent.setImage(initialImageName);
+                    }
 
                 }   // end dragExit
 
                 public void dropActionChanged(
                         java.awt.dnd.DropTargetDragEvent evt) {
 
-                    // Is this an acceptable drag event?
-                    if (isDragOk(evt)) {
-                        evt.acceptDrag(java.awt.dnd.DnDConstants.ACTION_COPY);
-                    } // end if: drag ok
-                    else {
+                    if (!listener.isOccupied()) {
+                        // Is this an acceptable drag event?
+                        if (isDragOk(evt)) {
+                            evt
+                                    .acceptDrag(
+                                            java.awt.dnd.DnDConstants.ACTION_COPY);
+                        } // end if: drag ok
+                        else {
+                            evt.rejectDrag();
+                        }   // end else: drag not ok
+                        initialComponent.setImage(initialImageName);
+                    }else{
                         evt.rejectDrag();
-                    }   // end else: drag not ok
-                    initialComponent.setImage(initialImageName);
-
+                    }
                 }   // end dropActionChanged
             }; // end DropTargetListener
 
@@ -483,6 +490,8 @@ public class AFileDrop {
          * @since 1.0
          */
         public abstract void filesDropped(java.io.File[] files);
+
+        public abstract boolean isOccupied();
 
     }   // end inner-interface Listener
 

@@ -18,7 +18,14 @@
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.ASurface;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -29,7 +36,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -184,10 +190,6 @@ public class AImage extends JLabel implements MouseListener {
                 RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
-//        g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-//                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-//        g.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-//                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
