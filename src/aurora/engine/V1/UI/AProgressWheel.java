@@ -21,151 +21,178 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import javax.swing.JPanel;
-
-import org.apache.log4j.Logger;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 /**
  *
  * @author Sammy
  */
-public class AProgressWheel extends JPanel implements Runnable {
+public class AProgressWheel extends JPanel {
 
-    private Thread runner;
+	private Timer runner;
+	private String URL;
+	private AImage img;
+	private int rotate = 0;
+	private int speed = 15;
+	private boolean isClockwiseRotating = true;
+	private boolean stop = false;
 
-    private String URL;
+	public AImage getImg() {
+		return img;
+	}
 
-    private AImage img;
+	public AProgressWheel(String URL) {
 
-    private int rotate = 0;
+		this.URL = URL;
+		img = new AImage(this.URL);
+		setOpaque(false);
 
-    private int speed = 15;
+		this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(),
+				img.getImgIcon().getIconHeight()));
+		start();
 
-    private boolean isClockwiseRotating = true;
+	}
 
-    static final Logger logger = Logger.getLogger(AProgressWheel.class);
+	public AProgressWheel(String URL, String SurfaceName) {
 
-    private int savedSpeed;
+		this.URL = URL;
+		img = new AImage(this.URL);
+		setOpaque(false);
 
-    public AImage getImg() {
-        return img;
-    }
+		this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(),
+				img.getImgIcon().getIconHeight()));
+		start();
 
-    public AProgressWheel(String URL) {
+	}
 
-        this.URL = URL;
-        img = new AImage(this.URL);
-        setOpaque(false);
+	public AProgressWheel(String URL, int speed) {
 
-        this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(), img
-                .getImgIcon().getIconHeight()));
-        start();
+		this.URL = URL;
+		img = new AImage(this.URL);
+		setOpaque(false);
 
-    }
+		this.speed = speed;
+		this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(),
+				img.getImgIcon().getIconHeight()));
 
-    public AProgressWheel(String URL, int speed) {
+		if (speed != 0) {
+			start();
+		}
 
-        this.URL = URL;
-        img = new AImage(this.URL);
-        setOpaque(false);
+	}
 
-        this.speed = speed;
-        this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(), img
-                .getImgIcon().getIconHeight()));
-        start();
+	public AProgressWheel(String URL, int speed, String SurfaceName) {
 
-    }
+		this.URL = URL;
+		img = new AImage(this.URL);
+		setOpaque(false);
 
-    @Override
-    public void run() {
-        while (runner == Thread.currentThread()) {
+		this.speed = speed;
+		this.setPreferredSize(new Dimension(img.getImgIcon().getIconWidth(),
+				img.getImgIcon().getIconHeight()));
+		start();
 
-            this.repaint();
-            try {
-                Thread.sleep(16);
-            } catch (InterruptedException ex) {
-                logger.error(ex);
-            }
+	}
 
-        }
+	private void start() {
+		if (speed != 0) {
+			if (runner == null) {
+				runner = new Timer(16, new StartProgressWheel());
+			}
+			runner.start();
+		}
+	}
 
+	public class StartProgressWheel implements ActionListener {
 
-    }
+		@Override
+		public void actionPerformed(ActionEvent e) {
 
-    public void stop() {
-        this.setVisible(false);
-        savedSpeed = speed;
-        speed = 0;
-        this.revalidate();
-        this.repaint();
-    }
+			if (!stop && SwingUtilities.isEventDispatchThread()) {
 
-     public void pause() {
-        savedSpeed = speed;
-        speed = 0;
-        this.revalidate();
-        this.repaint();
-    }
+				repaint();
 
-    public void resume() {
-        this.setVisible(true);
-        speed = savedSpeed;
-        this.revalidate();
-        this.repaint();
-    }
+			} else {
+				if (runner != null) {
+					runner.stop();
+				}
+				Timer time = (Timer) e.getSource();
+				time.stop();
+				runner = null;
+				return;
+			}
 
-    public void setSpeed(int Speed) {
-        this.speed = Speed;
-    }
+		}
 
-    public void setClockwise(boolean Clockwise) {
+	}
 
-        this.isClockwiseRotating = Clockwise;
+	public void stop() {
+		this.setVisible(false);
+		stop = true;
+	}
 
-    }
+	public void restart() {
+		this.setVisible(true);
+		stop = false;
+		start();
+	}
 
-    @Override
-    public void paint(Graphics g) {
-        super.paintComponent(g);
+	public void setSpeed(int Speed) {
+		this.speed = Speed;
+		if (speed != 0) {
+			stop = false;
+			if (runner == null) {
+				start();
+			}
+		} else {
+			stop = true;
+			runner = null;
+		}
+	}
 
-        if (speed > 0) {
-            rotate += speed - 8;
+	public void setClockwise(boolean Clockwise) {
 
-            Graphics2D g2d = (Graphics2D) g;
+		this.isClockwiseRotating = Clockwise;
 
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                    RenderingHints.VALUE_RENDER_QUALITY);
+	}
 
+	@Override
+	public void paint(Graphics g) {
+		super.paintComponent(g);
 
-            AffineTransform origXform = g2d.getTransform();
-            AffineTransform newXform = (AffineTransform) (origXform.clone());
+		rotate += speed;
 
+		Graphics2D g2d = (Graphics2D) g;
 
-            //center of rotation is center of the panel
-            int xRot = this.getWidth() / 2;
-            int yRot = this.getHeight() / 2;
-            if (isClockwiseRotating && rotate > 0) {
-                newXform.rotate(Math.toRadians(rotate), xRot, yRot);
-            } else if (!isClockwiseRotating && rotate > 0) {
-                newXform.rotate(-Math.toRadians(rotate), xRot, yRot);
-            }
-            g2d.setTransform(newXform);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
 
-            //draw image centered in panel
-            int x = (getWidth() - img.getImgIcon().getIconWidth()) / 2;
-            int y = (getHeight() - img.getImgIcon().getIconHeight()) / 2;
-            g2d.drawImage(img.getImgIcon().getImage(), x, y, this);
-            g2d.setTransform(origXform);
-        }
-    }
+		AffineTransform origXform = g2d.getTransform();
+		AffineTransform newXform = (AffineTransform) (origXform.clone());
 
-    private void start() {
-        if (runner == null) {
-            runner = new Thread(this);
-        }
-        runner.start();
-    }
+		// center of rotation is center of the panel
+		int xRot = this.getWidth() / 2;
+		int yRot = this.getHeight() / 2;
+		if (isClockwiseRotating) {
+			newXform.rotate(Math.toRadians(Math.abs(rotate)), xRot, yRot);
+		} else if (!isClockwiseRotating) {
+			newXform.rotate(-Math.toRadians(Math.abs(rotate)), xRot, yRot);
+		}
+		g2d.setTransform(newXform);
+
+		// draw image centered in panel
+		int x = (getWidth() - img.getImgIcon().getIconWidth()) / 2;
+		int y = (getHeight() - img.getImgIcon().getIconHeight()) / 2;
+		g2d.drawImage(img.getImgIcon().getImage(), x, y, this);
+		g2d.setTransform(origXform);
+
+	}
+
 }

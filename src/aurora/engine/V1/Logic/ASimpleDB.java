@@ -1013,10 +1013,6 @@ public class ASimpleDB {
             }
         }
 
-        if (logger.isDebugEnabled()) {
-            logger.debug(ColumnCSV);
-        }
-
         try {
             if (logger.isDebugEnabled()) {
                 logger.debug("SELECT " + ColumnCSV + " FROM " + TableName
@@ -1237,6 +1233,18 @@ public class ASimpleDB {
                                                                       + aproxString
                     .replace("'", "''") + "%'");
 
+            if (logger.isDebugEnabled()) {
+                logger.debug("SELECT "
+                             + ColumnNameSelect
+                             + " FROM "
+                             + TableName
+                             + " WHERE "
+                             + ColumnNameWhere
+                             + " LIKE '%"
+                             + aproxString
+                        .replace("'", "''") + "%'");
+            }
+
             ResultSet rs = statement.executeQuery();
             rs.first();
             Object[] array = new Object[10];
@@ -1383,10 +1391,9 @@ public class ASimpleDB {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
 
-
-                if (logger.isDebugEnabled()) {
-                    logger.debug(SQL);
-                }
+            if (logger.isDebugEnabled()) {
+                logger.debug(SQL);
+            }
 
             ResultSet rs = statement.executeQuery(SQL);
             rs.first();
