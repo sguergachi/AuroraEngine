@@ -4,12 +4,9 @@
  */
 package aurora.engine.V1.UI;
 
-import com.sun.awt.AWTUtilities;
 import java.awt.Color;
-import java.awt.Window;
 import javax.swing.BorderFactory;
 import javax.swing.JPopupMenu;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 /**

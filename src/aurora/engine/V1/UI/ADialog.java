@@ -23,11 +23,14 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.*;
-
+import javax.swing.AbstractAction;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
-
 
 /**
  * .------------------------------------------------------------------------.
@@ -122,6 +125,8 @@ public final class ADialog extends ADragFrame {
 
     static final Logger logger = Logger.getLogger(ADialog.class);
 
+    private boolean isConfigured;
+
     /**
      * .-----------------------------------------------------------------------.
      * | ADialog(int Type, String Text, Font font, ActionListener al)
@@ -140,15 +145,14 @@ public final class ADialog extends ADragFrame {
      *
      */
     public ADialog(int Type, String Text, Font font, ActionListener al) {
+
         setButtonListener(al);
         this.Type = Type;
         this.Text = Text;
         this.font = font;
         if (Type == aDIALOG_WARNING) {
 
-
             iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
-
 
         } else if (Type == aDIALOG_ERROR) {
 
@@ -176,6 +180,7 @@ public final class ADialog extends ADragFrame {
      *
      */
     public ADialog(int Type, String Text, ActionListener al) {
+
         setButtonListener(al);
         this.Type = Type;
         this.Text = Text;
@@ -185,10 +190,7 @@ public final class ADialog extends ADragFrame {
 
             iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
 
-
-
         } else if (Type == aDIALOG_ERROR) {
-
 
             iconImg = new AImage("app_icon_dialog_error.png");
         }
@@ -214,8 +216,6 @@ public final class ADialog extends ADragFrame {
      *
      */
     public ADialog(int Type, String Text, Font font) {
-
-
         this.Type = Type;
         this.Text = Text;
         this.font = font;
@@ -223,8 +223,6 @@ public final class ADialog extends ADragFrame {
         if (Type == aDIALOG_WARNING) {
 
             iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
-
-
 
         } else if (Type == aDIALOG_ERROR) {
 
@@ -251,17 +249,13 @@ public final class ADialog extends ADragFrame {
      *
      */
     public ADialog(int Type, String Text) {
-
-
         this.Type = Type;
         this.Text = Text;
         font = new Font("Arial", Font.BOLD, 20);
 
         if (Type == aDIALOG_WARNING) {
 
-
             iconImg = new AImage("app_icon_dialog_warning.png", 100, 100);
-
 
         } else if (Type == aDIALOG_ERROR) {
 
@@ -269,7 +263,6 @@ public final class ADialog extends ADragFrame {
         }
 
         showDialog();
-
 
     }
 
@@ -327,17 +320,19 @@ public final class ADialog extends ADragFrame {
      */
     public void showDialog() {
 
-
-        paneDialogBG = new AImagePane("app_dialog_bg.png",555,250);
+        paneDialogBG = new AImagePane("app_dialog_bg.png", 555, 250);
         paneDialogBG.setLayout(new BorderLayout());
         add(BorderLayout.CENTER, paneDialogBG);
 
         //* Config Dialog *//
-        setUndecorated(true);
+        if (!isConfigured) {
+            setUndecorated(true);
+            isConfigured = true;
+        }
+
         setSize(555, 250);
         setLocationRelativeTo(null);
         setAlwaysOnTop(true);
-
         iconImg.setAlignmentX(JComponent.CENTER_ALIGNMENT);
         iconContainer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         iconContainer.setLayout(new BoxLayout(iconContainer, BoxLayout.Y_AXIS));
@@ -347,23 +342,22 @@ public final class ADialog extends ADragFrame {
         iconContainer.add(Box.createVerticalStrut(10));
         paneDialogBG.add(iconContainer, BorderLayout.NORTH);
 
-
-        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER,5,12));
+        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 12));
         textContainer.setOpaque(false);
         lblText = new ASlickLabel(Text);
         lblText.setFont(font);
         lblText.setForeground(Color.LIGHT_GRAY);
         textContainer.add(lblText);
 
-
         //BOTTOM
-
         paneDialogBG.add(textContainer, BorderLayout.CENTER);
 
         btnOk = new AButton("app_btn_okDialog_norm.png",
-                "app_btn_okDialog_down.png", "app_btn_okDialog_over.png");
+                            "app_btn_okDialog_down.png",
+                            "app_btn_okDialog_over.png");
         btnCancel = new AButton("app_btn_cancelDialog_norm.png",
-                "app_btn_cancelDialog_down.png", "app_btn_cancelDialog_over.png");
+                                "app_btn_cancelDialog_down.png",
+                                "app_btn_cancelDialog_over.png");
         if (a != null) {
             btnOk.addActionListener(a);
 
@@ -377,13 +371,11 @@ public final class ADialog extends ADragFrame {
 
         }
 
-
         Bottom = new JPanel(new BorderLayout(0, 0));
         pnlButtonContainer = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
         pnlButtonContainer.setOpaque(false);
         pnlButtonContainer.add(btnCancel);
         pnlButtonContainer.add(btnOk);
-
 
         Bottom.setOpaque(false);
         Bottom.add(pnlButtonContainer, BorderLayout.EAST);
@@ -402,8 +394,6 @@ public final class ADialog extends ADragFrame {
                 a.actionPerformed(null);
             }
         });
-
-
 
         requestFocusInWindow();
 

@@ -63,6 +63,8 @@ public class ASimpleDB {
     public static String FOREIGN_KEY = "FOREIGN KEY";
     //
 
+    private final String postURL = ";IFEXISTS=TRUE;AUTO_SERVER=TRUE;MULTI_THREADED=1";
+
     private String databasePath = System.getProperty("user.dir") + "\\lib\\";
 
     private String databasePath_DEV = System.getProperty("user.dir") + "//";
@@ -213,7 +215,7 @@ public class ASimpleDB {
 
                     if (logger.isDebugEnabled()) {
                         logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                     + DatabaseName + ";IFEXISTS=TRUE");
+                                     + DatabaseName + postURL);
                     }
 
                 } catch (Exception exx) {
@@ -281,7 +283,7 @@ public class ASimpleDB {
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -342,18 +344,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -362,12 +364,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -416,18 +418,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -436,12 +438,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -492,17 +494,17 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+                    logger.debug(databasePath + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -511,12 +513,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -582,18 +584,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -602,12 +604,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -676,18 +678,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -696,12 +698,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -762,18 +764,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -782,12 +784,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -859,17 +861,17 @@ public class ASimpleDB {
                                                              + databasePath
                                                              + "\\lib\\"
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
-                    logger.debug(databasePath + DatabaseName + ";IFEXISTS=TRUE");
+                    logger.debug(databasePath + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -879,17 +881,17 @@ public class ASimpleDB {
                                                              + databasePath_DEV
                                                              + "//"
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "//"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
             }
         }
@@ -963,19 +965,19 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//")
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "//"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
                 //Dev Mode
@@ -985,18 +987,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//")
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "//"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             }
@@ -1105,18 +1107,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -1125,12 +1127,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -1188,18 +1190,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -1209,12 +1211,12 @@ public class ASimpleDB {
                         connection = DriverManager.getConnection("jdbc:h2:file:"
                                                                  + databasePath_DEV
                                                                  + DatabaseName
-                                                                 + ";IFEXISTS=TRUE");
+                                                                 + postURL);
                     } else if (osName.equals("Mac OS X")) {
                         connection = DriverManager.getConnection("jdbc:h2:file:"
                                                                  + databasePath_DEV
                                 .replace("\\", "//") + DatabaseName
-                                                                 + ";IFEXISTS=TRUE");
+                                                                 + postURL);
                     }
                 } catch (Exception exxx) {
                     logger.error(exxx);
@@ -1279,18 +1281,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug(System.getProperty("user.dir") + "\\lib\\"
-                                 + DatabaseName + ";IFEXISTS=TRUE");
+                                 + DatabaseName + postURL);
                 }
 
             } catch (Exception exx) {
@@ -1299,12 +1301,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -1345,18 +1347,18 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath
                             .replace(
                                     "\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
                 if (logger.isDebugEnabled()) {
                     logger.debug("jdbc:h2:file:" + databasePath + DatabaseName
-                                 + ";IFEXISTS=TRUE");
+                                 + postURL);
                 }
 
             } catch (Exception exx) {
@@ -1365,12 +1367,12 @@ public class ASimpleDB {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                                                              + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 } else if (osName.equals("Mac OS X")) {
                     connection = DriverManager.getConnection("jdbc:h2:file:"
                                                              + databasePath_DEV
                             .replace("\\", "//") + DatabaseName
-                                                             + ";IFEXISTS=TRUE");
+                                                             + postURL);
                 }
 
             }
@@ -1380,6 +1382,11 @@ public class ASimpleDB {
             Statement statement = connection.createStatement(
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
+
+
+                if (logger.isDebugEnabled()) {
+                    logger.debug(SQL);
+                }
 
             ResultSet rs = statement.executeQuery(SQL);
             rs.first();
