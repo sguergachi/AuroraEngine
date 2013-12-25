@@ -106,5 +106,6 @@ public class AThreadWorker implements Runnable {
         if (doAfter != null) {
             doAfter.actionPerformed(null);
         }
+        
     }
 }

@@ -1391,10 +1391,6 @@ public class ASimpleDB {
                     ResultSet.TYPE_SCROLL_INSENSITIVE,
                     ResultSet.CONCUR_READ_ONLY);
 
-            if (logger.isDebugEnabled()) {
-                logger.debug(SQL);
-            }
-
             ResultSet rs = statement.executeQuery(SQL);
             rs.first();
 
