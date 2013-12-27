@@ -71,7 +71,6 @@ public class AFileManager {
 
         this.path = currentPath;
 
-
     }
 
     /**
@@ -101,7 +100,6 @@ public class AFileManager {
             try {
 
                 //System.out.println(input.readLine());
-
                 int index = 0;
                 String currentLine = null;
                 fileList.add(input.readLine());
@@ -182,8 +180,10 @@ public class AFileManager {
 
         if (folderName != null) {
             try {
-                BufferedImage bi = AImage.resizeBufferedImg(img.getImgIcon()
-                        .getImage(), img.getImgIcon().getIconWidth(), img
+                BufferedImage bi = AImage.resizeBufferedImage(AImage
+                        .toBufferedImage(img.getImgIcon()
+                                .getImage()), img.getImgIcon().getIconWidth(),
+                        img
                         .getImgIcon().getIconHeight()); // retrieve image
                 File outputfile = new File(path + "/" + folderName + "/"
                                            + fileName);
@@ -255,7 +255,6 @@ public class AFileManager {
             }
 
         }
-
 
     }
 
@@ -418,7 +417,6 @@ public class AFileManager {
         File sourceFile = new File(source);
         File destinationFile = new File(destination);
 
-
         copyDirectory(sourceFile, destinationFile);
         try {
             if (!deleteFile(sourceFile)) {
@@ -483,7 +481,6 @@ public class AFileManager {
 
     public void downloadFile(URL location, File dest) throws IOException {
 
-
 //        try {
 //            URLConnection urlConn = location.openConnection();
 //            BufferedInputStream is = new BufferedInputStream(urlConn
@@ -503,12 +500,9 @@ public class AFileManager {
 //        } catch (IOException mfu) {
 //            mfu.printStackTrace();
 //        }
-
         ReadableByteChannel rbc = Channels.newChannel(location.openStream());
         FileOutputStream fos = new FileOutputStream(dest);
         fos.getChannel().transferFrom(rbc, 0, 1 << 24);
-
-
 
     }
 

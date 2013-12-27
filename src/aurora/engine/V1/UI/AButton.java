@@ -167,15 +167,15 @@ public class AButton extends JButton {
                 }
 
                 btnNormal.setImage(AImage
-                        .resizeBufferedImg((new ImageIcon(new URL(ressource
+                        .resizeImage((new ImageIcon(new URL(ressource
                         .getSurfacePath() + "/aurora/V1/resources/" + urlNorm))
                         .getImage()), btnWidth, btnHeight));
                 btnOver.setImage(AImage
-                        .resizeBufferedImg((new ImageIcon(new URL(ressource
+                        .resizeImage((new ImageIcon(new URL(ressource
                         .getSurfacePath() + "/aurora/V1/resources/" + urlOver))
                         .getImage()), btnWidth, btnHeight));
                 btnDown.setImage(AImage
-                        .resizeBufferedImg((new ImageIcon(new URL(ressource
+                        .resizeImage((new ImageIcon(new URL(ressource
                         .getSurfacePath() + "/aurora/V1/resources/" + urlDown))
                         .getImage()), btnWidth, btnHeight));
             }
@@ -205,16 +205,16 @@ public class AButton extends JButton {
                     }
 
                     btnNormal.setImage(AImage
-                            .resizeBufferedImg((new ImageIcon(getClass()
+                            .resizeImage((new ImageIcon(getClass()
                             .getResource("/aurora/V1/resources/" + urlNorm))
                             .getImage()), btnWidth, btnHeight));
                     btnOver.setImage(AImage
-                            .resizeBufferedImg((new ImageIcon(getClass()
+                            .resizeImage((new ImageIcon(getClass()
                             .getResource("/aurora/V1/resources/" + urlOver))
                             .getImage()), btnWidth, btnHeight));
 
                     btnDown.setImage(AImage
-                            .resizeBufferedImg((new ImageIcon(getClass()
+                            .resizeImage((new ImageIcon(getClass()
                             .getResource("/aurora/V1/resources/" + urlDown))
                             .getImage()), btnWidth, btnHeight));
                 }
@@ -257,30 +257,30 @@ public class AButton extends JButton {
         this.btnHeight = height;
         try {
             btnOver.setImage(AImage
-                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .resizeImage((new ImageIcon(new URL(ressource
                     .getSurfacePath() + "/aurora/V1/resources/" + urlOver))
                     .getImage()), btnWidth, btnHeight));
             btnNormal.setImage(AImage
-                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .resizeImage((new ImageIcon(new URL(ressource
                     .getSurfacePath() + "/aurora/V1/resources/" + urlNorm))
                     .getImage()), btnWidth, btnHeight));
             btnDown.setImage(AImage
-                    .resizeBufferedImg((new ImageIcon(new URL(ressource
+                    .resizeImage((new ImageIcon(new URL(ressource
                     .getSurfacePath() + "/aurora/V1/resources/" + urlDown))
                     .getImage()), btnWidth, btnHeight));
 
         } catch (MalformedURLException ex) {
             try {
                 btnOver.setImage(AImage
-                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .resizeImage((new ImageIcon(getClass()
                         .getResource("/aurora/V1/resources/" + urlOver))
                         .getImage()), btnWidth, btnHeight));
                 btnNormal.setImage(AImage
-                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .resizeImage((new ImageIcon(getClass()
                         .getResource("/aurora/V1/resources/" + urlNorm))
                         .getImage()), btnWidth, btnHeight));
                 btnDown.setImage(AImage
-                        .resizeBufferedImg((new ImageIcon(getClass()
+                        .resizeImage((new ImageIcon(getClass()
                         .getResource("/aurora/V1/resources/" + urlDown))
                         .getImage()), btnWidth, btnHeight));
 

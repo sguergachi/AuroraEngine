@@ -79,7 +79,7 @@ public final class ADialog extends ADragFrame {
     /**
      * Custom text label.
      */
-    private ASlickTextArea lblText;
+    private ASlickTextPane lblText;
 
     /**
      * OK button.
@@ -351,7 +351,7 @@ public final class ADialog extends ADragFrame {
                                       - iconImg.getImgHeight() - 20));
         textContainer.setOpaque(false);
 
-        lblText = new ASlickTextArea(Text);
+        lblText = new ASlickTextPane(Text);
         lblText.setFont(font);
         lblText.setForeground(Color.LIGHT_GRAY);
 

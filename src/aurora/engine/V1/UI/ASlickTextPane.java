@@ -26,7 +26,7 @@ import org.apache.log4j.Logger;
  *
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
-public class ASlickTextArea extends JTextPane implements MouseListener {
+public class ASlickTextPane extends JTextPane implements MouseListener {
 
     private String url;
 
@@ -38,19 +38,20 @@ public class ASlickTextArea extends JTextPane implements MouseListener {
 
     private Color linkColor;
 
-    public ASlickTextArea(String text) {
+    public ASlickTextPane(String text) {
         super.setText(text + "");
         this.setOpaque(false);
         UIManager.getLookAndFeelDefaults().put(
                 "TextPane[Enabled].backgroundPainter", new FillPainter());
         this.setEditable(false);
+        setEnabled(false);
     }
 
-    public ASlickTextArea() {
+    public ASlickTextPane() {
         UIManager.getLookAndFeelDefaults().put(
                 "TextPane[Enabled].backgroundPainter", new FillPainter());
         this.setEditable(false);
-
+        setEnabled(false);
     }
 
     @Override
@@ -60,6 +61,13 @@ public class ASlickTextArea extends JTextPane implements MouseListener {
         this.setEditable(false);
         UIManager.getLookAndFeelDefaults().put(
                 "TextPane[Enabled].backgroundPainter", new FillPainter());
+        setEnabled(false);
+        
+    }
+    
+    @Override
+    public void setForeground(Color color){
+        setDisabledTextColor(color);
     }
 
     public void setLink(String URL) {
@@ -84,13 +92,13 @@ public class ASlickTextArea extends JTextPane implements MouseListener {
         Graphics2D g2d = (Graphics2D) g.create();
 
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                             RenderingHints.VALUE_RENDER_QUALITY);
+                RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                             RenderingHints.VALUE_ANTIALIAS_ON);
+                RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 
         super.paintComponent(g2d);
     }

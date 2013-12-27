@@ -37,12 +37,14 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import org.apache.log4j.Logger;
+import org.imgscalr.Scalr;
 
 /**
  *
  * @author Sammy
  */
 public class AImage extends JLabel implements MouseListener {
+
     private static final long serialVersionUID = 1L;
 
     private String ImageURl;
@@ -141,8 +143,8 @@ public class AImage extends JLabel implements MouseListener {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
-                        "/aurora/V1/resources/"
-                        + ImageURl));
+                                "/aurora/V1/resources/"
+                                + ImageURl));
             } catch (Exception exx) {
                 logger.error(exx);
             }
@@ -153,12 +155,10 @@ public class AImage extends JLabel implements MouseListener {
             h = image.getImage().getHeight(this);
         }
 
-
         Image img = (AImage.resizeImage(image.getImage(), w, h));
         img.setAccelerationPriority(1);
         image.setImage(img);
         img.flush();
-
 
         this.setIcon(image);
     }
@@ -177,9 +177,21 @@ public class AImage extends JLabel implements MouseListener {
         super.paintComponent(g2d);
     }
 
-    public static BufferedImage resizeBufferedImg(Image image, int width,
-                                                  int height) {
+    public static BufferedImage resizeBufferedImage(BufferedImage image,
+                                                    int width,
+                                                    int height) {
 
+        BufferedImage bufferedImage = Scalr.resize(image, Scalr.Method.QUALITY,
+                Scalr.Mode.FIT_EXACT,
+                width, height,
+                Scalr.OP_ANTIALIAS);
+
+        return bufferedImage;
+    }
+
+    public static BufferedImage resizeBufferedImage2(Image image,
+                                                     int width,
+                                                     int height) {
         BufferedImage bufferedImage = new BufferedImage(width, height,
                 BufferedImage.TYPE_INT_ARGB_PRE);
         Graphics2D g = bufferedImage.createGraphics();
@@ -194,8 +206,39 @@ public class AImage extends JLabel implements MouseListener {
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
 
-
         return bufferedImage;
+    }
+
+    /**
+     * Converts a given Image into a BufferedImage
+     *
+     * @param img The Image to be converted
+     * <p>
+     * @return The converted BufferedImage
+     */
+    public static BufferedImage toBufferedImage(Image img) {
+        if (img instanceof BufferedImage) {
+            return (BufferedImage) img;
+        }
+
+        // Create a buffered image with transparency
+        BufferedImage bimage = new BufferedImage(img.getWidth(null), img
+                .getHeight(null), BufferedImage.TYPE_INT_ARGB);
+
+        // Draw the image on to the buffered image
+        Graphics2D g2d = bimage.createGraphics();
+        g2d.setComposite(AlphaComposite.Src);
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        g2d.drawImage(img, 0, 0, null);
+        g2d.dispose();
+
+        // Return the buffered image
+        return bimage;
     }
 
     public static Image resizeImage(Image image, int width, int height) {
@@ -211,10 +254,8 @@ public class AImage extends JLabel implements MouseListener {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
-
 
         return Toolkit.getDefaultToolkit()
                 .createImage(bufferedImage.getSource());

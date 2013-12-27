@@ -56,7 +56,7 @@ public class ACursor {
      */
     private void generateCursor() {
         try {
-            BufferedImage bufferedImage = AImage.resizeBufferedImg(cursorImage
+            BufferedImage bufferedImage = AImage.resizeBufferedImage2(cursorImage
                     .getImgIcon().getImage(), cursorImage
                     .getImgIcon().getIconWidth(), cursorImage.getImgIcon()
                     .getIconHeight());

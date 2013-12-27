@@ -55,7 +55,6 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
     public void setLink(String URL) {
         this.url = URL;
-        this.setToolTipText(URL);
         this.addMouseListener(this);
         this.linkColor = Color.green;
     }
@@ -63,7 +62,6 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
     public void setLink(String URL, Color linkColor) {
         this.url = URL;
-        this.setToolTipText(URL);
         this.addMouseListener(this);
         this.linkColor = linkColor;
     }
