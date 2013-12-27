@@ -19,6 +19,7 @@ package aurora.engine.V1.UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -27,9 +28,11 @@ import javax.swing.AbstractAction;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import org.apache.log4j.Logger;
 
 /**
@@ -71,12 +74,12 @@ public final class ADialog extends ADragFrame {
     /**
      * Background.
      */
-    private JPanel paneDialogBG;
+    private AImagePane paneDialogBG;
 
     /**
      * Custom text label.
      */
-    private ASlickLabel lblText;
+    private ASlickTextArea lblText;
 
     /**
      * OK button.
@@ -111,7 +114,7 @@ public final class ADialog extends ADragFrame {
     /**
      * Icon Panel.
      */
-    private JLabel iconImg;
+    private AImage iconImg;
 
     /**
      * Icon container.
@@ -339,14 +342,25 @@ public final class ADialog extends ADragFrame {
         iconContainer.setOpaque(false);
         iconContainer.add(Box.createVerticalStrut(15));
         iconContainer.add(iconImg);
-        iconContainer.add(Box.createVerticalStrut(10));
+        iconContainer.add(Box.createVerticalStrut(12));
         paneDialogBG.add(iconContainer, BorderLayout.NORTH);
 
-        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 12));
+        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
+        textContainer.setPreferredSize(new Dimension(paneDialogBG
+                .getRealImageWidth(), paneDialogBG.getRealImageHeight()
+                                      - iconImg.getImgHeight() - 20));
         textContainer.setOpaque(false);
-        lblText = new ASlickLabel(Text);
+
+        lblText = new ASlickTextArea(Text);
         lblText.setFont(font);
         lblText.setForeground(Color.LIGHT_GRAY);
+
+        StyledDocument doc = lblText.getStyledDocument();
+        SimpleAttributeSet center = new SimpleAttributeSet();
+        StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
+        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+
+        lblText.setPreferredSize(textContainer.getPreferredSize());
         textContainer.add(lblText);
 
         //BOTTOM
@@ -378,6 +392,7 @@ public final class ADialog extends ADragFrame {
         pnlButtonContainer.add(btnOk);
 
         Bottom.setOpaque(false);
+        Bottom.add(Box.createVerticalGlue(), BorderLayout.NORTH);
         Bottom.add(pnlButtonContainer, BorderLayout.EAST);
         paneDialogBG.add(BorderLayout.PAGE_END, Bottom);
 

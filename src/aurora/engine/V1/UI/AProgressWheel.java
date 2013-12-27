@@ -165,7 +165,7 @@ public class AProgressWheel extends JPanel {
 	public void paint(Graphics g) {
 		super.paintComponent(g);
 
-		rotate += speed;
+		rotate += (speed - 5);
 
 		Graphics2D g2d = (Graphics2D) g;
 
