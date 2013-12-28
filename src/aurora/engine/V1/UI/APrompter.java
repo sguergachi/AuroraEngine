@@ -109,11 +109,8 @@ public class APrompter extends JPanel implements Runnable {
         this.Ypos = Ypos * 2;
         this.Xpos = Xpos / 2;
 
-
         this.setPreferredSize(
                 new Dimension(Ypos, Xpos));
-
-
 
     }
 
@@ -171,7 +168,6 @@ public class APrompter extends JPanel implements Runnable {
 
         while (runner == Thread.currentThread()) {
 
-
             if (!stop) {
 
                 this.repaint();
@@ -184,8 +180,7 @@ public class APrompter extends JPanel implements Runnable {
                     } catch (InterruptedException ex) {
                         logger.error(ex);
                     }
-                }
-                else if (Ypos == (this.getHeight() / 2) + 5 && Counter > 1) {
+                } else if (Ypos == (this.getHeight() / 2) + 5 && Counter > 1) {
                     //Wait to allow for reading
 
                     logger.info("text pause");
@@ -198,17 +193,11 @@ public class APrompter extends JPanel implements Runnable {
                         logger.error(ex);
                     }
 
-
                 } else {
                     visible = false;
                 }
 
-
-
-
-
             } else {
-
 
                 updateList();
 
@@ -224,7 +213,6 @@ public class APrompter extends JPanel implements Runnable {
                         break;
                     }
                 }
-
 
             }
 
@@ -248,7 +236,6 @@ public class APrompter extends JPanel implements Runnable {
             }
         }
 
-
     }
 
     @Override
@@ -261,18 +248,14 @@ public class APrompter extends JPanel implements Runnable {
     @Override
     public void update(Graphics g) {
 
-
-
         //User JAVA 2D Graphics not just Graphics
         Graphics2D g2d = (Graphics2D) g.create();
-
 
         if (listUpdateColor != null) {
             g2d.setColor(listUpdateColor.get(arrayIndex));
         } else {
             g2d.setColor(Color.darkGray);
         }
-
 
         //Make Text Render Beautifuly
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
@@ -286,17 +269,12 @@ public class APrompter extends JPanel implements Runnable {
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-
-
-
         //If Already Fully trans, Turn Opaque first
-
         //Animate the Text
         paintText(g2d);
 
         //Count the number of updates
         Counter++;
-
 
         if (Alpha != 0.0F) {
             Alpha -= 0.05F;
@@ -304,11 +282,9 @@ public class APrompter extends JPanel implements Runnable {
             Alpha = 1.0F;
         }
 
-
     }
 
     public void paintText(Graphics2D g2d) {
-
 
         if (fm == null) {
             fm = g2d.getFontMetrics(font);
@@ -316,8 +292,6 @@ public class APrompter extends JPanel implements Runnable {
 
         //When Opacity is Close to 0 Then Move On To Next Text To Display
         if (Alpha <= 0.05F) {
-
-
 
             Alpha = 0.0F;
             cleared = true;
@@ -332,7 +306,6 @@ public class APrompter extends JPanel implements Runnable {
             Ypos = this.getHeight() / 2 + 8;
 
             //If no more to add then check for more
-
             if (arrayIndex + 1 > toDisplayList.size() - 1) {
                 stop = true;
                 arrayIndex = 0; //Reset ArrayIndex
@@ -345,7 +318,6 @@ public class APrompter extends JPanel implements Runnable {
         }
 
         //This Is Where The Animation Really Happens
-
         if (!stop && !needUpdate) {
             //Get Width Of Text
             rect = fm.getStringBounds(toDisplayList.get(arrayIndex), g2d);
@@ -355,14 +327,15 @@ public class APrompter extends JPanel implements Runnable {
             Xpos = (this.getWidth() - textWidth) / 2;
             g2d.setFont(font);
 
-
             if (!visible || !singlePause) {
                 //Move up
                 Ypos--;
                 //Set Opacity
                 g2d.setComposite(makeComposite(Alpha));
-                g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
-                        Ypos);
+                if (toDisplayList.size() > arrayIndex) {
+                    g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
+                            Ypos);
+                }
             } else if (visible && singlePause) {
 
                 if (!needUpdate) {
@@ -370,12 +343,12 @@ public class APrompter extends JPanel implements Runnable {
                     Ypos--;
                     //Set Opacity
                     g2d.setComposite(makeComposite(Alpha));
-                    if(arrayIndex > 0){
+                    if (arrayIndex > 0) {
                         g2d.drawString(toDisplayList.get(arrayIndex - 1), Xpos,
-                            Ypos);
-                    }else{
+                                Ypos);
+                    } else {
                         g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
-                            Ypos);
+                                Ypos);
                     }
                 } else {
                     g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
@@ -385,9 +358,6 @@ public class APrompter extends JPanel implements Runnable {
             }
 
             //And DRAW!!
-
-
-
         }
     }
 
