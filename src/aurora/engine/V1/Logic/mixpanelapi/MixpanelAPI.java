@@ -1,16 +1,18 @@
 package aurora.engine.V1.Logic.mixpanelapi;
 
+import aurora.engine.V1.Logic.JSON.JSONArray;
+import aurora.engine.V1.Logic.JSON.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
 
-import aurora.engine.V1.Logic.JSON.JSONArray;
-import aurora.engine.V1.Logic.JSON.JSONObject;
+
 
 /**
  * Simple interface to the Mixpanel tracking API, intended for use in
@@ -106,7 +108,14 @@ public class MixpanelAPI {
         conn.setDoOutput(true);
         conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=utf8");
 
-        String base64data = Base64Coder.encodeString(dataString);
+        byte[] utf8data;
+        try {
+            utf8data = dataString.getBytes("utf-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Mixpanel library requires utf-8 support", e);
+        }
+
+        String base64data = new String(Base64Coder.encode(utf8data));
         String encodedData = URLEncoder.encode(base64data, "utf8");
         String encodedQuery = "data=" + encodedData;
 
