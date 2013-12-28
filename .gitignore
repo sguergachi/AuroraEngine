@@ -15,7 +15,6 @@
 *.dmg
 *.gz
 *.iso
-*.jar
 *.rar
 *.tar
 *.zip
@@ -23,7 +22,6 @@
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -54,7 +52,6 @@ Thumbs.db
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 /build/
