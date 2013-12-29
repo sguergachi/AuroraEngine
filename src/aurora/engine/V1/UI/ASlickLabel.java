@@ -15,10 +15,7 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.swing.Icon;
 import javax.swing.JLabel;
-import javax.swing.ToolTipManager;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -35,6 +32,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
     private Cursor prevCursor;
 
     static final Logger logger = Logger.getLogger(ASlickLabel.class);
+
     private Color linkColor;
 
     public ASlickLabel(String text) {
@@ -59,7 +57,6 @@ public class ASlickLabel extends JLabel implements MouseListener {
         this.linkColor = Color.green;
     }
 
-
     public void setLink(String URL, Color linkColor) {
         this.url = URL;
         this.addMouseListener(this);
@@ -73,6 +70,10 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
+                RenderingHints.VALUE_STROKE_NORMALIZE);
+
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
                 RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

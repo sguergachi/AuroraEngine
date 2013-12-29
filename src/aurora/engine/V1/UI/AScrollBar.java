@@ -7,12 +7,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JScrollBar;
 import javax.swing.plaf.basic.BasicScrollBarUI;
-
 import org.apache.log4j.Logger;
 
 
@@ -49,11 +47,19 @@ public class AScrollBar extends BasicScrollBarUI {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setColor(new Color(0,0,0,0));
         g2d.translate(trackBounds.x, trackBounds.y);
+
+//        ((Graphics2D) g).drawImage(
+//                imageTrack,
+//                AffineTransform
+//                .getScaleInstance(1, (double) trackBounds.height
+//                                     / imageTrack.getHeight(null)), null);
         ((Graphics2D) g).drawImage(
                 imageTrack,
                 AffineTransform
-                .getScaleInstance(1, (double) trackBounds.height
+                .getScaleInstance((double) trackBounds.width
+                                     / imageTrack.getWidth(null), (double) trackBounds.height
                                      / imageTrack.getHeight(null)), null);
+        
         g2d.translate(-trackBounds.x, -trackBounds.y);
     }
 

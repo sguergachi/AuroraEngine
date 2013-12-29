@@ -410,6 +410,8 @@ public class AAnimate implements Runnable {
                 frame.setVisible(true);
             }
         }
+
+
         Animating = false;
         runner = null;
         if (component != null) {
