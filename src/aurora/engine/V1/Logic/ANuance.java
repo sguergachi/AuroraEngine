@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Random;
-
 import org.apache.log4j.Logger;
 
 
@@ -76,7 +75,7 @@ public class ANuance {
 
     private String[] fld_WelcomeBack = {"Welcome Back!", "How Was Your Day!",
         "Let Me Finish Loading Your Games", "Good To See You!",
-        "Lets Play Some Games!!"};
+        "Lets Play Some Games!"};
 
     public static final int inx_WelcomeBack = 7;
 
@@ -99,7 +98,7 @@ public class ANuance {
     private File file;
 
     private boolean useInternal;
-    
+
     static final Logger logger = Logger.getLogger(ANuance.class);
 
     public ANuance() {
@@ -244,11 +243,11 @@ public class ANuance {
                     int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
 
                     if (hourOfDay <= 12) {
-                        vi_Response = "Good morning!";
+                        vi_Response = "Good morning";
                     } else if (hourOfDay >= 13 && hourOfDay <= 17) {
-                        vi_Response = "Good afternoon!";
+                        vi_Response = "Good afternoon";
                     } else if (hourOfDay >= 18) {
-                        vi_Response = "Good evening!";
+                        vi_Response = "Good evening";
                     }
                 }
 
@@ -290,11 +289,11 @@ public class ANuance {
                     int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
 
                     if (hourOfDay <= 12) {
-                        vi_Response = "Good morning!";
+                        vi_Response = "Good morning";
                     } else if (hourOfDay >= 13 && hourOfDay <= 17) {
-                        vi_Response = "Good afternoon!";
+                        vi_Response = "Good afternoon";
                     } else if (hourOfDay >= 18) {
-                        vi_Response = "Good evening!";
+                        vi_Response = "Good evening";
                     }
                 }
 
