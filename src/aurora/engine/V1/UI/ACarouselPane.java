@@ -18,11 +18,8 @@
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.UI.ACarouselTitle.TitleType;
-import java.awt.BorderLayout;
-import java.awt.ComponentOrientation;
 import java.awt.FlowLayout;
 import java.awt.Point;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -43,7 +40,7 @@ public class ACarouselPane extends AImagePane {
     private boolean isLeftPane;
 
     private boolean isRightPane;
-    
+
     static final Logger logger = Logger.getLogger(ACarouselPane.class);
 
     public ACarouselPane(String path, int W, int H, boolean DoubleBuffered,
@@ -61,8 +58,7 @@ public class ACarouselPane extends AImagePane {
         isLeftPane = false;
         isRightPane = false;
 
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -15));
-//        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -20));
     }
 
     public ACarouselPane(String path, int W, int H, ACarouselTitle title,
@@ -80,8 +76,7 @@ public class ACarouselPane extends AImagePane {
         isLeftPane = false;
         isRightPane = false;
 
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -15));
-//        this.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -20));
     }
 
     /**
@@ -100,8 +95,8 @@ public class ACarouselPane extends AImagePane {
             titleImage = title.getGlowImage();
         }
 
-        this.add( new AImage(titleImage.getImgURl()));
-        this.add( image);
+        this.add(new AImage(titleImage.getImgURl()));
+        this.add(image);
 
     }
 
@@ -115,16 +110,16 @@ public class ACarouselPane extends AImagePane {
             titleImage = title.getGlowImage();
         }
 
-        this.add( new AImage(titleImage.getImgURl()));
-        this.add( image);
+        this.add(new AImage(titleImage.getImgURl()));
+        this.add(image);
     }
 
     public void setDisplayedImage(AImage image) {
-        this.add( image);
+        this.add(image);
     }
 
     public void setDisplayedImage(AImagePane image) {
-        this.add( image);
+        this.add(image);
     }
 
     public void setDisplayedTitle(ACarouselTitle.TitleType titleType) {
@@ -136,7 +131,7 @@ public class ACarouselPane extends AImagePane {
         } else if (titleType == TitleType.GLOW) {
             titleImage = title.getGlowImage();
         }
-        this.add( new AImage(titleImage.getImgURl()));
+        this.add(new AImage(titleImage.getImgURl()));
     }
 
     public void setTitle(ACarouselTitle title) {
@@ -166,7 +161,7 @@ public class ACarouselPane extends AImagePane {
      * @param image image to display
      */
     public void setImage(AImage image) {
-        this.add( image);
+        this.add(image);
     }
 
     /**

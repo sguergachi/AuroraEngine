@@ -46,7 +46,8 @@ import org.apache.log4j.Logger;
  * |
  * .........................................................................
  *
- * @author Sammy Guergachi <sguergachi at gmail.com> & Marius Brandt <marius dot brandt at hotmail dot com>
+ * @author Sammy Guergachi <sguergachi at gmail.com> & Marius Brandt <marius dot
+ * brandt at hotmail dot com>
  *
  */
 public final class ADialog extends ADragFrame {
@@ -135,7 +136,8 @@ public final class ADialog extends ADragFrame {
      * | ADialog(int Type, String Text, Font font, ActionListener al)
      * .-----------------------------------------------------------------------.
      * |
-     * |This constructor takes the type of dialog that should be shown (error or warning),
+     * |This constructor takes the type of dialog that should be shown (error or
+     * warning),
      * |the text that the user wants to display,
      * |a custom font and an ActionListener.
      * |The custom ActionListener is mapped to the OK button.
@@ -170,9 +172,11 @@ public final class ADialog extends ADragFrame {
      * | ADialog(int Type, String Text, ActionListener al)
      * .-----------------------------------------------------------------------.
      * |
-     * |This constructor takes the type of dialog that should be shown (error or warning),
+     * |This constructor takes the type of dialog that should be shown (error or
+     * warning),
      * |the text that the user wants to display,
-     * |a default font will be used instead of a custom one, and an ActionListener.
+     * |a default font will be used instead of a custom one, and an
+     * ActionListener.
      * |The custom ActionListener is mapped to the OK button.
      * |After the initialization, the dialog is finished and can be shown via
      * |.setVisible(true)
@@ -207,9 +211,11 @@ public final class ADialog extends ADragFrame {
      * | ADialog(int Type, String Text, Font font)
      * .-----------------------------------------------------------------------.
      * |
-     * |This constructor takes the type of dialog that should be shown (error or warning),
+     * |This constructor takes the type of dialog that should be shown (error or
+     * warning),
      * |the text that the user wants to display and a custom font.
-     * |However, a default ActionListener will be used (OK button closes the dialog).
+     * |However, a default ActionListener will be used (OK button closes the
+     * dialog).
      * |After the initialization, the dialog is finished and can be shown via
      * |.setVisible(true)
      * |
@@ -240,9 +246,11 @@ public final class ADialog extends ADragFrame {
      * | ADialog(int Type, String Text)
      * .-----------------------------------------------------------------------.
      * |
-     * |This constructor takes the type of dialog that should be shown (error or warning),
+     * |This constructor takes the type of dialog that should be shown (error or
+     * warning),
      * |and text that the user wants to display.
-     * |However, a default font and a default ActionListener will be used (OK button closes the dialog).
+     * |However, a default font and a default ActionListener will be used (OK
+     * button closes the dialog).
      * |After the initialization, the dialog is finished and can be shown via
      * |.setVisible(true)
      * |
@@ -274,7 +282,8 @@ public final class ADialog extends ADragFrame {
      * | setButtonListener(ActionListener a)
      * .-----------------------------------------------------------------------.
      * |
-     * |This function is used by the constructors to assign a custom ActionListener.
+     * |This function is used by the constructors to assign a custom
+     * ActionListener.
      * |This function is not meant to be used from outside the class.
      * |To assign a custom handler manually, see setOKButtonListener.
      * |
@@ -292,7 +301,8 @@ public final class ADialog extends ADragFrame {
      * | setOKButtonListener(ActionListener listener)
      * .-----------------------------------------------------------------------.
      * |
-     * | This function requires a custom ActionListener that has to be passed like this
+     * | This function requires a custom ActionListener that has to be passed
+     * like this
      * | .setOKButtonListener(new YourListenerClass());
      * | This function will also override any previous assigned ActionListeners
      * | AND the default listener.
@@ -316,7 +326,8 @@ public final class ADialog extends ADragFrame {
      * |
      * |This function prepares the dialog.
      * |Buttons, text etc. are added and the dialog is ready.
-     * |But this function does not make the dialog visible (see constructor notice)
+     * |But this function does not make the dialog visible (see constructor
+     * notice)
      * |
      * .........................................................................
      *
@@ -345,33 +356,33 @@ public final class ADialog extends ADragFrame {
         iconContainer.add(Box.createVerticalStrut(12));
         paneDialogBG.add(iconContainer, BorderLayout.NORTH);
 
-        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,0));
+        textContainer = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
         textContainer.setPreferredSize(new Dimension(paneDialogBG
                 .getRealImageWidth(), paneDialogBG.getRealImageHeight()
                                       - iconImg.getImgHeight() - 20));
         textContainer.setOpaque(false);
 
         lblText = new ASlickTextPane(Text);
-        lblText.setFont(font);
+        lblText.setPreferredSize(textContainer.getPreferredSize());
         lblText.setForeground(Color.LIGHT_GRAY);
+        lblText.setFont(font);
 
         StyledDocument doc = lblText.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
-        lblText.setPreferredSize(textContainer.getPreferredSize());
         textContainer.add(lblText);
 
         //BOTTOM
         paneDialogBG.add(textContainer, BorderLayout.CENTER);
 
         btnOk = new AButton("app_btn_okDialog_norm.png",
-                            "app_btn_okDialog_down.png",
-                            "app_btn_okDialog_over.png");
+                "app_btn_okDialog_down.png",
+                "app_btn_okDialog_over.png");
         btnCancel = new AButton("app_btn_cancelDialog_norm.png",
-                                "app_btn_cancelDialog_down.png",
-                                "app_btn_cancelDialog_over.png");
+                "app_btn_cancelDialog_down.png",
+                "app_btn_cancelDialog_over.png");
         if (a != null) {
             btnOk.addActionListener(a);
 

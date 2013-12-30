@@ -40,9 +40,9 @@ public class ASlickTextPane extends JTextPane implements MouseListener {
 
     public ASlickTextPane(String text) {
         super.setText(text + "");
-        this.setOpaque(false);
         UIManager.getLookAndFeelDefaults().put(
                 "TextPane[Enabled].backgroundPainter", new FillPainter());
+        this.setOpaque(false);
         this.setEditable(false);
         setEnabled(false);
     }
@@ -56,17 +56,17 @@ public class ASlickTextPane extends JTextPane implements MouseListener {
 
     @Override
     public void setText(String text) {
-        super.setText(text + "  ");
-        this.setOpaque(false);
+        super.setText(text);
         this.setEditable(false);
         UIManager.getLookAndFeelDefaults().put(
                 "TextPane[Enabled].backgroundPainter", new FillPainter());
+        this.setOpaque(false);
         setEnabled(false);
-        
+
     }
-    
+
     @Override
-    public void setForeground(Color color){
+    public void setForeground(Color color) {
         setDisabledTextColor(color);
     }
 
