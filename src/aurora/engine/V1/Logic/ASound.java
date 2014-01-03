@@ -17,22 +17,13 @@
  */
 package aurora.engine.V1.Logic;
 
-import aurora.engine.V1.UI.ADialog;
-
 import java.applet.Applet;
 import java.applet.AudioClip;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 import javax.sound.sampled.UnsupportedAudioFileException;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -60,7 +51,6 @@ public class ASound implements Runnable {
     /**
      * Path to sound.
      */
-
     private String URL;
 
     /**
@@ -117,7 +107,8 @@ public class ASound implements Runnable {
      * |
      * | Note: The URL should be something like this -> "yoursound.wav"
      * |
-     * | If you want the sound to be played in a loop, set the boolean loop to true
+     * | If you want the sound to be played in a loop, set the boolean loop to
+     * true
      * | otherwise set it to false.
      * |
      * |
@@ -126,7 +117,7 @@ public class ASound implements Runnable {
      * @param URL String, loop boolean
      *
      */
-    public ASound(String URL, boolean loop)  {
+    public ASound(String URL, boolean loop) {
         this.URL = URL;
 
         this.loop = loop;
@@ -140,13 +131,14 @@ public class ASound implements Runnable {
      * | Use this method to play the sound defined in the constructor.
      * |
      * | This method MUST either be embedded into a try-catch statement,
-     * | or the method which calls this method must have certain throws declarations
+     * | or the method which calls this method must have certain throws
+     * declarations
      * | Note: Eclipse will offer you to do any of both options for you.
      * |
      * .........................................................................
      *
      */
-    public void Play()  {
+    public void Play() {
         if (runner == null) {
             runner = new Thread(this);
             runner.start();
@@ -225,9 +217,9 @@ public class ASound implements Runnable {
                                     URISyntaxException, LineUnavailableException {
         path = new URL(getClass().getResource("/aurora/V1/resources/Sound/"
                                               + URL).toString());
-        sound = Applet.newAudioClip(path );
+        sound = Applet.newAudioClip(path);
         if (logger.isDebugEnabled()) {
-        	logger.debug("Playing Sound " + path);
+            logger.debug("Playing Sound " + path);
         }
 
         if (loop) {
@@ -250,12 +242,16 @@ public class ASound implements Runnable {
      */
     @Override
     public void run() {
-        try {
-            playSound();
-        } catch (Exception e) {
-        	logger.error(e, e);
+        while (runner == Thread.currentThread()) {
 
+            try {
+                playSound();
+            } catch (Exception e) {
+                logger.error(e, e);
+
+            }
+            runner = null;
+            break;
         }
-        runner = null;
     }
 }
