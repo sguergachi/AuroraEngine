@@ -1,14 +1,33 @@
 package aurora.engine.V1.UI;
 
-import java.awt.*;
-import java.awt.event.*;
+import aurora.engine.V1.Logic.APostHandler;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.event.*;
-
+import javax.swing.BoxLayout;
+import javax.swing.JToolTip;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+import javax.swing.ToolTipManager;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 import org.apache.log4j.Logger;
 
 /**
@@ -66,6 +85,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
     static final Logger logger = Logger.getLogger(AMarqueePanel.class);
     private Cursor previousCursor;
+    private APostHandler onReleaseAction;
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
@@ -455,7 +475,6 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     }
 
     public void windowOpened(WindowEvent e) {
-        // startScrolling();
     }
 
     // implement MouseListener
@@ -497,6 +516,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     }
 
     public void mouseReleased(MouseEvent arg0) {
+
+
+        // launch onReleaseAction
+        onReleaseAction.doAction();
 
         int x = arg0.getX();
         int offset = scrollOffset;
@@ -594,5 +617,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
                 i++;
             }
         }
+    }
+
+
+    public void setPreOnReleaseAction( APostHandler postHandler){
+        this.onReleaseAction = postHandler;
     }
 }

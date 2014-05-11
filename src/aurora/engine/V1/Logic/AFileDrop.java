@@ -18,36 +18,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * This class makes it easy to drag and drop files from the operating
- * system to a Java program. Any <tt>java.awt.Component</tt> can be
- * dropped onto, but only <tt>javax.swing.JComponent</tt>s will indicate
- * the drop event with a changed border.
- * <p/>
- * To use this class, construct a new <tt>AFileDrop</tt> by passing
- * it the target component and a <tt>Listener</tt> to receive notification
- * when file(s) have been dropped. Here is an example:
- * <p/>
- * <code><pre>
- * JPanel myPanel = new JPanel();
- * new AFileDrop( myPanel, new AFileDrop.Listener()
- * {   public void filesDropped( java.io.File[] files )
- * {
- * // handle file drop
- * ...
- * }   // end filesDropped
- * }); // end AFileDrop.Listener
- * </pre></code>
- * <p/>
- * You can specify the border that will appear when files are being dragged by
- * calling the constructor with a <tt>javax.swing.border.Border</tt>. Only
- * <tt>JComponent</tt>s will show any indication with a border.
- * <p/>
- * I'm releasing this code into the Public Domain. Enjoy.
- * </p>
+ * <em>Original author: Robert Harder, rharder@usa.net
+ *  Modified by Sammy Guergachi for Aurora Engine</em></p>
  * <p>
- * <em>Original author: Robert Harder, rharder@usa.net</em></p>
- * <p>
- * 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.</p>
  *
  * @author Robert Harder
  * @author rharder@users.sf.net
@@ -72,6 +45,9 @@ public class AFileDrop {
 
     static final org.apache.log4j.Logger logger = org.apache.log4j.Logger
             .getLogger(AFileDrop.class);
+    private final Listener listener;
+    private final List<String> fileExtensions;
+    private final boolean recursive;
 
     /**
      * Full constructor with a specified border and debugging optionally turned
@@ -102,7 +78,12 @@ public class AFileDrop {
         this.dragImageName = DragImageName;
         this.rejectDragImageName = RejectDragImageName;
         this.initialImageName = InitialComponent.getImageURL();
+        this.listener = listener;
+        this.fileExtensions = fileExtensions;
+        this.recursive = recursive;
+    }
 
+    public void setupFileDrop(){
         if (supportsDnD()) {   // Make a drop listener
             dropListener = new DropTargetListener() {
                 @Override

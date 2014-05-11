@@ -264,7 +264,7 @@ public class ACarousel extends JPanel implements Runnable {
                 err.setVisible(true);
             }
              if (postRightAnimate != null) {
-                postRightAnimate.postAction();
+                postRightAnimate.doAction();
             }
         }
     }
@@ -290,7 +290,7 @@ public class ACarousel extends JPanel implements Runnable {
                 err.setVisible(true);
             }
             if (postLeftAnimate != null) {
-                postLeftAnimate.postAction();
+                postLeftAnimate.doAction();
             }
         }
     }

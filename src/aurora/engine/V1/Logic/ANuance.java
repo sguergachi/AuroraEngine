@@ -36,9 +36,6 @@ import org.apache.log4j.Logger;
  */
 public class ANuance {
 
-    private static final long serialVersionUID = 1L;
-    //TODO Add DAY Sensitive Greetings, i.e. Happy Holidays OR Merry Christmas, OR Happy Birthday <- might be harder to implement
-    //TODO Add ability to read greetings from text file
 
     private String[] fld_Welcome = {"Welcome"};
 
@@ -83,11 +80,9 @@ public class ANuance {
 
     public static final int inx_User = 9;
 
-    private String vi_Response;
+    private String Nuance_Response;
 
     private final Random randomGenerator;
-
-    private AParser parser;
 
     private ArrayList<String> fileContent;
 
@@ -200,42 +195,42 @@ public class ANuance {
     public String VI(int index) {
         if (!useInternal) {
             if (index == inx_Welcome) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Sure) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Please) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Searching) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Preparing) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Error) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Exit) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_WelcomeBack) {
-                vi_Response = nuanceDict[index][generateNum(0, getLineLength(
+                Nuance_Response = nuanceDict[index][generateNum(0, getLineLength(
                         index)
                                                                - 1)];
             } else if (index == inx_Greeting) {
                 int greetingRand = generateNum(0, 1);
 
                 if (greetingRand == 0) {
-                    vi_Response = fld_Hi[generateNum(0, fld_Hi.length - 1)];
+                    Nuance_Response = fld_Hi[generateNum(0, fld_Hi.length - 1)];
                 } else {
 
                     // added by Carlos - time sensitive greeting
@@ -243,64 +238,64 @@ public class ANuance {
                     int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
 
                     if (hourOfDay <= 12) {
-                        vi_Response = "Good morning";
+                        Nuance_Response = "Good morning";
                     } else if (hourOfDay >= 13 && hourOfDay <= 17) {
-                        vi_Response = "Good afternoon";
+                        Nuance_Response = "Good afternoon";
                     } else if (hourOfDay >= 18) {
-                        vi_Response = "Good evening";
+                        Nuance_Response = "Good evening";
                     }
                 }
 
             } else if (index == inx_User) {
-                vi_Response = System.getProperty("user.name");
+                Nuance_Response = System.getProperty("user.name");
             }
         } else {
             if (index == inx_Welcome) {
-                vi_Response = fld_Welcome[generateNum(0, fld_Welcome.length - 1)];
+                Nuance_Response = fld_Welcome[generateNum(0, fld_Welcome.length - 1)];
             } else if (index == inx_Sure) {
-                vi_Response = fld_Sure[generateNum(0, fld_Sure.length - 1)];
+                Nuance_Response = fld_Sure[generateNum(0, fld_Sure.length - 1)];
             } else if (index == inx_Please) {
-                vi_Response = fld_Please[generateNum(0, fld_Please.length - 1)];
+                Nuance_Response = fld_Please[generateNum(0, fld_Please.length - 1)];
             } else if (index == inx_Searching) {
-                vi_Response = fld_Searching[generateNum(0, fld_Searching.length
+                Nuance_Response = fld_Searching[generateNum(0, fld_Searching.length
                                                            - 1)];
             } else if (index == inx_Preparing) {
-                vi_Response = fld_Preparing[generateNum(0, fld_Preparing.length
+                Nuance_Response = fld_Preparing[generateNum(0, fld_Preparing.length
                                                            - 1)];
             } else if (index == inx_Error) {
-                vi_Response = fld_Error[generateNum(0, fld_Error.length - 1)];
+                Nuance_Response = fld_Error[generateNum(0, fld_Error.length - 1)];
             } else if (index == inx_Exit) {
-                vi_Response = fld_Exit[generateNum(0, fld_Exit.length - 1)];
+                Nuance_Response = fld_Exit[generateNum(0, fld_Exit.length - 1)];
             } else if (index == inx_User) {
-                vi_Response = System.getProperty("user.name");
+                Nuance_Response = System.getProperty("user.name");
             } else if (index == inx_WelcomeBack) {
-                vi_Response = fld_WelcomeBack[generateNum(0,
+                Nuance_Response = fld_WelcomeBack[generateNum(0,
                         fld_WelcomeBack.length
                         - 1)];
             } else if (index == inx_Greeting) {
                 int greetingRand = generateNum(0, 1);
 
                 if (greetingRand == 0) {
-                    vi_Response = fld_Hi[generateNum(0, fld_Hi.length - 1)];
+                    Nuance_Response = fld_Hi[generateNum(0, fld_Hi.length - 1)];
                 } else {
 
-                    // added by Carlos - time sensitive greeting
+                    // Time sensitive greeting
                     Calendar cal = Calendar.getInstance();
                     int hourOfDay = cal.get(Calendar.HOUR_OF_DAY);
 
                     if (hourOfDay <= 12) {
-                        vi_Response = "Good morning";
+                        Nuance_Response = "Good morning";
                     } else if (hourOfDay >= 13 && hourOfDay <= 17) {
-                        vi_Response = "Good afternoon";
+                        Nuance_Response = "Good afternoon";
                     } else if (hourOfDay >= 18) {
-                        vi_Response = "Good evening";
+                        Nuance_Response = "Good evening";
                     }
                 }
 
             }
         }
 
-        return vi_Response;
+        return Nuance_Response;
     }
 
     private int generateNum(int btwNum1, int btwNum2) {

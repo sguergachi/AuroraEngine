@@ -207,7 +207,7 @@ public class APrompter extends JPanel implements Runnable {
 
                     //Execute what ever is in postHandler Method
                     if (postHandler != null) {
-                        postHandler.postAction();
+                        postHandler.doAction();
                         break;
                     } else {
                         break;

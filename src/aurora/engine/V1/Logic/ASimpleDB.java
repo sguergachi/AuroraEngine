@@ -464,10 +464,10 @@ public class ASimpleDB {
             logger.error(ex);
 
         } finally {
-            connection.close();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Closed connection");
-            }
+//            connection.close();
+//            if (logger.isDebugEnabled()) {
+//                logger.debug("Closed connection");
+//            }
         }
 
     }

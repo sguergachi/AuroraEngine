@@ -1,16 +1,6 @@
 package aurora.engine.V1.UI;
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.swing.JLabel;
-import javax.swing.JToolTip;
-
 import org.apache.log4j.Logger;
 
 
@@ -42,11 +32,7 @@ public class AInfoFeedLabel extends ASlickLabel implements MouseListener{
     private String customToolTip;
 
     static final Logger logger = Logger.getLogger(AInfoFeedLabel.class);
-    private Cursor previousCursor;
 
-    /**
-     *
-     */
     public AInfoFeedLabel(String title, String url) {
 
         super(title);
@@ -84,9 +70,7 @@ public class AInfoFeedLabel extends ASlickLabel implements MouseListener{
     }
 
     public int getEndPosition() {
-
         return endPosition;
-
     }
 
     public void setSourceName(String name) {

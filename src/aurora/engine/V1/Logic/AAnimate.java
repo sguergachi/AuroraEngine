@@ -429,12 +429,12 @@ public class AAnimate implements Runnable {
     ///Run when animation is complete
     private void doneAnimation() {
         if (postAnimate != null) {
-            postAnimate.postAction();
+            postAnimate.doAction();
         }
 
         if (postListenerList.size() != 0) {
             for (int i = 0; i < postListenerList.size(); i++) {
-                postListenerList.get(i).postAction();
+                postListenerList.get(i).doAction();
             }
 
             postListenerList.clear();
