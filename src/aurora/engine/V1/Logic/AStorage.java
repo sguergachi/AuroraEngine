@@ -44,34 +44,27 @@ public abstract class AStorage {
     protected ArrayList getDatabaseArray(String TableName, String ColumnName) throws SQLException {
         database = new ArrayList<Object>();
 
-            ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
-                                        + TableName);
+        ResultSet rs = db.flexQuery("SELECT " + ColumnName + " FROM "
+                + TableName);
 
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("RS " + rs);
-            }
-
-
-
+        if (logger.isDebugEnabled()) {
+            logger.debug("RS " + rs);
+        }
 
             //Check if db is still empty
+        if (rs != null) {
+            rs.beforeFirst();
 
-            if (rs != null) {
-                rs.beforeFirst();
-
-                while (rs.next()) {
-                    database.add(rs.getObject(ColumnName));
-                }
-
-                db.CloseConnection();
-                return database;
-            } else {
-                db.CloseConnection();
-                return null;
+            while (rs.next()) {
+                database.add(rs.getObject(ColumnName));
             }
 
-
+//            db.CloseConnection();
+            return database;
+        } else {
+//            db.CloseConnection();
+            return null;
+        }
 
     }
 }
