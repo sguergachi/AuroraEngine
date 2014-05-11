@@ -22,9 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 /**
  *
@@ -124,6 +122,11 @@ public class ARadioButton extends AImagePane {
         this.setImageSize(width, height);
         this.setPreferredSize(new Dimension(getImageWidth(), getImageHeight()));
 
+    }
+
+    public void clearHandlers() {
+        onSelectHander = null;
+        onUnSelectHander = null;
     }
 
     public class Click implements MouseListener {
