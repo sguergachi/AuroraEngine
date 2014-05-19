@@ -57,15 +57,23 @@ public class AFadeLabel extends ASlickLabel {
 
     private Font labelFont;
 
+    private int count2;
+
+    private Timer fadeOutAnimation;
 
     public AFadeLabel() {
 
         this.setIgnoreRepaint(true);
 
+
+
     }
 
     public AFadeLabel(String text) {
         setText(text);
+        this.setIgnoreRepaint(true);
+
+
     }
 
     @Override
@@ -95,30 +103,30 @@ public class AFadeLabel extends ASlickLabel {
     }
 
     private void fade() {
+
         if (!nextString.equals(currentString)) {
             stop = false;
-            Timer fadeOutAnimation = new Timer(16, new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
 
-                    repaint();
+            if (fadeOutAnimation == null) {
+                fadeOutAnimation = new Timer(16, new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
 
+                        repaint();
 
-                    // If currentString is still visible then repaint
-
-                    if (!fadedOut) {
-
-                        if (Alpha > 0.09F && count > 0) {
+                        // If currentString is still visible then repaint
+                        if (!fadedOut && Alpha > 0.09F && count > 0) {
                             ((Timer) e.getSource()).stop();
                             stop = true;
                             setFadedOut();
                         }
+
                     }
+                });
+            }
 
-                }
-            });
-
-
-            fadeOutAnimation.start();
+            if (!fadeOutAnimation.isRunning()) {
+                fadeOutAnimation.start();
+            }
 
 
         }
@@ -135,15 +143,15 @@ public class AFadeLabel extends ASlickLabel {
 
         //Make Text Render Beautifuly
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                             RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+                             RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 
         //Animate the Text
@@ -178,7 +186,7 @@ public class AFadeLabel extends ASlickLabel {
 
             for (int k = 1; labelW > maxWidth; k++) {
                 labelFont = this.getFont().deriveFont(this.getFont().getSize()
-                                                      - k * 1.0f);
+                                                              - k * 1.0f);
                 this.setFont(labelFont);
                 g2d.setFont(this.getFont());
                 labelW = (int) Math
@@ -188,7 +196,7 @@ public class AFadeLabel extends ASlickLabel {
         }
 
         g2d.drawString(currentString, Xpos,
-                    this.getPreferredSize().height);
+                       this.getPreferredSize().height);
 
 
 
@@ -209,15 +217,14 @@ public class AFadeLabel extends ASlickLabel {
 
             setFadedOut();
 
-        }
-
-
-        if (Alpha > 0.85F && faded) {
+        }else if (Alpha > 0.85F && faded) {
 
             faded = false;
             setFadedIn();
 
         }
+        count2++;
+        System.out.println(count2);
 
 
     }
@@ -231,7 +238,8 @@ public class AFadeLabel extends ASlickLabel {
 
     private void setFadedOut() {
 
-
+        System.out.println("===========");
+        count2 = 0;
         fadedOut = true;
 
         if (nextString != null || Alpha < 0.05F) {
@@ -261,6 +269,5 @@ public class AFadeLabel extends ASlickLabel {
 
 
     }
-
 
 }
