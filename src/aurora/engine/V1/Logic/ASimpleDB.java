@@ -1397,7 +1397,7 @@ public class ASimpleDB {
             return rs;
 
         } catch (SQLException ex) {
-            connection.rollback();
+//            connection.rollback();
             logger.error(ex);
             return null;
         }

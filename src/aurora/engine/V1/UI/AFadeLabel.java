@@ -47,8 +47,6 @@ public class AFadeLabel extends ASlickLabel {
 
     private boolean fadedOut = false;
 
-    private boolean fadedIn = true;
-
     private boolean stop;
 
     private int count;
@@ -59,9 +57,6 @@ public class AFadeLabel extends ASlickLabel {
 
     private Font labelFont;
 
-    private Font savedFont;
-
-    private int stringCount;
 
     public AFadeLabel() {
 
@@ -178,6 +173,7 @@ public class AFadeLabel extends ASlickLabel {
                 .ceil(met.stringWidth(currentString));
         int maxWidth = (int) Math.floor(this.getWidth());
 
+        // Scale text to fit max width
         if (labelW > maxWidth) {
 
             for (int k = 1; labelW > maxWidth; k++) {
@@ -237,7 +233,6 @@ public class AFadeLabel extends ASlickLabel {
 
 
         fadedOut = true;
-        fadedIn = false;
 
         if (nextString != null || Alpha < 0.05F) {
             currentString = nextString;
@@ -259,7 +254,6 @@ public class AFadeLabel extends ASlickLabel {
     private void setFadedIn() {
 
         count++;
-        fadedIn = true;
         fadedOut = false;
 
         this.setFont(this.getFont());
