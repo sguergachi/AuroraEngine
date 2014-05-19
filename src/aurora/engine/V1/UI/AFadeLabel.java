@@ -57,7 +57,6 @@ public class AFadeLabel extends ASlickLabel {
 
     private Font labelFont;
 
-    private int count2;
 
     private Timer fadeOutAnimation;
 
@@ -223,8 +222,6 @@ public class AFadeLabel extends ASlickLabel {
             setFadedIn();
 
         }
-        count2++;
-        System.out.println(count2);
 
 
     }
@@ -239,7 +236,6 @@ public class AFadeLabel extends ASlickLabel {
     private void setFadedOut() {
 
         System.out.println("===========");
-        count2 = 0;
         fadedOut = true;
 
         if (nextString != null || Alpha < 0.05F) {
