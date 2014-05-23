@@ -106,9 +106,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         addMouseListener(this);
         addMouseMotionListener(this);
         ttm = ToolTipManager.sharedInstance();
-        ttm.setInitialDelay(0);
-        ttm.setReshowDelay(0);
-        ttm.setDismissDelay(1000);
+        ttm.setInitialDelay(10);
+        ttm.setReshowDelay(1000);
+        ttm.setDismissDelay(500);
     }
 
     /**
@@ -132,9 +132,9 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         addMouseListener(this);
         addMouseMotionListener(this);
         ttm = ToolTipManager.sharedInstance();
-        ttm.setInitialDelay(0);
-        ttm.setReshowDelay(0);
-        ttm.setDismissDelay(1000);
+        ttm.setInitialDelay(10);
+        ttm.setReshowDelay(1000);
+        ttm.setDismissDelay(500);
     }
 
     /*
@@ -424,7 +424,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     public Point getToolTipLocation(MouseEvent e) {
         if (isHovering && e.getLocationOnScreen() != null) {
             return new Point(e.getX() - (this.getToolTipText().length() * 3),
-                    - 10);
+                    - 20);
         }
         return null;
 
