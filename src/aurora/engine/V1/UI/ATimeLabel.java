@@ -18,15 +18,10 @@
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.AThreadWorker;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import javax.swing.JLabel;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -35,8 +30,6 @@ import org.apache.log4j.Logger;
  * @version 0.2
  */
 public class ATimeLabel extends ASlickLabel {
-
-    private Thread runner;
 
     public static final String FULL_DATE = "EEEEE, MMMMM dd hh:mm:ss a";
 
@@ -91,7 +84,7 @@ public class ATimeLabel extends ASlickLabel {
             public void actionPerformed(ActionEvent e) {
                 setText(current(timeType) + "   ");
                 repaint();
-                logger.info("Time thread refreshing");
+                logger.info("[Time Thread Heartbeat]");
             }
         }, 30000);
 

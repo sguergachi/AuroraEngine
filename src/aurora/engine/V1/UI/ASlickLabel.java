@@ -51,6 +51,10 @@ public class ASlickLabel extends JLabel implements MouseListener {
         super.setText(text + "  ");
     }
 
+    public void superSetText(String text) {
+        super.setText(text);
+    }
+
     public void setLink(String URL) {
         this.url = URL;
         this.addMouseListener(this);
