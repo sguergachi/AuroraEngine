@@ -427,8 +427,8 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
 
         if (isHovering && e.getLocationOnScreen() != null) {
-            return new Point(e.getX() + (this.getToolTipText().length() * 5),
-                             -20);
+            return new Point(e.getX() + (this.getToolTipText().length() ),
+                             -16);
         }
         return null;
 
