@@ -18,9 +18,9 @@ public class APopupMenu extends JPopupMenu {
     {
         // need to disable that to work
         setLightWeightPopupEnabled(false);
-        UIManager.put("PopupMenu.background", new Color(0,0,0,0));
+        UIManager.put("PopupMenu.background", new Color(0, 0, 0, 0));
         UIManager.put("PopupMenu.border", BorderFactory.createEmptyBorder());
+        UIManager.put("PopupMenu.consumeEventOnClose", Boolean.TRUE);
     }
-
 
 }
