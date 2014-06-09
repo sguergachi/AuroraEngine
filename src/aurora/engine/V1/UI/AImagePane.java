@@ -19,6 +19,7 @@ package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.AFileManager;
 import aurora.engine.V1.Logic.ASurface;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.LayoutManager;
@@ -54,6 +55,7 @@ public class AImagePane extends JPanel {
     private String SurfaceName;
 
     static final Logger logger = Logger.getLogger(AImagePane.class);
+
     private String ImageFileName;
 
     //////////////
@@ -135,13 +137,14 @@ public class AImagePane extends JPanel {
     protected final void setUpImage(String URL) {
         try {
             image = new ImageIcon(new URL(ressource.getSurfacePath()
-                                          + "/aurora/V1/resources/" + ImageURL));
+                                                  + "/aurora/V1/resources/"
+                                                  + ImageURL));
         } catch (MalformedURLException ex) {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
                                 "/aurora/V1/resources/"
-                                + ImageURL));
+                                        + ImageURL));
             } catch (Exception exx) {
                 logger.error(exx);
             }
@@ -154,16 +157,16 @@ public class AImagePane extends JPanel {
         Graphics2D g2d = (Graphics2D) g.create();
 
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_DEFAULT);
+                             RenderingHints.VALUE_RENDER_DEFAULT);
 
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+                             RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL,
-                RenderingHints.VALUE_STROKE_NORMALIZE);
+                             RenderingHints.VALUE_STROKE_NORMALIZE);
 
         if (image != null) {
             if (imageWidth == 0) {
@@ -181,7 +184,7 @@ public class AImagePane extends JPanel {
 
     public void setURL(String URL) {
         ImageURL = URL;
-        
+
         // Allow size to be from image
         imageWidth = 0;
         imageHeight = 0;
@@ -223,14 +226,14 @@ public class AImagePane extends JPanel {
         this.setOpaque(false);
         try {
             image = new ImageIcon(new URL(ressource.getSurfacePath()
-                                          + "/aurora/V1/resources/"
-                                          + this.ImageURL));
+                                                  + "/aurora/V1/resources/"
+                                                  + this.ImageURL));
         } catch (MalformedURLException ex) {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
                                 "/aurora/V1/resources/"
-                                + ImageURL));
+                                        + ImageURL));
             } catch (Exception exx) {
                 logger.error(exx);
             }
@@ -256,14 +259,14 @@ public class AImagePane extends JPanel {
 
         try {
             this.image = new ImageIcon(new URL(ressource.getSurfacePath()
-                                               + "/aurora/V1/resources/"
-                                               + ImageURL));
+                                                       + "/aurora/V1/resources/"
+                                                       + ImageURL));
         } catch (MalformedURLException ex) {
             try {
                 image = new ImageIcon(getClass()
                         .getResource(
                                 "/aurora/V1/resources/"
-                                + ImageURL));
+                                        + ImageURL));
             } catch (Exception exx) {
                 logger.error(exx);
             }
@@ -339,7 +342,10 @@ public class AImagePane extends JPanel {
         return this.getImgIcon().getIconHeight();
     }
 
-    //TODO GET REAL SIZE AND WIDTH using get getImgIcon().getIconWidth()
+    public Dimension getRealImageSize() {
+        return new Dimension(getRealImageWidth(), getRealImageHeight());
+    }
+
     public void setImageHeight(int imageHeight) {
         this.imageHeight = imageHeight;
         this.repaint();

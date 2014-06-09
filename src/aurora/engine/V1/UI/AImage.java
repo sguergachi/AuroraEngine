@@ -84,6 +84,12 @@ public class AImage extends JLabel implements MouseListener {
         createImage();
     }
 
+    public void setImage(String ImgURl) {
+        this.ImageURl = ImgURl;
+        w = 0;
+        createImage();
+    }
+
     public void setH(int height) {
         this.h = height;
         createImage();
@@ -169,10 +175,10 @@ public class AImage extends JLabel implements MouseListener {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING,
-                RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+                             RenderingHints.VALUE_COLOR_RENDER_QUALITY);
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
 
         super.paintComponent(g2d);
     }
@@ -182,9 +188,9 @@ public class AImage extends JLabel implements MouseListener {
                                                     int height) {
 
         BufferedImage bufferedImage = Scalr.resize(image, Scalr.Method.QUALITY,
-                Scalr.Mode.FIT_EXACT,
-                width, height,
-                Scalr.OP_ANTIALIAS);
+                                                   Scalr.Mode.FIT_EXACT,
+                                                   width, height,
+                                                   Scalr.OP_ANTIALIAS);
 
         return bufferedImage;
     }
@@ -193,15 +199,15 @@ public class AImage extends JLabel implements MouseListener {
                                                      int width,
                                                      int height) {
         BufferedImage bufferedImage = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_ARGB_PRE);
+                                                        BufferedImage.TYPE_INT_ARGB_PRE);
         Graphics2D g = bufferedImage.createGraphics();
         g.setComposite(AlphaComposite.Src);
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                           RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                           RenderingHints.VALUE_ANTIALIAS_ON);
 
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
@@ -223,17 +229,17 @@ public class AImage extends JLabel implements MouseListener {
 
         // Create a buffered image with transparency
         BufferedImage bimage = new BufferedImage(img.getWidth(null), img
-                .getHeight(null), BufferedImage.TYPE_INT_ARGB);
+                                                 .getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
         // Draw the image on to the buffered image
         Graphics2D g2d = bimage.createGraphics();
         g2d.setComposite(AlphaComposite.Src);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                             RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                             RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.drawImage(img, 0, 0, null);
         g2d.dispose();
 
@@ -244,15 +250,15 @@ public class AImage extends JLabel implements MouseListener {
     public static Image resizeImage(Image image, int width, int height) {
 
         BufferedImage bufferedImage = new BufferedImage(width, height,
-                BufferedImage.TYPE_INT_ARGB_PRE);
+                                                        BufferedImage.TYPE_INT_ARGB_PRE);
         Graphics2D g = bufferedImage.createGraphics();
         g.setComposite(AlphaComposite.Src);
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                           RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                           RenderingHints.VALUE_RENDER_QUALITY);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                           RenderingHints.VALUE_ANTIALIAS_ON);
 
         g.drawImage(image, 0, 0, width, height, null);
         g.dispose();
