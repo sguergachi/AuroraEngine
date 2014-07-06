@@ -34,7 +34,7 @@ public class AFloatingPanel extends JPanel {
 
         shown = true;
         this.setLocation(x, y);
-        frame.getLayeredPane().add(this, JLayeredPane.POPUP_LAYER);
+        frame.getLayeredPane().add(this, JLayeredPane.MODAL_LAYER);
         this.revalidate();
         this.requestFocusInWindow();
     }

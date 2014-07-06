@@ -275,14 +275,14 @@ public class AAnimate implements Runnable {
 
                     if (component.getLocation().x > XPos / 2) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Slow Down Pos!!");
+//                            logger.debug("Slow Down Pos!!");
                         }
 
                         acc--;
                         acc--;
                     } else if (component.getLocation().x < XPos / 2) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Accelerate Pos!!");
+//                            logger.debug("Accelerate Pos!!");
                         }
 
                         acc++;
@@ -295,14 +295,14 @@ public class AAnimate implements Runnable {
 
                     if (component.getLocation().x <= XPos / 2) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Slow Down Neg!!");
+//                            logger.debug("Slow Down Neg!!");
                         }
 
                         acc++;
                         acc++;
                     } else if (component.getLocation().x >= XPos / 2) {
                         if (logger.isDebugEnabled()) {
-                            logger.debug("Accelerate Neg!!");
+//                            logger.debug("Accelerate Neg!!");
                         }
 
                         acc--;

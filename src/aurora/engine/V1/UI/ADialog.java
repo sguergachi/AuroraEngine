@@ -421,7 +421,7 @@ public final class ADialog extends ADragFrame {
             }
         });
 
-        requestFocusInWindow();
+        btnOk.requestFocusInWindow();
 
     }
 
