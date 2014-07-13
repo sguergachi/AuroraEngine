@@ -20,17 +20,26 @@ package aurora.engine.V1.Logic;
 import aurora.engine.V1.UI.AImage;
 import aurora.engine.V1.UI.AImagePane;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -481,25 +490,7 @@ public class AFileManager {
 
     public void downloadFile(URL location, File dest) throws IOException {
 
-//        try {
-//            URLConnection urlConn = location.openConnection();
-//            BufferedInputStream is = new BufferedInputStream(urlConn
-//                    .getInputStream());
-//            File out = dest;
-//            BufferedOutputStream bout = new BufferedOutputStream(
-//                    new FileOutputStream(dest));
-//            byte[] b = new byte[8 * 1024];
-//            int read = 0;
-//            while ((read = is.read(b)) > -1) {
-//                bout.write(b, 0, read);
-//            }
-//            bout.flush();
-//            bout.close();
-//            is.close();
-//
-//        } catch (IOException mfu) {
-//            mfu.printStackTrace();
-//        }
+
         ReadableByteChannel rbc = Channels.newChannel(location.openStream());
         FileOutputStream fos = new FileOutputStream(dest);
         fos.getChannel().transferFrom(rbc, 0, 1 << 24);

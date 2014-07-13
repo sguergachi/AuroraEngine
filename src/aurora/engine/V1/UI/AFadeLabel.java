@@ -235,7 +235,7 @@ public class AFadeLabel extends ASlickLabel {
 
     private void setFadedOut() {
 
-        System.out.println("===========");
+//        System.out.println("===========");
         fadedOut = true;
 
         if (nextString != null || Alpha < 0.05F) {
