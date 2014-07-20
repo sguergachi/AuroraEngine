@@ -63,14 +63,14 @@ public class AImage extends JLabel implements MouseListener {
 
     static final Logger logger = Logger.getLogger(AImage.class);
 
-    private URL path;
+    private String path;
 
     public String getImgURl() {
         return ImageURl;
     }
 
     public String getImagePath() {
-        return path.getPath();
+        return path;
     }
 
     public int getImgHeight() {
@@ -147,22 +147,26 @@ public class AImage extends JLabel implements MouseListener {
 
         try {
 
-            path = new URL(ressource.getSurfacePath()
-                           + "/aurora/V1/resources/" + ImageURl);
-            image = new ImageIcon(path);
+            path = ressource.getSurfacePath()
+                   + "/aurora/V1/resources/" + ImageURl;
+
+            image = new ImageIcon(new URL(path));
 
         } catch (MalformedURLException ex) {
             //fallback
             try {
 
-                path = new URL(getClass()
+
+                path = getClass()
                         .getResource(
                                 "/aurora/V1/resources/"
-                                + ImageURl).getPath());
-                if (path.getPath().contains("!") && !path.getPath().contains("jar:")) {
-                    path = new URL("jar:" + path);
+                                + ImageURl).getPath();
+                if (path.contains("!") && !path.contains("jar:")) {
+                    path = "jar:" + path;
                 }
-                image = new ImageIcon(path);
+
+                image = new ImageIcon(new URL("file://" + path));
+
             } catch (Exception exx) {
                 logger.error(exx);
             }
