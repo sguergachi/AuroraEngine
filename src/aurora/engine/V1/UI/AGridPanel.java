@@ -18,11 +18,11 @@
 package aurora.engine.V1.UI;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -56,7 +56,7 @@ public class AGridPanel extends JPanel {
         this.col = col;
         numberOfComponentsAdded = 0;
 
-        this.setLayout(new GridLayout(this.row, this.col, 0, 0));
+        this.setLayout(new GridLayout(this.row, this.col, 30, 0));
 
     }
 
@@ -67,7 +67,7 @@ public class AGridPanel extends JPanel {
 
         this.setOpaque(!Transparent);
 
-        this.setLayout(new GridLayout(this.row, this.col, 0, 0));
+        this.setLayout(new GridLayout(this.row, this.col, 30, 0));
 
     }
 
@@ -81,7 +81,10 @@ public class AGridPanel extends JPanel {
         if (!isGridFull()) {
             if (!componentList.contains(comp)) {
                 componentList.add(comp);
-                this.add(componentList.get(componentList.indexOf(comp)));
+                JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+                pane.setOpaque(false);
+                pane.add(componentList.get(componentList.indexOf(comp)));
+                this.add(pane);
                 numberOfComponentsAdded++;
                 if (logger.isDebugEnabled()) {
                     logger.debug("Adding to grid...");
@@ -102,7 +105,10 @@ public class AGridPanel extends JPanel {
         if (!isGridFull()) {
             if (!componentList.contains(comp)) {
                 componentList.add(index, comp);
-                this.add(componentList.get(componentList.indexOf(comp)), index);
+                JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+//                pane.setOpaque(false);
+                pane.add(componentList.get(componentList.indexOf(comp)));
+                this.add(pane);
                 numberOfComponentsAdded++;
                 if (logger.isDebugEnabled()) {
                     logger.debug("Adding to grid... ");

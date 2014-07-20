@@ -62,14 +62,15 @@ public class AImage extends JLabel implements MouseListener {
     private Cursor prevCursor;
 
     static final Logger logger = Logger.getLogger(AImage.class);
-    private String path;
+
+    private URL path;
 
     public String getImgURl() {
         return ImageURl;
     }
 
     public String getImagePath() {
-        return path;
+        return path.getPath();
     }
 
     public int getImgHeight() {
@@ -146,33 +147,40 @@ public class AImage extends JLabel implements MouseListener {
 
         try {
 
-            path = ressource.getSurfacePath()
-                                          + "/aurora/V1/resources/" + ImageURl;
-            image = new ImageIcon(new URL(path));
+            path = new URL(ressource.getSurfacePath()
+                           + "/aurora/V1/resources/" + ImageURl);
+            image = new ImageIcon(path);
 
         } catch (MalformedURLException ex) {
             //fallback
             try {
 
-                path = getClass()
+                path = new URL(getClass()
                         .getResource(
                                 "/aurora/V1/resources/"
-                                + ImageURl).getPath();
+                                + ImageURl).getPath());
+                if (path.getPath().contains("!") && !path.getPath().contains("jar:")) {
+                    path = new URL("jar:" + path);
+                }
                 image = new ImageIcon(path);
             } catch (Exception exx) {
                 logger.error(exx);
             }
         }
 
-        if (w == 0) {
+
+
+        if (w == 0 || w == -1) {
             w = image.getImage().getWidth(this);
             h = image.getImage().getHeight(this);
         }
 
-        Image img = (AImage.resizeImage(image.getImage(), w, h));
-        img.setAccelerationPriority(1);
-        image.setImage(img);
-        img.flush();
+        if (w != image.getImage().getWidth(this) || h != image.getImage().getHeight(this)) {
+            Image img = (AImage.resizeImage(image.getImage(), w, h));
+            img.setAccelerationPriority(1);
+            image.setImage(img);
+            img.flush();
+        }
 
         this.setIcon(image);
     }
