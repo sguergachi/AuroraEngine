@@ -82,6 +82,7 @@ public class AGridPanel extends JPanel {
             if (!componentList.contains(comp)) {
                 componentList.add(comp);
                 JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+                pane.setName("AGrid Panel");
                 pane.setOpaque(false);
                 pane.add(componentList.get(componentList.indexOf(comp)));
                 this.add(pane);

@@ -25,7 +25,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-
 import org.apache.log4j.Logger;
 
 /**
@@ -222,6 +221,7 @@ public class AButton extends JButton {
 
             } catch (Exception exx) {
                 logger.error(exx);
+                exx.printStackTrace();
             }
 
             this.revalidate();
