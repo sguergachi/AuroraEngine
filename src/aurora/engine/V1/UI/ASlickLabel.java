@@ -36,7 +36,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
     private Color linkColor;
 
     public ASlickLabel(String text) {
-        super(text + "");
+        super(text);
     }
 
     public ASlickLabel(String text, int horizontalAlignment) {
