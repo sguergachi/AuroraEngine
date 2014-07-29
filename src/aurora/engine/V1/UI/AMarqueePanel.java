@@ -1,6 +1,7 @@
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.APostHandler;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -10,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -20,8 +22,9 @@ import java.awt.event.WindowListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 import javax.swing.JToolTip;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -41,8 +44,8 @@ import org.apache.log4j.Logger;
  * Changes to the properties are dynamic and will take effect the next time the
  * components are scrolled.
  */
-public class AMarqueePanel extends AImagePane implements ActionListener,
-                                                         AncestorListener, WindowListener, MouseListener, MouseMotionListener {
+public class AMarqueePanel extends JPanel implements ActionListener,
+                                                     AncestorListener, WindowListener, MouseListener, MouseMotionListener {
 
     /**
      *
@@ -69,12 +72,14 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
     private int wrapAmount = 50;
 
+    protected int strokeSize = 1;
+    protected Dimension arcs = new Dimension(15, 15);
+
     private boolean scrollWhenFocused = true;
 
     private Timer timer = new Timer(0, this);
 
-    public static ArrayList<AInfoFeedLabel> infoFeedLabelList;
-
+//    public static ArrayList<AInfoFeedLabel> infoFeedLabelList;
     private ToolTipManager ttm;
 
     private int orgScrollAmount = 0;
@@ -88,19 +93,17 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
     private Cursor previousCursor;
 
     private APostHandler onReleaseAction;
+    private Color BACKGROUND_BORDER;
 
     /**
      * Create an AnimatedIcon that will continuously cycle with the default
      * (500ms).
      * <p/>
-     * @param component
-     *                  the component the icon will be painted on
-     * @param icons
-     *                  the Icons to be painted as part of the animation
      */
-    public AMarqueePanel(int width, int height, String backgroundImage) {
-        super(backgroundImage, width, height);
-
+    public AMarqueePanel(int width, int height, Color bg, Color border) {
+        BACKGROUND_BORDER = border;
+        setBackground(bg);
+        setBorder(BorderFactory.createLineBorder(border, 3, true));
         setScrollFrequency(frequency);
         setScrollAmount(2);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -123,10 +126,11 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      *                  the Icons to be painted as part of the animation
      */
     public AMarqueePanel(int scrollSpeed, int width, int height,
-                         String backgroundImage) {
-        super(backgroundImage, width, height);
+                         Color bg, Color border) {
+        BACKGROUND_BORDER = border;
         this.setOpaque(true);
-
+        setBackground(bg);
+        setBorder(BorderFactory.createLineBorder(border, 3, true));
         setScrollFrequency(frequency);
         setScrollAmount(scrollSpeed);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
@@ -159,10 +163,10 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
         // background image  to use the aspect ratio data to try to
         // clip the display area reasonably
         Rectangle rect = g2d.getClip().getBounds();
-        int relationalX = Math.round(6 * getWidthRatio());
-        int relationalWidth = Math.round(12 * getWidthRatio());
+        int relationalX = Math.round(6 * 1);
+        int relationalWidth = Math.round(12 * 1);
         rect.setBounds(new Rectangle(rect.x + relationalX, rect.y, rect.width
-                                                                           - relationalWidth,
+                                                                   - relationalWidth,
                                      rect.height));
         g2d.setClip(rect);
 
@@ -177,7 +181,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
-                                 - wrapAmount;
+                         - wrapAmount;
 
             g2d.translate(-wrapOffset, 0);
             super.paintChildren(g);
@@ -193,7 +197,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
      */
     public void actionPerformed(ActionEvent ae) {
         scrollOffset = scrollOffset + scrollAmount;
-        int width = getPreferredSize().width;
+        int width = getPreferredSize().width * this.getComponentCount() / 2;
 
         if (scrollOffset > width) {
             if (postCycleListener != null) {
@@ -427,7 +431,7 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
 
         if (isHovering && e.getLocationOnScreen() != null) {
-            return new Point(e.getX() + (this.getToolTipText().length() ),
+            return new Point(e.getX() + (this.getToolTipText().length()),
                              -16);
         }
         return null;
@@ -627,5 +631,39 @@ public class AMarqueePanel extends AImagePane implements ActionListener,
 
     public void setPreOnReleaseAction(APostHandler postHandler) {
         this.onReleaseAction = postHandler;
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+
+        super.paintComponent(g);
+        int width = getWidth();
+        int height = getHeight();
+        Graphics2D graphics = (Graphics2D) g;
+
+        //Sets antialiasing
+        graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                                  RenderingHints.VALUE_ANTIALIAS_ON);
+
+        //Draws the rounded opaque panel with borders.
+        graphics.setColor(getBackground());
+        graphics.fillRoundRect(0, 0, width - 1,
+                               height - 1, arcs.width, arcs.height);
+
+        graphics.setColor(Color.BLACK);
+        graphics.setStroke(new BasicStroke(strokeSize));
+        graphics.drawRoundRect(0, 0, width - 1,
+                               height - 1, arcs.width, arcs.height);
+
+        graphics.setColor(BACKGROUND_BORDER);
+        graphics.setStroke(new BasicStroke(strokeSize));
+        graphics.drawRoundRect(1, 1, width - 3,
+                               height - 3, arcs.width, arcs.height);
+
+        //Sets strokes to default, is better.
+        graphics.setStroke(new BasicStroke());
+
+
+        super.paintComponent(g);
     }
 }
