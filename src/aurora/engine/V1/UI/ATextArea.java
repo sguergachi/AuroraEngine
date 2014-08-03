@@ -1,20 +1,31 @@
+/*
+ * Copyright 2012 Sardonix Creative.
+ *
+ * This work is licensed under the
+ * Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.
+ * To view a copy of this license, visit
+ *
+ *      http://creativecommons.org/licenses/by-nc-nd/3.0/
+ *
+ * or send a letter to Creative Commons, 444 Castro Street, Suite 900,
+ * Mountain View, California, 94041, USA.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.AContextMenuListener;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-
-import aurora.engine.V1.Logic.*;
-
 import javax.swing.BorderFactory;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
 import org.apache.log4j.Logger;
 
 public class ATextArea extends AImagePane {
@@ -103,13 +114,13 @@ public class ATextArea extends AImagePane {
         areaScrollPane.setViewportBorder(BorderFactory.createEmptyBorder());
         areaScrollPane
                 .setHorizontalScrollBarPolicy(
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         //Make Scrollbar move a little to the left
         areaScrollPane.setPreferredSize(new Dimension(this.getWidth() - 7, this
-                .getHeight()));
+                                                      .getHeight()));
         this.setPreferredSize(new Dimension(this.getRealImageWidth(), this
-                .getRealImageHeight()));
+                                            .getRealImageHeight()));
         this.add(areaScrollPane, BorderLayout.WEST);
 
         this.setOpaque(false);
@@ -137,7 +148,7 @@ public class ATextArea extends AImagePane {
     public void setBackgroundImage(String backgroundImage) {
         this.imagePath = backgroundImage;
         this.setImageSize(this.getPreferredSize().width,
-                this.getPreferredSize().height);
+                          this.getPreferredSize().height);
     }
 
     public class textFocusListener implements FocusListener {
@@ -148,12 +159,12 @@ public class ATextArea extends AImagePane {
                 setImage(activeImagePath);
 
                 setImageSize(getPreferredSize().width,
-                        getPreferredSize().height);
+                             getPreferredSize().height);
             } else {
                 setImage(imagePath);
 
                 setImageSize(getPreferredSize().width,
-                        getPreferredSize().height);
+                             getPreferredSize().height);
             }
 
         }

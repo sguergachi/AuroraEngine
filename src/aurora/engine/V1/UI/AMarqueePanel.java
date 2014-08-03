@@ -1,3 +1,6 @@
+
+
+
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.APostHandler;
@@ -47,9 +50,7 @@ import org.apache.log4j.Logger;
 public class AMarqueePanel extends JPanel implements ActionListener,
                                                      AncestorListener, WindowListener, MouseListener, MouseMotionListener {
 
-    /**
-     *
-     */
+
     private static final long serialVersionUID = 1L;
 
     protected boolean paintChildren;
