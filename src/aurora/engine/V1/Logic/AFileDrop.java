@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 /**
  * <em>Original author: Robert Harder, rharder@usa.net
- *  Modified by Sammy Guergachi for Aurora Engine</em></p>
+ * Modified by Sammy Guergachi for Aurora Engine</em></p>
  * <p>
  *
  * @author Robert Harder
@@ -83,11 +83,11 @@ public class AFileDrop {
         this.recursive = recursive;
     }
 
-    public void setupFileDrop(){
+    public void setupFileDrop() {
         if (supportsDnD()) {   // Make a drop listener
             dropListener = new DropTargetListener() {
                 @Override
-                public void dragEnter(java.awt.dnd.DropTargetDragEvent evt) {
+                public void dragEnter(DropTargetDragEvent evt) {
 
 
 
@@ -100,7 +100,7 @@ public class AFileDrop {
                             initialComponent.setImage(dragImageName);
 
                             // Acknowledge that it's okay to enter
-                            //evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
+//                            evt.acceptDrag( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
                             evt.acceptDrag(DnDConstants.ACTION_COPY);
                         } // end if: drag ok
                         else {   // Reject the drag event
@@ -188,12 +188,12 @@ public class AFileDrop {
                                 .getTransferable();
                         if (!initialComponent.getImageURL().equals(
                                 rejectDragImageName) && !listener.isOccupied()) {
-                            logger.info("Drop OK");
+
                             // Is it a file list?
                             if (tr.isDataFlavorSupported(
                                     DataFlavor.javaFileListFlavor)) {
 
-
+                                logger.info("Drop OK");
 
                                 // Say we'll take it.
                                 //evt.acceptDrop ( java.awt.dnd.DnDConstants.ACTION_COPY_OR_MOVE );
@@ -222,6 +222,7 @@ public class AFileDrop {
                             } // end if: file list
                             else // this section will check for a reader flavor.
                             {
+                                logger.info("Drop OK");
                                 DataFlavor[] flavors = tr
                                         .getTransferDataFlavors();
                                 boolean handled = false;
@@ -250,10 +251,10 @@ public class AFileDrop {
                                     }
                                 }
                                 if (!handled) {
+                                    logger.info("Drop Rejected");
                                     evt.rejectDrop();
                                 }
-                                // END 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
-                            }   // end else: not a file list
+                            }
                         }
                     } // end try
                     catch (java.io.IOException io) {
@@ -262,6 +263,7 @@ public class AFileDrop {
                         logger.error(io);
                     } // end catch IOException
                     catch (java.awt.datatransfer.UnsupportedFlavorException ufe) {
+                        logger.info("Drop Rejected");
                         evt.rejectDrop();
                         logger.error(ufe);
                     } // end catch: UnsupportedFlavorException
@@ -283,16 +285,16 @@ public class AFileDrop {
                     if (!listener.isOccupied()) {
                         // Is this an acceptable drag event?
                         if (isDragOk(evt)) {
-                            evt
-                                    .acceptDrag(
-                                            java.awt.dnd.DnDConstants.ACTION_COPY);
+                            evt.acceptDrag(java.awt.dnd.DnDConstants.ACTION_COPY);
                         } // end if: drag ok
                         else {
                             evt.rejectDrag();
                         }   // end else: drag not ok
                         initialComponent.setImage(initialImageName);
                     } else {
+                        logger.info("Drag Rejected");
                         evt.rejectDrag();
+
                     }
                 }   // end dropActionChanged
             }; // end DropTargetListener
@@ -302,6 +304,7 @@ public class AFileDrop {
         } // end if: supports dnd
         else {
             initialComponent.setImage(rejectDragImageName);
+            logger.error("System doesn't support DnD");
         }   // end else: does not support DnD
     }   // end constructor
 
@@ -322,7 +325,6 @@ public class AFileDrop {
         return supportsDnD.booleanValue();
     }   // end supportsDnD
 
-    // BEGIN 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
     private static String ZERO_CHAR_STRING = "" + (char) 0;
 
     private static File[] createFileArray(BufferedReader bReader) {
@@ -349,7 +351,6 @@ public class AFileDrop {
         }
         return new File[0];
     }
-    // END 2007-09-12 Nathan Blomquist -- Linux (KDE/Gnome) support added.
 
     private void makeDropTarget(final java.awt.Component c, boolean recursive) {
         // Make drop target
@@ -625,7 +626,7 @@ public class AFileDrop {
          */
         public final static java.awt.datatransfer.DataFlavor DATA_FLAVOR
                                                              = new java.awt.datatransfer.DataFlavor(
-                AFileDrop.TransferableObject.class, MIME_TYPE);
+                        AFileDrop.TransferableObject.class, MIME_TYPE);
 
         private Fetcher fetcher;
 
@@ -684,7 +685,7 @@ public class AFileDrop {
         public TransferableObject(Class dataClass, Fetcher fetcher) {
             this.fetcher = fetcher;
             this.customFlavor = new java.awt.datatransfer.DataFlavor(dataClass,
-                    MIME_TYPE);
+                                                                     MIME_TYPE);
         }   // end constructor
 
         /**
