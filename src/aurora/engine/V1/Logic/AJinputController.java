@@ -52,6 +52,10 @@ public class AJinputController {
     private ActionListener listener_hat_down_button;
     private ActionListener listener_hat_right_button;
     private ActionListener listener_hat_left_button;
+    private ActionListener listener_lanalog_right;
+    private ActionListener listener_lanalog_left;
+    private ActionListener listener_lanalog_up;
+    private ActionListener listener_lanalog_down;
 
     public void loadControllers() {
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
@@ -100,7 +104,6 @@ public class AJinputController {
                 Event event = new Event();
 
 
-//                for (int i = 0; i < components.length; i++) {
                 while (queue.getNextEvent(event)) {
                     Component component = event.getComponent();
                     Component.Identifier componentIdentifier = component.getIdentifier();
@@ -130,13 +133,13 @@ public class AJinputController {
                         else if (listener_a_button != null && buttonIndex == 2 && isItPressed) {
                             listener_x_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// Y Button Pressed
-                        else if (listener_a_button != null && buttonIndex == 2 && isItPressed) {
+                        else if (listener_a_button != null && buttonIndex == 3 && isItPressed) {
                             listener_y_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// Left Bumper Pressed
-                        else if (listener_a_button != null && buttonIndex == 4 && isItPressed) {
+                        else if (listener_lb_button != null && buttonIndex == 4 && isItPressed) {
                             listener_lb_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// Right Bumper Pressed
-                        else if (listener_a_button != null && buttonIndex == 5 && isItPressed) {
+                        else if (listener_rb_button != null && buttonIndex == 5 && isItPressed) {
                             listener_rb_button.actionPerformed(new ActionEvent(this, 0, null));
                         }
 
@@ -169,6 +172,14 @@ public class AJinputController {
                         continue;
                     }
 
+
+
+
+                }
+
+                for (int i = 0; i < components.length; i++) {
+                    Component component = components[i];
+                    Component.Identifier componentIdentifier = component.getIdentifier();
                     // Axes
                     if (component.isAnalog()) {
                         float axisValue = component.getPollData();
@@ -178,27 +189,41 @@ public class AJinputController {
                         if (componentIdentifier == Component.Identifier.Axis.X) {
                             xAxisPercentage = axisValueInPercentage;
                             logger.info("xAxisPercentage " + xAxisPercentage);
+                            if (listener_lanalog_right != null && xAxisPercentage > 75) {
+                                listener_lanalog_right.actionPerformed(new ActionEvent(this, 0, null));
+                            } else if (listener_lanalog_left != null && xAxisPercentage < 25) {
+                                listener_lanalog_left.actionPerformed(new ActionEvent(this, 0, null));
+                            }
                             continue; // Go to next component.
                         }
                         // Y axis
                         if (componentIdentifier == Component.Identifier.Axis.Y) {
                             yAxisPercentage = axisValueInPercentage;
                             logger.info("yAxisPercentage " + yAxisPercentage);
-
+                            if (listener_lanalog_up != null && yAxisPercentage > 75) {
+                                listener_lanalog_up.actionPerformed(new ActionEvent(this, 0, null));
+                            } else if (listener_lanalog_down != null && yAxisPercentage < 25) {
+                                listener_lanalog_down.actionPerformed(new ActionEvent(this, 0, null));
+                            }
                             continue; // Go to next component.
                         }
 
                         // Other axis
                         logger.info("axisValueInPercentage " + axisValueInPercentage);
-                    }
 
+
+                        try {
+                            Thread.sleep(15);
+                        } catch (InterruptedException ex) {
+                            java.util.logging.Logger.getLogger(AJinputController.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
 
                 }
 
 
-
                 try {
-                    Thread.sleep(50);
+                    Thread.sleep(30);
                 } catch (InterruptedException ex) {
                     java.util.logging.Logger.getLogger(AJinputController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -207,14 +232,13 @@ public class AJinputController {
 
 
             }
-        },
-                                                             50);
+        }, 50);
 
         controllerListener.start();
     }
 
-// A button
-    public void addListener_A_Button(ActionListener listener) {
+    // A button
+    public void setListener_A_Button(ActionListener listener) {
         listener_a_button = (listener);
     }
 
@@ -223,7 +247,7 @@ public class AJinputController {
     }
 
     // B button
-    public void addListener_B_Button(ActionListener listener) {
+    public void setListener_B_Button(ActionListener listener) {
         listener_b_button = listener;
     }
 
@@ -250,7 +274,7 @@ public class AJinputController {
     }
 
     // LB button
-    public void addListener_LB_Button(ActionListener listener) {
+    public void setListener_LB_Button(ActionListener listener) {
         listener_lb_button = (listener);
     }
 
@@ -259,7 +283,7 @@ public class AJinputController {
     }
 
     // RB button
-    public void addListener_RB_Button(ActionListener listener) {
+    public void setListener_RB_Button(ActionListener listener) {
         listener_rb_button = (listener);
     }
 
@@ -301,6 +325,42 @@ public class AJinputController {
 
     public void clearListener_HAT_Down_Button() {
         listener_hat_down_button = null;
+    }
+
+    // Analog Down
+    public void setListener_ANALOG_Down_Button(ActionListener listener) {
+        listener_lanalog_down = (listener);
+    }
+
+    public void clearListener_ANALOG_Down_Button() {
+        listener_lanalog_down = null;
+    }
+
+    // Analog Up
+    public void setListener_ANALOG_Up_Button(ActionListener listener) {
+        listener_lanalog_up = (listener);
+    }
+
+    public void clearListener_ANALOG_Up_Button() {
+        listener_lanalog_up = null;
+    }
+
+    // Analog Left
+    public void setListener_ANALOG_Left_Button(ActionListener listener) {
+        listener_lanalog_left = (listener);
+    }
+
+    public void clearListener_ANALOG_Left_Button() {
+        listener_lanalog_left = null;
+    }
+
+    // Analog Right
+    public void setListener_ANALOG_Right_Button(ActionListener listener) {
+        listener_lanalog_right = (listener);
+    }
+
+    public void clearListener_ANALOG_Right_Button() {
+        listener_lanalog_right = null;
     }
 
     public void clearAllListeners() {
