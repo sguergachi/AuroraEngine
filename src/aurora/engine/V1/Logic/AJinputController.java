@@ -15,7 +15,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.Logic;
 
 import java.awt.event.ActionEvent;
@@ -25,12 +24,12 @@ import java.util.logging.Level;
 import net.java.games.input.Component;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
+import net.java.games.input.Event;
 import org.apache.log4j.Logger;
-
-
 
 /**
  * Code derived from "http://theuzo007.wordpress.com/2013/10/26/joystick-in-java-with-jinput-v2/"
+ * <p>
  * @author Sammy Guergachi <sguergachi at gmail.com>
  */
 public class AJinputController {
@@ -43,12 +42,12 @@ public class AJinputController {
     //
     // Listener Arrays
     //
-    private ArrayList<ActionListener> listener_a_button = new ArrayList<>();
-    private ArrayList<ActionListener> listener_b_button = new ArrayList<>();
-    private ArrayList<ActionListener> listener_x_button = new ArrayList<>();
-    private ArrayList<ActionListener> listener_y_button = new ArrayList<>();
-    private ArrayList<ActionListener> listener_rb_button = new ArrayList<>();
-    private ArrayList<ActionListener> listener_lb_button = new ArrayList<>();
+    private ActionListener listener_a_button;
+    private ActionListener listener_b_button;
+    private ActionListener listener_x_button;
+    private ActionListener listener_y_button;
+    private ActionListener listener_rb_button;
+    private ActionListener listener_lb_button;
     private ActionListener listener_hat_up_button;
     private ActionListener listener_hat_down_button;
     private ActionListener listener_hat_right_button;
@@ -88,8 +87,6 @@ public class AJinputController {
 
                 // Pull controller for current data, and break loop if controller is disconnected.
                 if (!controller.poll()) {
-
-
                     ((AThreadWorker) e.getSource()).stop();
                 }
 
@@ -99,8 +96,13 @@ public class AJinputController {
 
                 // Go trough all components of the controller.
                 Component[] components = controller.getComponents();
-                for (int i = 0; i < components.length; i++) {
-                    Component component = components[i];
+                net.java.games.input.EventQueue queue = controller.getEventQueue();
+                Event event = new Event();
+
+
+//                for (int i = 0; i < components.length; i++) {
+                while (queue.getNextEvent(event)) {
+                    Component component = event.getComponent();
                     Component.Identifier componentIdentifier = component.getIdentifier();
 
                     // Buttons
@@ -119,33 +121,23 @@ public class AJinputController {
                         logger.info("button Press  " + buttonIndex + " isPressed? " + isItPressed);
 
                         // A Button Pressed
-                        if (buttonIndex == 0 && isItPressed) {
-                            listener_a_button.get(0).actionPerformed(new ActionEvent(this, 0, null));
+                        if (listener_a_button != null && buttonIndex == 0 && isItPressed) {
+                            listener_a_button.actionPerformed(new ActionEvent(this, 0, null));
                         } // B Button Pressed
-                        else if (buttonIndex == 1 && isItPressed) {
-//                            for (int a = 0; a < listener_b_button.size(); a++) {
-                            listener_b_button.get(0).actionPerformed(new ActionEvent(this, 0, null));
-//                            }
+                        else if (listener_a_button != null && buttonIndex == 1 && isItPressed) {
+                            listener_b_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// X Button Pressed
-                        else if (buttonIndex == 2 && isItPressed) {
-//                            for (int a = 0; a < listener_x_button.size(); a++) {
-                            listener_x_button.get(0).actionPerformed(new ActionEvent(this, 0, null));
-//                            }
+                        else if (listener_a_button != null && buttonIndex == 2 && isItPressed) {
+                            listener_x_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// Y Button Pressed
-                        else if (buttonIndex == 2 && isItPressed) {
-//                            for (int a = 0; a < listener_y_button.size(); a++) {
-                            listener_y_button.get(0).actionPerformed(new ActionEvent(this, 0, null));
-//                            }
+                        else if (listener_a_button != null && buttonIndex == 2 && isItPressed) {
+                            listener_y_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// Left Bumper Pressed
-                        else if (buttonIndex == 4 && isItPressed) {
-//                            for (int a = 0; a < listener_lb_button.size(); a++) {
-                            listener_lb_button.get(0).actionPerformed(new ActionEvent(this, 0, null));
-//                            }
+                        else if (listener_a_button != null && buttonIndex == 4 && isItPressed) {
+                            listener_lb_button.actionPerformed(new ActionEvent(this, 0, null));
                         }// Right Bumper Pressed
-                        else if (buttonIndex == 5 && isItPressed) {
-//                            for (int a = 0; a < listener_rb_button.size(); a++) {
-                            listener_rb_button.get(0).actionPerformed(new ActionEvent(this, 0, null));
-//                            }
+                        else if (listener_a_button != null && buttonIndex == 5 && isItPressed) {
+                            listener_rb_button.actionPerformed(new ActionEvent(this, 0, null));
                         }
 
 
@@ -200,80 +192,79 @@ public class AJinputController {
                         logger.info("axisValueInPercentage " + axisValueInPercentage);
                     }
 
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {
-                        java.util.logging.Logger.getLogger(AJinputController.class.getName()).log(Level.SEVERE, null, ex);
-                    }
 
                 }
 
 
 
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException ex) {
+                    java.util.logging.Logger.getLogger(AJinputController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+
+
+
             }
-        }, 50);
+        },
+                                                             50);
 
         controllerListener.start();
     }
 
-    // A button
+// A button
     public void addListener_A_Button(ActionListener listener) {
-        listener_a_button.clear();
-        listener_a_button.add(listener);
+        listener_a_button = (listener);
     }
 
     public void clearListener_A_Button() {
-        listener_a_button.clear();
+        listener_a_button = null;
     }
 
     // B button
     public void addListener_B_Button(ActionListener listener) {
-        listener_b_button.clear();
-        listener_b_button.add(listener);
+        listener_b_button = listener;
     }
 
     public void clearListener_B_Button() {
-        listener_b_button.clear();
+        listener_b_button = null;
     }
 
     // X button
     public void addListener_X_Button(ActionListener listener) {
-        listener_x_button.clear();
-        listener_x_button.add(listener);
+        listener_x_button = (listener);
     }
 
     public void clearListener_X_Button() {
-        listener_x_button.clear();
+        listener_x_button = null;
     }
 
     // Y button
     public void addListener_Y_Button(ActionListener listener) {
-        listener_y_button.clear();
-        listener_y_button.add(listener);
+        listener_y_button = (listener);
     }
 
     public void clearListener_Y_Button() {
-        listener_y_button.clear();
+        listener_y_button = null;
     }
 
     // LB button
     public void addListener_LB_Button(ActionListener listener) {
-        listener_lb_button.clear();
-        listener_lb_button.add(listener);
+        listener_lb_button = (listener);
     }
 
     public void clearListener_LB_Button() {
-        listener_lb_button.clear();
+        listener_lb_button = null;
     }
 
     // RB button
     public void addListener_RB_Button(ActionListener listener) {
-        listener_rb_button.clear();
-        listener_rb_button.add(listener);
+        listener_rb_button = (listener);
     }
 
     public void clearListener_RB_Button() {
-        listener_rb_button.clear();
+        listener_rb_button = null;
     }
 
     // Hat Right
@@ -319,6 +310,50 @@ public class AJinputController {
         clearListener_A_Button();
         clearListener_LB_Button();
         clearListener_RB_Button();
+    }
+
+    public ArrayList<Controller> getFoundControllers() {
+        return foundControllers;
+    }
+
+    public ActionListener getListener_a_button() {
+        return listener_a_button;
+    }
+
+    public ActionListener getListener_b_button() {
+        return listener_b_button;
+    }
+
+    public ActionListener getListener_x_button() {
+        return listener_x_button;
+    }
+
+    public ActionListener getListener_y_button() {
+        return listener_y_button;
+    }
+
+    public ActionListener getListener_rb_button() {
+        return listener_rb_button;
+    }
+
+    public ActionListener getListener_lb_button() {
+        return listener_lb_button;
+    }
+
+    public ActionListener getListener_hat_up_button() {
+        return listener_hat_up_button;
+    }
+
+    public ActionListener getListener_hat_down_button() {
+        return listener_hat_down_button;
+    }
+
+    public ActionListener getListener_hat_right_button() {
+        return listener_hat_right_button;
+    }
+
+    public ActionListener getListener_hat_left_button() {
+        return listener_hat_left_button;
     }
 
     /**

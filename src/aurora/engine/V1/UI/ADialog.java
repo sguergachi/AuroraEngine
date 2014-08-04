@@ -17,6 +17,7 @@
  */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.APostHandler;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -105,7 +106,7 @@ public final class ADialog extends ADragFrame {
     /**
      * Custom ActionListener.
      */
-    private ActionListener a;
+    private ActionListener okButtonListener;
 
     /**
      * Custom Font.
@@ -130,6 +131,8 @@ public final class ADialog extends ADragFrame {
     static final Logger logger = Logger.getLogger(ADialog.class);
 
     private boolean isConfigured;
+    private ExitListener exitListener;
+    private APostHandler postExit;
 
     /**
      * .-----------------------------------------------------------------------.
@@ -293,7 +296,7 @@ public final class ADialog extends ADragFrame {
      *
      */
     private void setButtonListener(ActionListener a) {
-        this.a = a;
+        this.okButtonListener = a;
     }
 
     /**
@@ -315,8 +318,8 @@ public final class ADialog extends ADragFrame {
      *
      */
     public void setOKButtonListener(ActionListener listener) {
-        a = listener;
-        btnOk.addActionListener(a);
+        okButtonListener = listener;
+        btnOk.addActionListener(okButtonListener);
     }
 
     /**
@@ -378,21 +381,21 @@ public final class ADialog extends ADragFrame {
         paneDialogBG.add(textContainer, BorderLayout.CENTER);
 
         btnOk = new AButton("app_btn_okDialog_norm.png",
-                "app_btn_okDialog_down.png",
-                "app_btn_okDialog_over.png");
+                            "app_btn_okDialog_down.png",
+                            "app_btn_okDialog_over.png");
         btnCancel = new AButton("app_btn_cancelDialog_norm.png",
-                "app_btn_cancelDialog_down.png",
-                "app_btn_cancelDialog_over.png");
-        if (a != null) {
-            btnOk.addActionListener(a);
+                                "app_btn_cancelDialog_down.png",
+                                "app_btn_cancelDialog_over.png");
+        if (okButtonListener != null) {
+            btnOk.addActionListener(okButtonListener);
 
         } else {
-            a = new ActionListener() {
+            okButtonListener = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     setVisible(false);
                 }
             };
-            btnOk.addActionListener(a);
+            btnOk.addActionListener(okButtonListener);
 
         }
 
@@ -407,7 +410,8 @@ public final class ADialog extends ADragFrame {
         Bottom.add(pnlButtonContainer, BorderLayout.EAST);
         paneDialogBG.add(BorderLayout.PAGE_END, Bottom);
 
-        btnCancel.addActionListener(new ExitListener());
+        exitListener = new ExitListener();
+        btnCancel.addActionListener(exitListener);
 
         paneDialogBG.getInputMap().put(KeyStroke.getKeyStroke(
                 java.awt.event.KeyEvent.VK_ENTER, 0), "enterDown");
@@ -417,7 +421,7 @@ public final class ADialog extends ADragFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                a.actionPerformed(null);
+                okButtonListener.actionPerformed(null);
             }
         });
 
@@ -425,12 +429,28 @@ public final class ADialog extends ADragFrame {
 
     }
 
-    class ExitListener implements ActionListener {
+    public ExitListener getExitListener() {
+        return exitListener;
+    }
+
+    public void setPostExitListener(APostHandler post) {
+        postExit = post;
+    }
+
+    public ActionListener getOkButtonListener() {
+        return okButtonListener;
+    }
+
+    public class ExitListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             setVisible(false);
+            dispose();
             setLocationRelativeTo(null);
+            if (postExit != null) {
+                postExit.doAction();
+            }
         }
     }
 }
