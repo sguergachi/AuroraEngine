@@ -398,8 +398,8 @@ public class AAnimate implements Runnable {
             alphaAcc = alphaAcc + 0.01f;
 
             if (logger.isDebugEnabled()) {
-                System.out.println("X Val " + x);
-                System.out.println("Y Val " + y);
+//                System.out.println("X Val " + x);
+//                System.out.println("Y Val " + y);
             }
 
             if (component != null) {

@@ -188,7 +188,7 @@ public class AJinputController {
                         // X axis
                         if (componentIdentifier == Component.Identifier.Axis.X) {
                             xAxisPercentage = axisValueInPercentage;
-                            logger.info("xAxisPercentage " + xAxisPercentage);
+//                            logger.info("xAxisPercentage " + xAxisPercentage);
                             if (listener_lanalog_right != null && xAxisPercentage > 75) {
                                 listener_lanalog_right.actionPerformed(new ActionEvent(this, 0, null));
                             } else if (listener_lanalog_left != null && xAxisPercentage < 25) {
@@ -199,7 +199,7 @@ public class AJinputController {
                         // Y axis
                         if (componentIdentifier == Component.Identifier.Axis.Y) {
                             yAxisPercentage = axisValueInPercentage;
-                            logger.info("yAxisPercentage " + yAxisPercentage);
+//                            logger.info("yAxisPercentage " + yAxisPercentage);
                             if (listener_lanalog_up != null && yAxisPercentage > 75) {
                                 listener_lanalog_up.actionPerformed(new ActionEvent(this, 0, null));
                             } else if (listener_lanalog_down != null && yAxisPercentage < 25) {
@@ -209,7 +209,7 @@ public class AJinputController {
                         }
 
                         // Other axis
-                        logger.info("axisValueInPercentage " + axisValueInPercentage);
+//                        logger.info("axisValueInPercentage " + axisValueInPercentage);
 
 
                         try {
