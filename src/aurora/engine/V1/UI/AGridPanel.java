@@ -81,7 +81,9 @@ public class AGridPanel extends JPanel {
         if (!isGridFull()) {
             if (!componentList.contains(comp)) {
                 componentList.add(comp);
-                JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
+                JPanel pane
+                               = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,
+                                                           0));
                 pane.setName("AGrid Panel");
                 pane.setOpaque(false);
                 pane.add(componentList.get(componentList.indexOf(comp)));
@@ -106,8 +108,10 @@ public class AGridPanel extends JPanel {
         if (!isGridFull()) {
             if (!componentList.contains(comp)) {
                 componentList.add(index, comp);
-                JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER,0,0));
-//                pane.setOpaque(false);
+                JPanel pane
+                               = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,
+                                                           0));
+                pane.setOpaque(false);
                 pane.add(componentList.get(componentList.indexOf(comp)));
                 this.add(pane);
                 numberOfComponentsAdded++;
@@ -127,9 +131,18 @@ public class AGridPanel extends JPanel {
         this.removeAll();
 
         for (int i = 0; i < componentList.size(); i++) {
-            this.setPreferredSize(new Dimension(componentList.get(i).getWidth(),
-                    componentList.get(i).getHeight()));
-            this.add(componentList.get(i));
+
+            JPanel pane = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 0));
+            pane.setOpaque(false);
+            pane.add(componentList.get(componentList.indexOf(componentList
+                    .get(i))));
+            componentList.get(i).setPreferredSize(new Dimension(componentList
+                    .get(i).getPreferredSize().width,
+                                                                componentList
+                                                                .get(i)
+                                                                .getPreferredSize().height));
+            pane.add(componentList.get(i));
+            this.add(pane);
             componentList.get(i).revalidate();
         }
         this.revalidate();
@@ -200,8 +213,8 @@ public class AGridPanel extends JPanel {
         double element_divby_cols = ((double) index) / ((double) col);
 
         int elementRow = (int) (element_divby_cols
-                                + (quotient * (((double) col)
-                                                          - ((double) elementColumn))));
+                                        + (quotient * (((double) col)
+                                                               - ((double) elementColumn))));
 
         columnAndRow[0] = elementColumn;
         columnAndRow[1] = elementRow;
@@ -217,6 +230,7 @@ public class AGridPanel extends JPanel {
      * Finds element in grid array
      *
      * @param comp
+     *             <p>
      * @return
      */
     public int find(JComponent comp) {

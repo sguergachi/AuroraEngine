@@ -43,30 +43,44 @@ public class AJinputController {
     // Listener Arrays
     //
     private ActionListener listener_a_button;
+
     private ActionListener listener_b_button;
+
     private ActionListener listener_x_button;
+
     private ActionListener listener_y_button;
+
     private ActionListener listener_rb_button;
+
     private ActionListener listener_lb_button;
+
     private ActionListener listener_hat_up_button;
+
     private ActionListener listener_hat_down_button;
+
     private ActionListener listener_hat_right_button;
+
     private ActionListener listener_hat_left_button;
+
     private ActionListener listener_lanalog_right;
+
     private ActionListener listener_lanalog_left;
+
     private ActionListener listener_lanalog_up;
+
     private ActionListener listener_lanalog_down;
 
     public void loadControllers() {
-        Controller[] controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+        Controller[] controllers = ControllerEnvironment.getDefaultEnvironment()
+                .getControllers();
 
         for (int i = 0; i < controllers.length; i++) {
             Controller controller = controllers[i];
 
             if (controller.getType() == Controller.Type.STICK
-                || controller.getType() == Controller.Type.GAMEPAD
-                || controller.getType() == Controller.Type.WHEEL
-                || controller.getType() == Controller.Type.FINGERSTICK) {
+                        || controller.getType() == Controller.Type.GAMEPAD
+                        || controller.getType() == Controller.Type.WHEEL
+                        || controller.getType() == Controller.Type.FINGERSTICK) {
 
                 logger.info("Controller Type: " + controller.getType());
                 logger.info("Controller Name: " + controller.getName());
@@ -81,158 +95,212 @@ public class AJinputController {
     }
 
     void startListeningToControllers() {
-        AThreadWorker controllerListener = new AThreadWorker(new ActionListener() {
+        AThreadWorker controllerListener = new AThreadWorker(
+                new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (foundControllers.size() > 0) {
+                            // Currently selected controller.
+                            Controller controller = foundControllers.get(0);
 
-                // Currently selected controller.
-                Controller controller = foundControllers.get(0);
+                            // Pull controller for current data, and break loop if controller is disconnected.
+                            if (!controller.poll()) {
+                                ((AThreadWorker) e.getSource()).stop();
+                            }
 
-                // Pull controller for current data, and break loop if controller is disconnected.
-                if (!controller.poll()) {
-                    ((AThreadWorker) e.getSource()).stop();
-                }
+                            // X axis and Y axis
+                            int xAxisPercentage = 0;
+                            int yAxisPercentage = 0;
 
-                // X axis and Y axis
-                int xAxisPercentage = 0;
-                int yAxisPercentage = 0;
-
-                // Go trough all components of the controller.
-                Component[] components = controller.getComponents();
-                net.java.games.input.EventQueue queue = controller.getEventQueue();
-                Event event = new Event();
-
-
-                while (queue.getNextEvent(event)) {
-                    Component component = event.getComponent();
-                    Component.Identifier componentIdentifier = component.getIdentifier();
-
-                    // Buttons
-                    if (componentIdentifier.getName().matches("^[0-9]*$")) { // If the component identifier name contains only numbers, then this is a button.
-                        // Is button pressed?
-                        boolean isItPressed = true;
-                        if (component.getPollData() == 0.0f) {
-                            isItPressed = false;
-                        }
-
-                        // Button index
-                        int buttonIndex;
-                        buttonIndex = Integer.parseInt(component.getIdentifier().toString().trim());
-
-                        // Create and add new button to panel.
-                        logger.info("button Press  " + buttonIndex + " isPressed? " + isItPressed);
-
-                        // A Button Pressed
-                        if (listener_a_button != null && buttonIndex == 0 && isItPressed) {
-                            listener_a_button.actionPerformed(new ActionEvent(this, 0, null));
-                        } // B Button Pressed
-                        else if (listener_a_button != null && buttonIndex == 1 && isItPressed) {
-                            listener_b_button.actionPerformed(new ActionEvent(this, 0, null));
-                        }// X Button Pressed
-                        else if (listener_a_button != null && buttonIndex == 2 && isItPressed) {
-                            listener_x_button.actionPerformed(new ActionEvent(this, 0, null));
-                        }// Y Button Pressed
-                        else if (listener_a_button != null && buttonIndex == 3 && isItPressed) {
-                            listener_y_button.actionPerformed(new ActionEvent(this, 0, null));
-                        }// Left Bumper Pressed
-                        else if (listener_lb_button != null && buttonIndex == 4 && isItPressed) {
-                            listener_lb_button.actionPerformed(new ActionEvent(this, 0, null));
-                        }// Right Bumper Pressed
-                        else if (listener_rb_button != null && buttonIndex == 5 && isItPressed) {
-                            listener_rb_button.actionPerformed(new ActionEvent(this, 0, null));
-                        }
+                            // Go trough all components of the controller.
+                            Component[] components = controller.getComponents();
+                            net.java.games.input.EventQueue queue = controller
+                            .getEventQueue();
+                            Event event = new Event();
 
 
+                            while (queue.getNextEvent(event)) {
+                                Component component = event.getComponent();
+                                Component.Identifier componentIdentifier
+                                                     = component.getIdentifier();
 
-                        // We know that this component was button so we can skip to next component.
-                        continue;
-                    }
+                                // Buttons
+                                if (componentIdentifier.getName().matches(
+                                        "^[0-9]*$")) { // If the component identifier name contains only numbers, then this is a button.
+                                    // Is button pressed?
+                                    boolean isItPressed = true;
+                                    if (component.getPollData() == 0.0f) {
+                                        isItPressed = false;
+                                    }
 
-                    // Hat switch
-                    if (componentIdentifier == Component.Identifier.Axis.POV) {
-                        float hatSwitchPosition = component.getPollData();
-                        logger.info("Hatswitch Position " + hatSwitchPosition);
+                                    // Button index
+                                    int buttonIndex;
+                                    buttonIndex = Integer.parseInt(component
+                                            .getIdentifier().toString().trim());
 
-                        // Hat Right
-                        if (hatSwitchPosition == 0.5 && listener_hat_right_button != null) {
-                            listener_hat_right_button.actionPerformed(new ActionEvent(this, 0, null));
-                        } // Hat Left
-                        else if (hatSwitchPosition == 1.0 && listener_hat_left_button != null) {
-                            listener_hat_left_button.actionPerformed(new ActionEvent(this, 0, null));
-                        } // Hat Up
-                        else if (hatSwitchPosition == 0.25 && listener_hat_up_button != null) {
-                            listener_hat_up_button.actionPerformed(new ActionEvent(this, 0, null));
-                        } // Hat Down
-                        else if (hatSwitchPosition == 0.75 && listener_hat_down_button != null) {
-                            listener_hat_down_button.actionPerformed(new ActionEvent(this, 0, null));
-                        }
+                                    // Create and add new button to panel.
+                                    logger.info("button Press  " + buttonIndex
+                                                + " isPressed? " + isItPressed);
 
-                        // We know that this component was hat switch so we can skip to next component.
-                        continue;
-                    }
+                                    // A Button Pressed
+                                    if (listener_a_button != null && buttonIndex
+                                                                     == 0
+                                        && isItPressed) {
+                                        listener_a_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    } // B Button Pressed
+                                    else if (listener_a_button != null
+                                             && buttonIndex == 1 && isItPressed) {
+                                        listener_b_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    }// X Button Pressed
+                                    else if (listener_a_button != null
+                                             && buttonIndex == 2 && isItPressed) {
+                                        listener_x_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    }// Y Button Pressed
+                                    else if (listener_a_button != null
+                                             && buttonIndex == 3 && isItPressed) {
+                                        listener_y_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    }// Left Bumper Pressed
+                                    else if (listener_lb_button != null
+                                             && buttonIndex == 4 && isItPressed) {
+                                        listener_lb_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    }// Right Bumper Pressed
+                                    else if (listener_rb_button != null
+                                             && buttonIndex == 5 && isItPressed) {
+                                        listener_rb_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    }
 
 
 
+                                    // We know that this component was button so we can skip to next component.
+                                    continue;
+                                }
 
-                }
+                                // Hat switch
+                                if (componentIdentifier
+                                    == Component.Identifier.Axis.POV) {
+                                    float hatSwitchPosition = component
+                                    .getPollData();
+                                    logger.info("Hatswitch Position "
+                                                + hatSwitchPosition);
 
-                for (int i = 0; i < components.length; i++) {
-                    Component component = components[i];
-                    Component.Identifier componentIdentifier = component.getIdentifier();
-                    // Axes
-                    if (component.isAnalog()) {
-                        float axisValue = component.getPollData();
-                        int axisValueInPercentage = getAxisValueInPercentage(axisValue);
+                                    // Hat Right
+                                    if (hatSwitchPosition == 0.5
+                                        && listener_hat_right_button != null) {
+                                        listener_hat_right_button
+                                        .actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    } // Hat Left
+                                    else if (hatSwitchPosition == 1.0
+                                             && listener_hat_left_button != null) {
+                                        listener_hat_left_button
+                                        .actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    } // Hat Up
+                                    else if (hatSwitchPosition == 0.25
+                                             && listener_hat_up_button != null) {
+                                        listener_hat_up_button.actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    } // Hat Down
+                                    else if (hatSwitchPosition == 0.75
+                                             && listener_hat_down_button != null) {
+                                        listener_hat_down_button
+                                        .actionPerformed(
+                                                new ActionEvent(this, 0, null));
+                                    }
 
-                        // X axis
-                        if (componentIdentifier == Component.Identifier.Axis.X) {
-                            xAxisPercentage = axisValueInPercentage;
+                                    // We know that this component was hat switch so we can skip to next component.
+                                    continue;
+                                }
+
+
+
+
+                            }
+
+                            for (int i = 0; i < components.length; i++) {
+                                Component component = components[i];
+                                Component.Identifier componentIdentifier
+                                                     = component.getIdentifier();
+                                // Axes
+                                if (component.isAnalog()) {
+                                    float axisValue = component.getPollData();
+                                    int axisValueInPercentage
+                                        = getAxisValueInPercentage(axisValue);
+
+                                    // X axis
+                                    if (componentIdentifier
+                                        == Component.Identifier.Axis.X) {
+                                        xAxisPercentage = axisValueInPercentage;
 //                            logger.info("xAxisPercentage " + xAxisPercentage);
-                            if (listener_lanalog_right != null && xAxisPercentage > 75) {
-                                listener_lanalog_right.actionPerformed(new ActionEvent(this, 0, null));
-                            } else if (listener_lanalog_left != null && xAxisPercentage < 25) {
-                                listener_lanalog_left.actionPerformed(new ActionEvent(this, 0, null));
-                            }
-                            continue; // Go to next component.
-                        }
-                        // Y axis
-                        if (componentIdentifier == Component.Identifier.Axis.Y) {
-                            yAxisPercentage = axisValueInPercentage;
+                                        if (listener_lanalog_right != null
+                                            && xAxisPercentage > 75) {
+                                            listener_lanalog_right
+                                            .actionPerformed(new ActionEvent(
+                                                            this, 0, null));
+                                        } else if (listener_lanalog_left != null
+                                                   && xAxisPercentage < 25) {
+                                            listener_lanalog_left
+                                            .actionPerformed(new ActionEvent(
+                                                            this, 0, null));
+                                        }
+                                        continue; // Go to next component.
+                                    }
+                                    // Y axis
+                                    if (componentIdentifier
+                                        == Component.Identifier.Axis.Y) {
+                                        yAxisPercentage = axisValueInPercentage;
 //                            logger.info("yAxisPercentage " + yAxisPercentage);
-                            if (listener_lanalog_up != null && yAxisPercentage > 75) {
-                                listener_lanalog_up.actionPerformed(new ActionEvent(this, 0, null));
-                            } else if (listener_lanalog_down != null && yAxisPercentage < 25) {
-                                listener_lanalog_down.actionPerformed(new ActionEvent(this, 0, null));
-                            }
-                            continue; // Go to next component.
-                        }
+                                        if (listener_lanalog_up != null
+                                            && yAxisPercentage > 75) {
+                                            listener_lanalog_up.actionPerformed(
+                                                    new ActionEvent(this, 0,
+                                                                    null));
+                                        } else if (listener_lanalog_down != null
+                                                   && yAxisPercentage < 25) {
+                                            listener_lanalog_down
+                                            .actionPerformed(new ActionEvent(
+                                                            this, 0, null));
+                                        }
+                                        continue; // Go to next component.
+                                    }
 
-                        // Other axis
+                                    // Other axis
 //                        logger.info("axisValueInPercentage " + axisValueInPercentage);
 
 
-                        try {
-                            Thread.sleep(15);
-                        } catch (InterruptedException ex) {
-                            java.util.logging.Logger.getLogger(AJinputController.class.getName()).log(Level.SEVERE, null, ex);
+                                    try {
+                                        Thread.sleep(15);
+                                    } catch (InterruptedException ex) {
+                                        java.util.logging.Logger.getLogger(
+                                                AJinputController.class
+                                                .getName()).log(Level.SEVERE,
+                                                                null, ex);
+                                    }
+                                }
+
+                            }
+
+
+                            try {
+                                Thread.sleep(30);
+                            } catch (InterruptedException ex) {
+                                java.util.logging.Logger.getLogger(
+                                        AJinputController.class.getName()).log(
+                                        Level.SEVERE, null, ex);
+                            }
+
+
                         }
+
                     }
-
-                }
-
-
-                try {
-                    Thread.sleep(30);
-                } catch (InterruptedException ex) {
-                    java.util.logging.Logger.getLogger(AJinputController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-
-
-
-
-            }
-        }, 50);
+                }, 50);
 
         controllerListener.start();
     }
