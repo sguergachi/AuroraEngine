@@ -324,7 +324,7 @@ public class AJinputController {
     }
 
     // X button
-    public void addListener_X_Button(ActionListener listener) {
+    public void setListener_X_Button(ActionListener listener) {
         listener_x_button = (listener);
     }
 
@@ -333,7 +333,7 @@ public class AJinputController {
     }
 
     // Y button
-    public void addListener_Y_Button(ActionListener listener) {
+    public void setListener_Y_Button(ActionListener listener) {
         listener_y_button = (listener);
     }
 

@@ -18,8 +18,10 @@
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.UI.ACarouselTitle.TitleType;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Point;
+import javax.swing.Box;
 import org.apache.log4j.Logger;
 
 /**
@@ -48,6 +50,7 @@ public class ACarouselPane extends AImagePane {
 
         //Create the Image
         super(path, W, H, DoubleBuffered);
+        setPreferredSize(new Dimension(W, H));
 
         //ID Name
         this.setName(name);
@@ -58,7 +61,6 @@ public class ACarouselPane extends AImagePane {
         isLeftPane = false;
         isRightPane = false;
 
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -20));
     }
 
     public ACarouselPane(String path, int W, int H, ACarouselTitle title,
@@ -76,7 +78,6 @@ public class ACarouselPane extends AImagePane {
         isLeftPane = false;
         isRightPane = false;
 
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -20));
     }
 
     /**
@@ -87,6 +88,7 @@ public class ACarouselPane extends AImagePane {
      */
     public void addContent(AImage image, ACarouselTitle.TitleType titleType) {
 
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -image.getPreferredSize().height / 10));
         AImage titleImage = null;
 
         if (titleType == TitleType.NORMAL) {
@@ -95,13 +97,16 @@ public class ACarouselPane extends AImagePane {
             titleImage = title.getGlowImage();
         }
 
+
+        this.add(Box.createRigidArea(new Dimension(image.getPreferredSize().width,
+                                                   image.getPreferredSize().height / 7)));
         this.add(new AImage(titleImage.getImgURl()));
         this.add(image);
 
     }
 
     public void addContent(AImagePane image, ACarouselTitle.TitleType titleType) {
-
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 0, -image.getPreferredSize().height / 8));
         AImage titleImage = null;
 
         if (titleType == TitleType.NORMAL) {
@@ -110,6 +115,8 @@ public class ACarouselPane extends AImagePane {
             titleImage = title.getGlowImage();
         }
 
+        this.add(Box.createRigidArea(new Dimension(image.getPreferredSize().width,
+                                                   image.getPreferredSize().height / 5)));
         this.add(new AImage(titleImage.getImgURl()));
         this.add(image);
     }
@@ -171,7 +178,7 @@ public class ACarouselPane extends AImagePane {
      */
     public void changeTitle(ACarouselTitle.TitleType titleType) {
 
-        AImage image = (AImage) this.getComponent(0);
+        AImage image = (AImage) this.getComponent(1);
         AImage titleImage = null;
 
         if (titleType == TitleType.NORMAL) {

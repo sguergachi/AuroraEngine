@@ -17,18 +17,14 @@
  */
 package aurora.engine.V1.UI;
 
-import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
 import org.apache.log4j.Logger;
-
 
 /**
  *
@@ -45,7 +41,7 @@ public class AScrollingImage extends JPanel implements Runnable {
 
     private AImage loopImage3;
 
-    private int imageHeight;
+    private double imageHeight;
 
     private int imageWidth;
 
@@ -57,7 +53,7 @@ public class AScrollingImage extends JPanel implements Runnable {
 
     private int Xpos3;
 
-    private int Ypos;
+    private double Ypos;
 
     private boolean isCentered;
 
@@ -72,7 +68,7 @@ public class AScrollingImage extends JPanel implements Runnable {
     private boolean pause;
 
     private boolean lock;
-    
+
     static final Logger logger = Logger.getLogger(AScrollingImage.class);
 
     public AScrollingImage(String URL, int ImageWidth, int ImageHeight) {
@@ -106,12 +102,12 @@ public class AScrollingImage extends JPanel implements Runnable {
 
     }
 
-    public void StartLoop() {
+    public void StartLoop(int height) {
         if (runner == null) {
             runner = new Thread(this);
         }
         runner.start();
-        Ypos = imageHeight - imageHeight/8;
+        Ypos = (int) (height / 2 - imageHeight / 2);
     }
 
     @Override
@@ -131,7 +127,7 @@ public class AScrollingImage extends JPanel implements Runnable {
                     Thread.sleep(16);
 
                 } catch (InterruptedException ex) {
-                	logger.error(ex);
+                    logger.error(ex);
                 }
 
             } else {
@@ -169,25 +165,22 @@ public class AScrollingImage extends JPanel implements Runnable {
     }
 
     public void setCenterToFrame(JFrame frame) {
-
-        Xpos = frame.getSize().width / 10 + 1;
+        Ypos += 15;
+        Xpos = (frame.getSize().width - loopImage1.getImgWidth()) / 2 - 15;
         loopImage2.setVisible(false);
         loopImage3.setVisible(false);
 
-        Xpos2 = Xpos2 + loopImage2.getImgWidth();
-        Xpos3 = Xpos3 - loopImage3.getImgWidth();
     }
 
-    public void grow(int size) {
+    public void grow(int scale) {
 
-        Xpos2 = Xpos2 - (size + 40) / 3 - 4;
-        Xpos3 = Xpos3 - (size + 40) / 3 - 4;
-        Xpos = Xpos - (size + 40) / 3 - 4;
-        Ypos = Ypos - size / 7;
-        imageHeight = imageHeight + size / 3 + 5;
-        imageWidth = imageWidth + (size + 40) + 6;
-        block = block + 2;
-        border = border + imageWidth;
+        double ratio = ((double) imageWidth / imageHeight);
+        imageWidth += scale;
+        imageHeight = (imageHeight + ((double) scale / ratio));
+
+        Xpos -= scale / 2;
+        Ypos -= (((double) scale / ratio) / 2) - (scale / ratio) / 4;
+
 
     }
 
@@ -207,23 +200,27 @@ public class AScrollingImage extends JPanel implements Runnable {
         Graphics2D g2d = (Graphics2D) g;
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                             RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                             RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
         if ((loopImage1.getImgIcon().getImage().getWidth(this) > 0)
             && (loopImage1.getImgIcon().getImage().getHeight(this) > 0)) {
             //Draw Left Image
-            g2d.drawImage(loopImage2.getImgIcon().getImage(), Xpos2 + border,
-                    Ypos, imageWidth, imageHeight, this);
-            //Draw setCenterToFrame Image
-            g2d.drawImage(loopImage1.getImgIcon().getImage(), Xpos, Ypos,
-                    imageWidth, imageHeight, this);
-            //Draw Right Image
-            g2d.drawImage(loopImage3.getImgIcon().getImage(), Xpos3 - border,
-                    Ypos, imageWidth, imageHeight, this);
+            if (loopImage2.isVisible()) {
+                g2d.drawImage(loopImage2.getImgIcon().getImage(), Xpos2 + border, (int) Ypos, imageWidth, (int) imageHeight, this);
+            }
+            if (loopImage1.isVisible()) //Draw setCenterToFrame Image
+            {
+                g2d.drawImage(loopImage1.getImgIcon().getImage(), Xpos, (int) Ypos,
+                              imageWidth, (int) imageHeight, this);
+            }
+            if (loopImage3.isVisible()) //Draw Right Image
+            {
+                g2d.drawImage(loopImage3.getImgIcon().getImage(), Xpos3 - border, (int) Ypos, imageWidth, (int) imageHeight, this);
+            }
         }
 
 
@@ -234,7 +231,7 @@ public class AScrollingImage extends JPanel implements Runnable {
 
     private void animate() {
         //move X cordinate to animate
-        if (!pause) {
+        if (!pause && !stop) {
             Xpos++;
             Xpos2++;
             Xpos3++;
@@ -254,10 +251,18 @@ public class AScrollingImage extends JPanel implements Runnable {
     }
 
     public int getYpos() {
-        return Ypos;
+        return (int) Ypos;
     }
 
     public void setYpos(int ypos) {
         this.Ypos = ypos;
+    }
+
+    public double getImageHeight() {
+        return imageHeight;
+    }
+
+    public int getImageWidth() {
+        return imageWidth;
     }
 }
