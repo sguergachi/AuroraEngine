@@ -69,12 +69,14 @@ public class AJinputController {
     private ActionListener listener_lanalog_up;
 
     private ActionListener listener_lanalog_down;
+
     private AThreadWorker controllerListener;
+
+    private boolean controllersDetected;
 
     public void loadControllers() {
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment()
                 .getControllers();
-
 
         foundControllers.clear();
         for (int i = 0; i < controllers.length; i++) {
@@ -99,7 +101,6 @@ public class AJinputController {
     public void startListeningToControllers() {
         controllerListener = new AThreadWorker(
                 new ActionListener() {
-                    private int controllerloop = 0;
 
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -112,6 +113,8 @@ public class AJinputController {
 
                             // Pull controller for current data, and break loop if controller is disconnected.
                             if (controller != null && controller.poll()) {
+
+                                controllersDetected = true;
 
                                 // X axis and Y axis
                                 int xAxisPercentage = 0;
@@ -291,9 +294,8 @@ public class AJinputController {
                                 }
                             } // controller poll end
                             else {
-                                loadControllers();
-//                                ((AThreadWorker) e.getSource()).stop();
-
+                                ((AThreadWorker) e.getSource()).stop();
+                                controllersDetected = false;
                             }
                             try {
                                 Thread.sleep(30);
@@ -306,11 +308,15 @@ public class AJinputController {
                         }
 
                     }
+
+
                 }, 50);
 
-        if (controllerListener != null) {
-            controllerListener.start();
-        }
+        controllerListener.start();
+    }
+
+    public boolean isControllersDetected() {
+        return controllersDetected;
     }
 
     // A button
@@ -446,6 +452,14 @@ public class AJinputController {
         clearListener_A_Button();
         clearListener_LB_Button();
         clearListener_RB_Button();
+        clearListener_ANALOG_Right_Button();
+        clearListener_ANALOG_Left_Button();
+        clearListener_ANALOG_Up_Button();
+        clearListener_ANALOG_Down_Button();
+        clearListener_HAT_Down_Button();
+        clearListener_HAT_Up_Button();
+        clearListener_HAT_Right_Button();
+        clearListener_HAT_Left_Button();
     }
 
     public ArrayList<Controller> getFoundControllers() {
