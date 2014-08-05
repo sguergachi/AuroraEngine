@@ -18,13 +18,18 @@
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.APostHandler;
-import java.awt.*;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.logging.Level;
-
 import javax.swing.JPanel;
-
 import org.apache.log4j.Logger;
 
 /**
