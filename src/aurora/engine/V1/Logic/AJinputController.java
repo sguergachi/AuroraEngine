@@ -82,9 +82,7 @@ public class AJinputController {
         for (int i = 0; i < controllers.length; i++) {
             Controller controller = controllers[i];
 
-            if (controller.getType() == Controller.Type.STICK
-                        || controller.getType() == Controller.Type.GAMEPAD
-                        || controller.getType() == Controller.Type.FINGERSTICK) {
+            if (controller.getType() == Controller.Type.GAMEPAD) {
 
                 logger.info("Controller Type: " + controller.getType());
                 logger.info("Controller Name: " + controller.getName());
