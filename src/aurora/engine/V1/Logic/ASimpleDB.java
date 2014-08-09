@@ -1427,7 +1427,7 @@ public class ASimpleDB {
         try {
             this.flexExecute("SELECT * FROM " + table);
             return true;
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
 
             java.util.logging.Logger.getLogger(ASimpleDB.class.getName()).
                     log(Level.SEVERE, null, ex);
