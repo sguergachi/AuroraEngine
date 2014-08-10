@@ -99,7 +99,9 @@ public class AAnimate implements Runnable {
         this.y = y;
         if (component != null) {
             this.component.setBounds(x, y, component.getWidth(), component
-                    .getHeight());
+                                     .getHeight());
+              this.component.setLocation(x, y);
+              
         } else {
             frame.setLocation(x, y);
         }
@@ -193,7 +195,7 @@ public class AAnimate implements Runnable {
     }
 
     public void moveDiagonal(int XPosition, int YPosition, int XMoveSpeed,
-                             int YMoveSpeed) {
+            int YMoveSpeed) {
         this.YPos = YPosition;
         this.XPos = XPosition;
         this.YSpeed = YMoveSpeed;
@@ -263,9 +265,8 @@ public class AAnimate implements Runnable {
             } else if (AnimationID == 2) {
 
                 x += (speed) + acc;
-
                 component.setBounds(x, component.getLocation().y, component
-                        .getWidth(), component.getHeight());
+                                    .getWidth(), component.getHeight());
 
                 if (speed > 0) {
 
@@ -308,6 +309,7 @@ public class AAnimate implements Runnable {
                         acc--;
                     }
                 }
+
                 this.component.setVisible(true);
 
                 //VERTICAL
@@ -319,8 +321,8 @@ public class AAnimate implements Runnable {
                     }
                     if (component != null) {
                         component.setBounds(component.getLocation().x, y,
-                                component
-                                .getWidth(), component.getHeight());
+                                            component
+                                            .getWidth(), component.getHeight());
                     } else {
                         frame.setLocation(x, y);
                     }
@@ -333,8 +335,8 @@ public class AAnimate implements Runnable {
 
                     if (component != null) {
                         component.setBounds(component.getLocation().x, y,
-                                component
-                                .getWidth(), component.getHeight());
+                                            component
+                                            .getWidth(), component.getHeight());
                     } else {
                         frame.setLocation(x, y);
                     }
@@ -379,18 +381,18 @@ public class AAnimate implements Runnable {
                 }
 
                 if (component.getLocation().x >= YPos
-                    && component.getLocation().y >= YPos) {
+                            && component.getLocation().y >= YPos) {
                     break;
                 }
 
                 component.setBounds(x, y, component.getWidth(), component
-                        .getHeight());
+                                    .getHeight());
 
             }
 
             //pause
             try {
-                Thread.sleep(16);
+                Thread.sleep(310);
             } catch (InterruptedException ex) {
                 logger.error(ex);
             }
@@ -424,7 +426,6 @@ public class AAnimate implements Runnable {
         doneAnimation();
 
     }
-
 
     ///Run when animation is complete
     private void doneAnimation() {

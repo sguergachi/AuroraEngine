@@ -82,7 +82,9 @@ public class AJinputController {
         for (int i = 0; i < controllers.length; i++) {
             Controller controller = controllers[i];
 
-            if (controller.getType() == Controller.Type.GAMEPAD) {
+            if (controller.getType() == Controller.Type.GAMEPAD || controller
+                    .getType() == Controller.Type.FINGERSTICK || controller
+                    .getType() == Controller.Type.STICK) {
 
                 logger.info("Controller Type: " + controller.getType());
                 logger.info("Controller Name: " + controller.getName());
@@ -113,7 +115,7 @@ public class AJinputController {
 
                             // Pull controller for current data, and break loop if controller is disconnected.
                             if (controller != null && controller.poll()) {
-
+                                logger.info("Detected Controller Successfully");
                                 controllersDetected = true;
 
                                 // X axis and Y axis
@@ -124,7 +126,7 @@ public class AJinputController {
                                 Component[] components = controller
                                 .getComponents();
                                 net.java.games.input.EventQueue queue
-                                                                        = controller
+                                                                = controller
                                 .getEventQueue();
                                 Event event = new Event();
 
@@ -132,12 +134,13 @@ public class AJinputController {
                                 while (queue.getNextEvent(event)) {
                                     Component component = event.getComponent();
                                     Component.Identifier componentIdentifier
-                                                                 = component
+                                                         = component
                                     .getIdentifier();
 
                                     // If the component identifier name contains only numbers, then this is a button.
                                     // Buttons
-                                    if (componentIdentifier.getName().matches(
+                                    if (componentIdentifier.getName()
+                                    .matches(
                                             "^[0-9]*$")) {
                                         // Is button pressed?
                                         boolean isItPressed = true;
@@ -148,7 +151,8 @@ public class AJinputController {
                                         // Button index
                                         int buttonIndex;
                                         buttonIndex = Integer.parseInt(component
-                                                .getIdentifier().toString()
+                                                .getIdentifier()
+                                                .toString()
                                                 .trim());
 
                                         // Create and add new button to panel.
@@ -259,22 +263,22 @@ public class AJinputController {
                                 for (int i = 0; i < components.length; i++) {
                                     Component component = components[i];
                                     Component.Identifier componentIdentifier
-                                                                 = component
+                                                         = component
                                     .getIdentifier();
                                     // Axes
                                     if (component.isAnalog()) {
                                         float axisValue = component
                                         .getPollData();
                                         int axisValueInPercentage
-                                                    = getAxisValueInPercentage(
+                                            = getAxisValueInPercentage(
                                                 axisValue);
 
                                         // X axis
                                         if (componentIdentifier
                                                     == Component.Identifier.Axis.X) {
                                             xAxisPercentage
-                                                    = axisValueInPercentage;
-//                            logger.info("xAxisPercentage " + xAxisPercentage);
+                                            = axisValueInPercentage;
+                            logger.info("xAxisPercentage " + xAxisPercentage);
                                             if (listener_lanalog_right != null
                                                         && xAxisPercentage > 75) {
                                                 listener_lanalog_right
@@ -296,8 +300,8 @@ public class AJinputController {
                                         if (componentIdentifier
                                                     == Component.Identifier.Axis.Y) {
                                             yAxisPercentage
-                                                    = axisValueInPercentage;
-//                            logger.info("yAxisPercentage " + yAxisPercentage);
+                                            = axisValueInPercentage;
+                            logger.info("yAxisPercentage " + yAxisPercentage);
                                             if (listener_lanalog_up != null
                                                         && yAxisPercentage > 75) {
                                                 listener_lanalog_up
@@ -317,7 +321,7 @@ public class AJinputController {
                                         }
 
                                         // Other axis
-//                        logger.info("axisValueInPercentage " + axisValueInPercentage);
+                        logger.info("axisValueInPercentage " + axisValueInPercentage);
 
 
                                         try {
@@ -336,12 +340,15 @@ public class AJinputController {
                             else {
                                 ((AThreadWorker) e.getSource()).stop();
                                 controllersDetected = false;
+                                logger.info("Unable to Connect To Controller Successfully");
+
                             }
                             try {
                                 Thread.sleep(30);
                             } catch (InterruptedException ex) {
                                 java.util.logging.Logger.getLogger(
-                                        AJinputController.class.getName()).log(
+                                        AJinputController.class.getName())
+                                .log(
                                         Level.SEVERE, null, ex);
                             }
 
