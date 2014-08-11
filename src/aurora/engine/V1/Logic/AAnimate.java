@@ -72,7 +72,7 @@ public class AAnimate implements Runnable {
     private Window frame;
     private Timer animation;
 
-    public static final int fps = 16;
+    public static final int fps = 14;
 
     public AAnimate(JComponent component) {
         this.postListenerList = new ArrayList<>();
