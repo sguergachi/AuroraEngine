@@ -137,6 +137,9 @@ public class AJinputController {
                                                          = component
                                     .getIdentifier();
 
+                                    logger.info("Event started");
+
+
                                     // If the component identifier name contains only numbers, then this is a button.
                                     // Buttons
                                     if (componentIdentifier.getName()
@@ -157,55 +160,54 @@ public class AJinputController {
 
                                         // Create and add new button to panel.
                                         logger.info("button Press  "
-                                                            + buttonIndex
-                                                            + " isPressed? "
-                                                            + isItPressed);
+                                                    + buttonIndex
+                                                    + " isPressed? "
+                                                    + isItPressed);
 
                                         // A Button Pressed
                                         if (listener_a_button != null
-                                                    && buttonIndex
-                                                               == 0
-                                                    && isItPressed) {
+                                            && buttonIndex
+                                               == 0
+                                            && isItPressed) {
                                             listener_a_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         } // B Button Pressed
                                         else if (listener_a_button != null
-                                                         && buttonIndex == 1
-                                                         && isItPressed) {
+                                                 && buttonIndex == 1
+                                                 && isItPressed) {
                                             listener_b_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }// X Button Pressed
                                         else if (listener_a_button != null
-                                                         && buttonIndex == 2
-                                                         && isItPressed) {
+                                                 && buttonIndex == 2
+                                                 && isItPressed) {
                                             listener_x_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }// Y Button Pressed
                                         else if (listener_a_button != null
-                                                         && buttonIndex == 3
-                                                         && isItPressed) {
+                                                 && buttonIndex == 3
+                                                 && isItPressed) {
                                             listener_y_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }// Left Bumper Pressed
                                         else if (listener_lb_button != null
-                                                         && buttonIndex == 4
-                                                         && isItPressed) {
+                                                 && buttonIndex == 4
+                                                 && isItPressed) {
                                             listener_lb_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }// Right Bumper Pressed
                                         else if (listener_rb_button != null
-                                                         && buttonIndex == 5
-                                                         && isItPressed) {
+                                                 && buttonIndex == 5
+                                                 && isItPressed) {
                                             listener_rb_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }
-
 
 
                                         // We know that this component was button so we can skip to next component.
@@ -214,40 +216,40 @@ public class AJinputController {
 
                                     // Hat switch
                                     if (componentIdentifier
-                                                == Component.Identifier.Axis.POV) {
+                                        == Component.Identifier.Axis.POV) {
                                         float hatSwitchPosition = component
                                         .getPollData();
                                         logger.info("Hatswitch Position "
-                                                            + hatSwitchPosition);
+                                                    + hatSwitchPosition);
 
                                         // Hat Right
                                         if (hatSwitchPosition == 0.5
-                                                    && listener_hat_right_button
-                                                               != null) {
+                                            && listener_hat_right_button
+                                               != null) {
                                             listener_hat_right_button
                                             .actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         } // Hat Left
                                         else if (hatSwitchPosition == 1.0
-                                                         && listener_hat_left_button
-                                                            != null) {
+                                                 && listener_hat_left_button
+                                                    != null) {
                                             listener_hat_left_button
                                             .actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         } // Hat Up
                                         else if (hatSwitchPosition == 0.25
-                                                         && listener_hat_up_button
-                                                            != null) {
+                                                 && listener_hat_up_button
+                                                    != null) {
                                             listener_hat_up_button
                                             .actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         } // Hat Down
                                         else if (hatSwitchPosition == 0.75
-                                                         && listener_hat_down_button
-                                                            != null) {
+                                                 && listener_hat_down_button
+                                                    != null) {
                                             listener_hat_down_button
                                             .actionPerformed(
                                                     new ActionEvent(this, 0,
@@ -275,20 +277,20 @@ public class AJinputController {
 
                                         // X axis
                                         if (componentIdentifier
-                                                    == Component.Identifier.Axis.X) {
+                                            == Component.Identifier.Axis.X) {
                                             xAxisPercentage
                                             = axisValueInPercentage;
-                            logger.info("xAxisPercentage " + xAxisPercentage);
+                                            logger.info("xAxisPercentage " + xAxisPercentage);
                                             if (listener_lanalog_right != null
-                                                        && xAxisPercentage > 75) {
+                                                && xAxisPercentage > 75) {
                                                 listener_lanalog_right
                                                 .actionPerformed(
                                                         new ActionEvent(
                                                                 this, 0, null));
                                             } else if (listener_lanalog_left
-                                                               != null
-                                                               && xAxisPercentage
-                                                                  < 25) {
+                                                       != null
+                                                       && xAxisPercentage
+                                                          < 25) {
                                                 listener_lanalog_left
                                                 .actionPerformed(
                                                         new ActionEvent(
@@ -298,20 +300,20 @@ public class AJinputController {
                                         }
                                         // Y axis
                                         if (componentIdentifier
-                                                    == Component.Identifier.Axis.Y) {
+                                            == Component.Identifier.Axis.Y) {
                                             yAxisPercentage
                                             = axisValueInPercentage;
-                            logger.info("yAxisPercentage " + yAxisPercentage);
+                                            logger.info("yAxisPercentage " + yAxisPercentage);
                                             if (listener_lanalog_up != null
-                                                        && yAxisPercentage > 75) {
+                                                && yAxisPercentage > 75) {
                                                 listener_lanalog_up
                                                 .actionPerformed(
                                                         new ActionEvent(this, 0,
                                                                         null));
                                             } else if (listener_lanalog_down
-                                                               != null
-                                                               && yAxisPercentage
-                                                                  < 25) {
+                                                       != null
+                                                       && yAxisPercentage
+                                                          < 25) {
                                                 listener_lanalog_down
                                                 .actionPerformed(
                                                         new ActionEvent(
@@ -321,7 +323,7 @@ public class AJinputController {
                                         }
 
                                         // Other axis
-                        logger.info("axisValueInPercentage " + axisValueInPercentage);
+                                        logger.info("axisValueInPercentage " + axisValueInPercentage);
 
 
                                         try {
