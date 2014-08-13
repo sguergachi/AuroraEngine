@@ -22,6 +22,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import javax.swing.JComponent;
 import javax.swing.Timer;
 import org.apache.log4j.Logger;
@@ -73,6 +74,8 @@ public class AAnimate implements Runnable {
     private Timer animation;
 
     public static final int fps = 14;
+    private boolean allowVisibleNow;
+    private int tick;
 
     public AAnimate(JComponent component) {
         this.postListenerList = new ArrayList<>();
@@ -212,6 +215,9 @@ public class AAnimate implements Runnable {
     }
 
     public void start() {
+        tick = 0;
+
+        // Method A
 //        runner = null;
 //        runner = new Thread(this);
 //        runner.start();
@@ -219,13 +225,19 @@ public class AAnimate implements Runnable {
         if (logger.isDebugEnabled()) {
             logger.debug("Running animation");
         }
+
+        // Method B
         runAnimation();
     }
 
-    public void runAnimation() {
+    public void setAllowVisibleNow(boolean allowVisibleNow) {
+        this.allowVisibleNow = allowVisibleNow;
+    }
 
+    public void runAnimation() {
+        int DELAY = 1000 / 60;
         if (animation == null) {
-            animation = new Timer(fps, new ActionListener() {
+            animation = new Timer(DELAY, new ActionListener() {
 
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -257,11 +269,9 @@ public class AAnimate implements Runnable {
                 if (timer.isRunning()) {
                     animating = true;
                 }
+                tick++;
                 if (AnimationID == 0) {
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Alpha of Animation: " + Alpha);
-                    }
 
                     //Decrease Alpha
                     Alpha += (0.05F + alphaAcc);
@@ -273,8 +283,8 @@ public class AAnimate implements Runnable {
                     if (Alpha > 0.9F) {
                         Alpha = 1F;
                         frame.setOpacity(Alpha);
-                        timer.stop();
-//                                break;
+                        animating = false;
+
 
                     }
 
@@ -282,9 +292,6 @@ public class AAnimate implements Runnable {
 
                 } else if (AnimationID == 1) {
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Alpha of Animation: " + Alpha);
-                    }
 
                     //Decrease Alpha
                     Alpha -= (0.05F + alphaAcc);
@@ -296,7 +303,6 @@ public class AAnimate implements Runnable {
                     if (Alpha < 0.05F) {
                         Alpha = 0.0F;
                         frame.setOpacity(Alpha);
-//                            timer.stop();
                         animating = false;
 
                     }
@@ -305,70 +311,56 @@ public class AAnimate implements Runnable {
                 } else if (AnimationID == 2) {
 
                     x += (speed) + acc;
-                    component.setBounds(x, component.getLocation().y, component
+                    y = component.getLocation().y;
+                    component.setBounds(x, y, component
                                         .getWidth(), component.getHeight());
+
 
                     if (speed > 0) {
 
                         if (component.getLocation().x >= XPos) {
-//                                timer.stop();
                             animating = false;
 
 
                         }
 
                         if (component.getLocation().x > XPos / 2) {
-                            if (logger.isDebugEnabled()) {
-//                            logger.debug("Slow Down Pos!!");
-                            }
 
                             acc--;
                             acc--;
                         } else if (component.getLocation().x < XPos / 2) {
-                            if (logger.isDebugEnabled()) {
-//                            logger.debug("Accelerate Pos!!");
-                            }
 
                             acc++;
                         }
 
                     } else {
                         if (component.getLocation().x <= XPos) {
-//                                timer.stop();
                             animating = false;
 
 
                         }
 
                         if (component.getLocation().x <= XPos / 2) {
-                            if (logger.isDebugEnabled()) {
-//                            logger.debug("Slow Down Neg!!");
-                            }
 
                             acc++;
                             acc++;
                         } else if (component.getLocation().x >= XPos / 2) {
-                            if (logger.isDebugEnabled()) {
-//                            logger.debug("Accelerate Neg!!");
-                            }
 
                             acc--;
                         }
                     }
 
-                    component.setVisible(true);
-
                     //VERTICAL
                 } else if (AnimationID == 3) {
                     if (YPos >= 0 && speed > 0) {
                         y = y + speed;
+                        x = component.getLocation().x;
                         if (YPos <= y) {
-//                                timer.stop();
                             animating = false;
 
                         }
                         if (component != null) {
-                            component.setBounds(component.getLocation().x, y,
+                            component.setBounds(x, y,
                                                 component
                                                 .getWidth(), component.getHeight());
                         } else {
@@ -382,7 +374,7 @@ public class AAnimate implements Runnable {
                         }
 
                         if (component != null) {
-                            component.setBounds(component.getLocation().x, y,
+                            component.setBounds(x, y,
                                                 component
                                                 .getWidth(), component.getHeight());
                         } else {
@@ -390,7 +382,6 @@ public class AAnimate implements Runnable {
                         }
 
                         if (YPos >= y) {
-//                                timer.stop();
                             animating = false;
 
 
@@ -433,7 +424,6 @@ public class AAnimate implements Runnable {
 
                     if (component.getLocation().x >= YPos
                         && component.getLocation().y >= YPos) {
-//                            timer.stop();
                         animating = false;
 
                     }
@@ -445,28 +435,65 @@ public class AAnimate implements Runnable {
 
                 alphaAcc += 0.01f;
 
-                if (logger.isDebugEnabled()) {
-                    System.out.println("X Val " + x);
-                    System.out.println("Y Val " + y);
-                }
+//                if (logger.isDebugEnabled()) {
+//                    if (allowVisibleNow) {
+//                        System.out.println("X1 Val " + x);
+//                        System.out.println("Y1 Val " + y);
+//                    } else {
+//                        System.out.println("X2 Val " + x);
+//                        System.out.println("Y2 Val " + y);
+//                    }
+//
+//                }
 
                 if (component != null) {
                     component.repaint();
-                    component.setVisible(true);
+                    if ((tick == 2 || allowVisibleNow)) {
+                        component.setVisible(true);
+                    }
+
+                    if (!allowVisibleNow && tick == 2) {
+                        AThreadWorker repaint = new AThreadWorker(new ActionListener() {
+
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+
+                                component.setBounds(x, y,
+                                                    component
+                                                    .getWidth(), component.getHeight());
+                                component.paintImmediately(component.getBounds());
+                                component.repaint();
+
+                                component.setVisible(true);
+
+
+                                try {
+                                    Thread.sleep(tick);
+                                } catch (InterruptedException ex) {
+                                    java.util.logging.Logger.getLogger(AAnimate.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+
+                                component.setBounds(x, y,
+                                                    component
+                                                    .getWidth(), component.getHeight());
+                                component.paintImmediately(component.getBounds());
+                                component.repaint();
+                            }
+                        });
+
+                        repaint.startOnce();
+                    }
+
                 } else {
                     frame.repaint();
                     frame.setVisible(true);
                 }
 
-//                //pause
-//                try {
-//                    Thread.sleep(16);
-//                } catch (InterruptedException ex) {
-//                    logger.error(ex);
-//                }
 
 
             }
+
         });
 
 
@@ -475,10 +502,11 @@ public class AAnimate implements Runnable {
     }
 
     public void run() {
+        int DELAY = 1000 / 60;
 
         while (runner == Thread.currentThread()) {
             animating = true;
-
+            tick++;
             if (AnimationID == 0) {
 
                 if (logger.isDebugEnabled()) {
@@ -523,7 +551,8 @@ public class AAnimate implements Runnable {
             } else if (AnimationID == 2) {
 
                 x += (speed) + acc;
-                component.setBounds(x, component.getLocation().y, component
+                y = component.getLocation().y;
+                component.setBounds(x, y, component
                                     .getWidth(), component.getHeight());
 
                 if (speed > 0) {
@@ -533,16 +562,10 @@ public class AAnimate implements Runnable {
                     }
 
                     if (component.getLocation().x > XPos / 2) {
-                        if (logger.isDebugEnabled()) {
-//                            logger.debug("Slow Down Pos!!");
-                        }
 
                         acc--;
                         acc--;
                     } else if (component.getLocation().x < XPos / 2) {
-                        if (logger.isDebugEnabled()) {
-//                            logger.debug("Accelerate Pos!!");
-                        }
 
                         acc++;
                     }
@@ -553,32 +576,25 @@ public class AAnimate implements Runnable {
                     }
 
                     if (component.getLocation().x <= XPos / 2) {
-                        if (logger.isDebugEnabled()) {
-//                            logger.debug("Slow Down Neg!!");
-                        }
 
                         acc++;
                         acc++;
                     } else if (component.getLocation().x >= XPos / 2) {
-                        if (logger.isDebugEnabled()) {
-//                            logger.debug("Accelerate Neg!!");
-                        }
 
                         acc--;
                     }
                 }
 
-                this.component.setVisible(true);
-
                 //VERTICAL
             } else if (AnimationID == 3) {
                 if (YPos >= 0 && speed > 0) {
                     y = y + speed;
+                    x = component.getLocation().x;
                     if (YPos <= y) {
                         break;
                     }
                     if (component != null) {
-                        component.setBounds(component.getLocation().x, y,
+                        component.setBounds(x, y,
                                             component
                                             .getWidth(), component.getHeight());
                     } else {
@@ -648,26 +664,63 @@ public class AAnimate implements Runnable {
 
             }
 
-            //pause
-            try {
-                Thread.sleep(fps);
-            } catch (InterruptedException ex) {
-                logger.error(ex);
-            }
+
 
             alphaAcc = alphaAcc + 0.01f;
 
-            if (logger.isDebugEnabled()) {
-//                System.out.println("X Val " + x);
-//                System.out.println("Y Val " + y);
-            }
 
             if (component != null) {
                 this.component.repaint();
-                this.component.setVisible(true);
+                if (!component.isVisible() && (tick == 3 || allowVisibleNow)) {
+                    component.setVisible(true);
+                }
+
+
+
+                if (!allowVisibleNow && tick == 3) {
+                    AThreadWorker repaint = new AThreadWorker(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+
+                            component.setBounds(x, y,
+                                                component
+                                                .getWidth(), component.getHeight());
+                            component.paintImmediately(component.getBounds());
+                            component.repaint();
+
+                            component.setVisible(true);
+
+
+                            try {
+                                Thread.sleep(tick);
+                            } catch (InterruptedException ex) {
+                                java.util.logging.Logger.getLogger(AAnimate.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+
+
+                            component.setBounds(x, y,
+                                                component
+                                                .getWidth(), component.getHeight());
+                            component.paintImmediately(component.getBounds());
+                            component.repaint();
+                        }
+                    });
+
+                    repaint.startOnce();
+                }
+
             } else {
                 frame.repaint();
                 frame.setVisible(true);
+            }
+
+
+            //pause
+            try {
+                Thread.sleep(DELAY);
+            } catch (InterruptedException ex) {
+                logger.error(ex);
             }
         }
 
@@ -676,7 +729,8 @@ public class AAnimate implements Runnable {
         runner = null;
         if (component != null) {
             this.component.setLocation(x, y);
-            this.component.revalidate();
+            component.revalidate();
+
         } else {
             this.frame.setLocation(x, y);
             this.frame.revalidate();

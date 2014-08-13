@@ -95,6 +95,8 @@ public class AJinputController {
             }
         }
 
+        logger.info("Controllers Found: " + foundControllers);
+
         return foundControllers.isEmpty();
 
     }
@@ -116,7 +118,7 @@ public class AJinputController {
                             // Pull controller for current data, and break loop if controller is disconnected.
                             if (controller != null && controller.poll()) {
                                 logger.info("Detected Controller Successfully");
-                                
+
                                 controllersDetected = true;
 
                                 // X axis and Y axis
