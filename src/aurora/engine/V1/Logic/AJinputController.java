@@ -176,21 +176,21 @@ public class AJinputController {
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         } // B Button Pressed
-                                        else if (listener_a_button != null
+                                        else if (listener_b_button != null
                                                  && buttonIndex == 1
                                                  && isItPressed) {
                                             listener_b_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }// X Button Pressed
-                                        else if (listener_a_button != null
+                                        else if (listener_x_button != null
                                                  && buttonIndex == 2
                                                  && isItPressed) {
                                             listener_x_button.actionPerformed(
                                                     new ActionEvent(this, 0,
                                                                     null));
                                         }// Y Button Pressed
-                                        else if (listener_a_button != null
+                                        else if (listener_y_button != null
                                                  && buttonIndex == 3
                                                  && isItPressed) {
                                             listener_y_button.actionPerformed(
@@ -330,7 +330,7 @@ public class AJinputController {
 
 
                                         try {
-                                            Thread.sleep(15);
+                                            Thread.sleep(16);
                                         } catch (InterruptedException ex) {
                                             java.util.logging.Logger.getLogger(
                                                     AJinputController.class

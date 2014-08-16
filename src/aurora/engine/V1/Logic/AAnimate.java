@@ -73,8 +73,8 @@ public class AAnimate implements Runnable {
     private Window frame;
     private Timer animation;
 
-    public static final int fps = 14;
-    private boolean allowVisibleNow;
+    public static final int fps = 60;
+    private boolean allowVisibleNow = true;
     private int tick;
 
     public AAnimate(JComponent component) {
@@ -218,16 +218,16 @@ public class AAnimate implements Runnable {
         tick = 0;
 
         // Method A
-//        runner = null;
-//        runner = new Thread(this);
-//        runner.start();
+        runner = null;
+        runner = new Thread(this);
+        runner.start();
 
         if (logger.isDebugEnabled()) {
             logger.debug("Running animation");
         }
 
         // Method B
-        runAnimation();
+//        runAnimation();
     }
 
     public void setAllowVisibleNow(boolean allowVisibleNow) {
@@ -235,7 +235,7 @@ public class AAnimate implements Runnable {
     }
 
     public void runAnimation() {
-        int DELAY = 1000 / 60;
+        int DELAY = 1000 / fps;
         if (animation == null) {
             animation = new Timer(DELAY, new ActionListener() {
 
@@ -435,19 +435,9 @@ public class AAnimate implements Runnable {
 
                 alphaAcc += 0.01f;
 
-//                if (logger.isDebugEnabled()) {
-//                    if (allowVisibleNow) {
-//                        System.out.println("X1 Val " + x);
-//                        System.out.println("Y1 Val " + y);
-//                    } else {
-//                        System.out.println("X2 Val " + x);
-//                        System.out.println("Y2 Val " + y);
-//                    }
-//
-//                }
 
                 if (component != null) {
-                    component.repaint();
+                    component.revalidate();
                     if ((tick == 2 || allowVisibleNow)) {
                         component.setVisible(true);
                     }
@@ -502,7 +492,7 @@ public class AAnimate implements Runnable {
     }
 
     public void run() {
-        int DELAY = 1000 / 60;
+        int DELAY = 1000 / fps;
 
         while (runner == Thread.currentThread()) {
             animating = true;
@@ -552,7 +542,7 @@ public class AAnimate implements Runnable {
 
                 x += (speed) + acc;
                 y = component.getLocation().y;
-                component.setBounds(x, y, component
+                component.setBounds(x, component.getLocation().y, component
                                     .getWidth(), component.getHeight());
 
                 if (speed > 0) {
@@ -675,15 +665,13 @@ public class AAnimate implements Runnable {
                     component.setVisible(true);
                 }
 
-
-
                 if (!allowVisibleNow && tick == 3) {
                     AThreadWorker repaint = new AThreadWorker(new ActionListener() {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
 
-                            component.setBounds(x, y,
+                            component.setBounds(x, component.getLocation().y,
                                                 component
                                                 .getWidth(), component.getHeight());
                             component.paintImmediately(component.getBounds());
@@ -699,7 +687,7 @@ public class AAnimate implements Runnable {
                             }
 
 
-                            component.setBounds(x, y,
+                            component.setBounds(x, component.getLocation().y,
                                                 component
                                                 .getWidth(), component.getHeight());
                             component.paintImmediately(component.getBounds());
