@@ -579,16 +579,16 @@ public class AAnimate implements Runnable {
             } else if (AnimationID == 3) {
                 if (YPos >= 0 && speed > 0) {
                     y = y + speed;
-                    x = component.getLocation().x;
                     if (YPos <= y) {
                         break;
                     }
                     if (component != null) {
+                        x = component.getLocation().x;
                         component.setBounds(x, y,
                                             component
                                             .getWidth(), component.getHeight());
                     } else {
-                        frame.setLocation(x, y);
+                        frame.setLocation(frame.getLocation().x, y);
                     }
                 } else {
                     if (speed < 0) {
