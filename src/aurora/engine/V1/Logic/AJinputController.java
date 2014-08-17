@@ -549,7 +549,7 @@ public class AJinputController {
 
     }
 
-    public void revertToStashListeners(){
+    public void revertToStashedListeners(){
 
         listener_x_button=original_X;
         listener_y_button=original_Y;
