@@ -73,6 +73,20 @@ public class AJinputController {
     private AThreadWorker controllerListener;
 
     public static boolean controllersDetected;
+    private ActionListener original_X;
+    private ActionListener original_lanalog_left;
+    private ActionListener original_lanalog_right;
+    private ActionListener original_Y;
+    private ActionListener original_a;
+    private ActionListener original_b;
+    private ActionListener original_rb;
+    private ActionListener original_lb;
+    private ActionListener original_hat_up;
+    private ActionListener original_hat_down;
+    private ActionListener original_hat_right;
+    private ActionListener original_hat_left;
+    private ActionListener original_lanalog_up;
+    private ActionListener original_lanalog_down;
 
     public boolean loadControllers() {
         Controller[] controllers = ControllerEnvironment.getDefaultEnvironment()
@@ -512,6 +526,46 @@ public class AJinputController {
         clearListener_HAT_Up_Button();
         clearListener_HAT_Right_Button();
         clearListener_HAT_Left_Button();
+    }
+
+    public void stashCurrentListeners() {
+
+
+        original_X = (ActionListener) new CopyBean(listener_x_button).getObject();
+        original_Y = (ActionListener) new CopyBean(listener_y_button).getObject();
+        original_a = (ActionListener) new CopyBean(listener_a_button).getObject();
+        original_b = (ActionListener) new CopyBean(listener_b_button).getObject();
+        original_rb = (ActionListener) new CopyBean(listener_rb_button).getObject();
+        original_lb = (ActionListener) new CopyBean(listener_lb_button).getObject();
+        original_hat_up = (ActionListener) new CopyBean(listener_hat_up_button).getObject();
+        original_hat_down = (ActionListener) new CopyBean(listener_hat_down_button).getObject();
+        original_hat_right = (ActionListener) new CopyBean(listener_hat_right_button).getObject();
+        original_hat_left = (ActionListener) new CopyBean(listener_hat_left_button).getObject();
+        original_lanalog_right = (ActionListener) new CopyBean(listener_lanalog_right).getObject();
+        original_lanalog_left = (ActionListener) new CopyBean(listener_lanalog_left).getObject();
+        original_lanalog_up = (ActionListener) new CopyBean(listener_lanalog_up).getObject();
+        original_lanalog_down = (ActionListener) new CopyBean(listener_lanalog_down).getObject();
+
+
+    }
+
+    public void revertToStashListeners(){
+
+        listener_x_button=original_X;
+        listener_y_button=original_Y;
+        listener_a_button=original_a;
+        listener_b_button=original_b;
+        listener_rb_button=original_rb;
+        listener_lb_button=original_lb;
+        listener_hat_up_button=original_hat_up;
+        listener_hat_down_button=original_hat_down;
+        listener_hat_right_button=original_hat_right;
+        listener_hat_left_button=original_hat_left;
+        listener_lanalog_right=original_lanalog_right;
+        listener_lanalog_left=original_lanalog_left;
+        listener_lanalog_up=original_lanalog_up;
+        listener_lanalog_down=original_lanalog_down;
+
     }
 
     public ArrayList<Controller> getFoundControllers() {

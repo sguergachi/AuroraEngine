@@ -49,6 +49,9 @@ public class AGridPanel extends JPanel {
         this.setLayout(new GridLayout());
         numberOfComponentsAdded = 0;
 
+        this.setDoubleBuffered(true);
+
+
     }
 
     public AGridPanel(int row, int col) {
@@ -56,6 +59,7 @@ public class AGridPanel extends JPanel {
         this.col = col;
         numberOfComponentsAdded = 0;
 
+        this.setDoubleBuffered(true);
         this.setLayout(new GridLayout(this.row, this.col, 30, 0));
 
     }
@@ -66,7 +70,7 @@ public class AGridPanel extends JPanel {
         numberOfComponentsAdded = 0;
 
         this.setOpaque(!Transparent);
-
+        this.setDoubleBuffered(true);
         this.setLayout(new GridLayout(this.row, this.col, 30, 0));
 
     }
@@ -82,8 +86,8 @@ public class AGridPanel extends JPanel {
             if (!componentList.contains(comp)) {
                 componentList.add(comp);
                 JPanel pane
-                               = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,
-                                                           0));
+                       = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,
+                                                   0));
                 pane.setName("AGrid Panel");
                 pane.setOpaque(false);
                 pane.add(componentList.get(componentList.indexOf(comp)));
@@ -109,8 +113,8 @@ public class AGridPanel extends JPanel {
             if (!componentList.contains(comp)) {
                 componentList.add(index, comp);
                 JPanel pane
-                               = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,
-                                                           0));
+                       = new JPanel(new FlowLayout(FlowLayout.CENTER, 0,
+                                                   0));
                 pane.setOpaque(false);
                 pane.add(componentList.get(componentList.indexOf(comp)));
                 this.add(pane);
@@ -213,8 +217,8 @@ public class AGridPanel extends JPanel {
         double element_divby_cols = ((double) index) / ((double) col);
 
         int elementRow = (int) (element_divby_cols
-                                        + (quotient * (((double) col)
-                                                               - ((double) elementColumn))));
+                                + (quotient * (((double) col)
+                                               - ((double) elementColumn))));
 
         columnAndRow[0] = elementColumn;
         columnAndRow[1] = elementRow;
