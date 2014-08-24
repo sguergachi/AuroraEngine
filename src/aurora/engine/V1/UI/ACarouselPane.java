@@ -162,6 +162,10 @@ public class ACarouselPane extends AImagePane {
         return point.x;
     }
 
+    public double getPointY() {
+        return point.y;
+    }
+
     /**
      * Sets the image displayed in the carousel pane
      *
