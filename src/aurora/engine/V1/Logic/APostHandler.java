@@ -15,20 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.Logic;
 
 /**
  * Handles actions
+ * <p>
  * @author Sammy
  */
-public interface APostHandler{
+public abstract class APostHandler {
+    private Object obj;
 
+    public APostHandler() {
+    }
 
+    public APostHandler(Object obj) {
+        this.obj = obj;
+    }
 
-     public abstract void doAction();
+    public abstract void doAction();
 
+    public Object getObj() {
+        return obj;
+    }
 
-
+    public void setObj(Object obj) {
+        this.obj = obj;
+    }
 
 }

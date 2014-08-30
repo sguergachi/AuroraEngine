@@ -17,6 +17,7 @@
  */
 package aurora.engine.V1.UI;
 
+import aurora.engine.V1.Logic.APostHandler;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -47,6 +48,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
     static final Logger logger = Logger.getLogger(ASlickLabel.class);
 
     private Color linkColor;
+    private APostHandler postLinkClickHandler;
 
     public ASlickLabel(String text) {
         super(text);
@@ -83,6 +85,10 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
     }
 
+    public void addLinkClickAction(APostHandler aPostHandler) {
+        postLinkClickHandler = aPostHandler;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
 
@@ -113,6 +119,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
                 } catch (URISyntaxException ex) {
                     logger.error(ex);
                 }
+                postLinkClickHandler.doAction();
             } catch (IOException ex) {
                 logger.error(ex);
             }
@@ -125,6 +132,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
     public void mouseReleased(MouseEvent e) {
         this.setForeground(prevColor);
+
     }
 
     public void mouseEntered(MouseEvent e) {

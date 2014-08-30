@@ -16,12 +16,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package aurora.engine.V1.UI;
 
-import java.awt.event.MouseListener;
 import org.apache.log4j.Logger;
-
 
 /**
  * The AInfoFeedLabel is used to scroll components from the right edge of the
@@ -32,7 +29,7 @@ import org.apache.log4j.Logger;
  * Changes to the properties are dynamic and will take effect the next time the
  * components are scrolled.
  */
-public class AInfoFeedLabel extends ASlickLabel implements MouseListener{
+public class AInfoFeedLabel extends ASlickLabel {
 
     /*
      * The URL associated with this label text
@@ -60,10 +57,10 @@ public class AInfoFeedLabel extends ASlickLabel implements MouseListener{
     }
 
     public void setUrl(String url) {
-         this.url = url;
+        this.url = url;
     }
 
-    public void setToolTip(String customToolTip){
+    public void setToolTip(String customToolTip) {
         this.customToolTip = customToolTip;
     }
 
@@ -111,8 +108,9 @@ public class AInfoFeedLabel extends ASlickLabel implements MouseListener{
     @Override
     public String toString() {
 
-        return "Title:= " + this.getText(); // + " URL:= " + url.toString();
+        return "Title:= " + this.getText();
     }
+
 
 
 }

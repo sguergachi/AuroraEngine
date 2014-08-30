@@ -1,6 +1,3 @@
-
-
-
 package aurora.engine.V1.UI;
 
 import aurora.engine.V1.Logic.APostHandler;
@@ -49,7 +46,6 @@ import org.apache.log4j.Logger;
  */
 public class AMarqueePanel extends JPanel implements ActionListener,
                                                      AncestorListener, WindowListener, MouseListener, MouseMotionListener {
-
 
     private static final long serialVersionUID = 1L;
 
@@ -207,7 +203,7 @@ public class AMarqueePanel extends JPanel implements ActionListener,
             }
 
             scrollOffset = isWrap() ? wrapOffset + scrollAmount
-                    : -getSize().width;
+                           : -getSize().width;
         }
 
         repaint();
@@ -527,10 +523,7 @@ public class AMarqueePanel extends JPanel implements ActionListener,
     public void mouseReleased(MouseEvent arg0) {
 
 
-        // launch onReleaseAction
-        if (onReleaseAction != null) {
-            onReleaseAction.doAction();
-        }
+
 
         int x = arg0.getX();
         int offset = scrollOffset;
@@ -568,6 +561,12 @@ public class AMarqueePanel extends JPanel implements ActionListener,
                             logger.error(e, e);
                         } catch (IOException e) {
                             logger.error(e, e);
+                        }
+
+                        // launch onReleaseAction
+                        if (onReleaseAction != null) {
+                            onReleaseAction.setObj(label);
+                            onReleaseAction.doAction();
                         }
 
                         componentFound = true;
