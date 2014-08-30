@@ -124,6 +124,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
     }
 
     public void mouseReleased(MouseEvent e) {
+        this.setForeground(prevColor);
     }
 
     public void mouseEntered(MouseEvent e) {

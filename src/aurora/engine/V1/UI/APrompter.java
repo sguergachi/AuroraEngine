@@ -323,7 +323,7 @@ public class APrompter extends JPanel implements Runnable {
         }
 
         //This Is Where The Animation Really Happens
-        if (!stop && !needUpdate) {
+        if (!stop && !needUpdate && toDisplayList.size() > arrayIndex) {
             //Get Width Of Text
             rect = fm.getStringBounds(toDisplayList.get(arrayIndex), g2d);
             textWidth = (int) rect.getWidth();
