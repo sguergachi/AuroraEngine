@@ -13,7 +13,6 @@ import java.net.URLEncoder;
 import java.util.List;
 
 
-
 /**
  * Simple interface to the Mixpanel tracking API, intended for use in
  * server-side applications. Users are encouraged to review our Javascript
@@ -88,13 +87,15 @@ public class MixpanelAPI {
      */
     public void deliver(ClientDelivery toSend, boolean useIpAddress) throws IOException {
         String ipParameter = "ip=0";
-        if (useIpAddress) ipParameter = "ip=1";
+        if (useIpAddress) {
+            ipParameter = "ip=1";
+        }
 
         String eventsUrl = mEventsEndpoint + "?" + ipParameter;
         List<JSONObject> events = toSend.getEventsMessages();
         sendMessages(events, eventsUrl);
 
-        String peopleUrl = mPeopleEndpoint;
+        String peopleUrl = mPeopleEndpoint + "?" + ipParameter;
         List<JSONObject> people = toSend.getPeopleMessages();
         sendMessages(people, peopleUrl);
     }

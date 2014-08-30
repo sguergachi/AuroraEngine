@@ -1,9 +1,9 @@
 package aurora.engine.V1.Logic.mixpanelapi;
 
+import aurora.engine.V1.Logic.JSON.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-import aurora.engine.V1.Logic.JSON.JSONObject;
 
 /**
  * Thrown when the Mixpanel server refuses to accept a set of messages.

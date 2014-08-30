@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 /**
  * A ClientDelivery can be used to send multiple messages to Mixpanel.
  */
