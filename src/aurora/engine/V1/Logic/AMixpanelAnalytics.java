@@ -15,6 +15,7 @@ import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 
@@ -109,10 +110,17 @@ public class AMixpanelAnalytics {
         try {
             // People Analytic //
             userProperties.put("$name", computerName);
+            try {
+                userProperties.put("$ip", InetAddress.getLocalHost().getHostAddress().toString());
+            } catch (UnknownHostException ex) {
+                java.util.logging.Logger.getLogger(AMixpanelAnalytics.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
 
         } catch (JSONException ex) {
         	logger.error(ex);
         }
+    
 
 
 

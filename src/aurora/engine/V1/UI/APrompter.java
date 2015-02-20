@@ -62,6 +62,7 @@ public class APrompter extends JPanel implements Runnable {
     static final Logger logger = Logger.getLogger(APrompter.class);
     private boolean cleared = true;
     private boolean singlePause;
+    private boolean slowAnimate = true;
 
     public APrompter(Font font) {
         super(true);
@@ -168,6 +169,10 @@ public class APrompter extends JPanel implements Runnable {
         done = true;
     }
 
+    public void stop() {
+        stop = true;
+    }
+
     @Override
     public void run() {
 
@@ -181,7 +186,9 @@ public class APrompter extends JPanel implements Runnable {
                     //Wait Longer for first text
                     logger.info("first pause");
                     try {
-                        Thread.sleep(900);
+                        if (slowAnimate) {
+                            Thread.sleep(900);
+                        }
                     } catch (InterruptedException ex) {
                         logger.error(ex);
                     }
@@ -193,7 +200,9 @@ public class APrompter extends JPanel implements Runnable {
                     visible = true;
 
                     try {
-                        Thread.sleep(600);
+                        if (slowAnimate) {
+                            Thread.sleep(600);
+                        }
                     } catch (InterruptedException ex) {
                         logger.error(ex);
                     }
@@ -264,15 +273,15 @@ public class APrompter extends JPanel implements Runnable {
 
         //Make Text Render Beautifuly
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+                             RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING,
-                RenderingHints.VALUE_RENDER_QUALITY);
+                             RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION,
-                RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+                             RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-                RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+                             RenderingHints.VALUE_FRACTIONALMETRICS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+                             RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         //If Already Fully trans, Turn Opaque first
         //Animate the Text
@@ -339,7 +348,7 @@ public class APrompter extends JPanel implements Runnable {
                 g2d.setComposite(makeComposite(Alpha));
                 if (toDisplayList.size() > arrayIndex) {
                     g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
-                            Ypos);
+                                   Ypos);
                 }
             } else if (visible && singlePause) {
 
@@ -350,14 +359,14 @@ public class APrompter extends JPanel implements Runnable {
                     g2d.setComposite(makeComposite(Alpha));
                     if (arrayIndex > 0) {
                         g2d.drawString(toDisplayList.get(arrayIndex - 1), Xpos,
-                                Ypos);
+                                       Ypos);
                     } else {
                         g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
-                                Ypos);
+                                       Ypos);
                     }
                 } else {
                     g2d.drawString(toDisplayList.get(arrayIndex), Xpos,
-                            Ypos);
+                                   Ypos);
                 }
 
             }
@@ -373,5 +382,9 @@ public class APrompter extends JPanel implements Runnable {
 
     public void addPost(APostHandler postAnimationHandler) {
         postHandler = postAnimationHandler;
+    }
+
+    public void setSlowAnimate(boolean slowAnimate) {
+        this.slowAnimate = slowAnimate;
     }
 }
