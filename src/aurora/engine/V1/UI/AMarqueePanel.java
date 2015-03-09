@@ -44,7 +44,7 @@ import org.apache.log4j.Logger;
  * Changes to the properties are dynamic and will take effect the next time the
  * components are scrolled.
  */
-public class AMarqueePanel extends JPanel implements ActionListener,
+public final class AMarqueePanel extends JPanel implements ActionListener,
                                                      AncestorListener, WindowListener, MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = 1L;
@@ -117,10 +117,6 @@ public class AMarqueePanel extends JPanel implements ActionListener,
      * Create an AnimatedIcon that will continuously cycle with the default
      * (500ms).
      * <p/>
-     * @param component
-     *                  the component the icon will be painted on
-     * @param icons
-     *                  the Icons to be painted as part of the animation
      */
     public AMarqueePanel(int scrollSpeed, int width, int height,
                          Color bg, Color border) {
@@ -191,9 +187,11 @@ public class AMarqueePanel extends JPanel implements ActionListener,
     /**
      * Adjust the offset of the components on the panel so it appears that they
      * are scrolling from right to left.
+     * @param ae
      */
+    @Override
     public void actionPerformed(ActionEvent ae) {
-        scrollOffset = scrollOffset + scrollAmount;
+        scrollOffset += scrollAmount;
         int width = getPreferredSize().width * this.getComponentCount() / 2;
 
         if (scrollOffset > width) {
@@ -306,7 +304,7 @@ public class AMarqueePanel extends JPanel implements ActionListener,
     /**
      * Specify the scrolling property for unfocused windows.
      * <p/>
-     * @param scrollWhenVisible
+     * @param scrollWhenFocused
      *                          when true scrolling pauses when the window loses focus.
      *                          Scrolling will continue when the window regains focus. When
      *                          false scrolling is continuous unless the window is iconified.
@@ -521,8 +519,6 @@ public class AMarqueePanel extends JPanel implements ActionListener,
     }
 
     public void mouseReleased(MouseEvent arg0) {
-
-
 
 
         int x = arg0.getX();

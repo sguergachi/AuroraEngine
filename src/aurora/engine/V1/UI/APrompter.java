@@ -171,6 +171,7 @@ public class APrompter extends JPanel implements Runnable {
 
     public void stop() {
         stop = true;
+        runner = null;
     }
 
     @Override
