@@ -56,18 +56,11 @@ public class AInfoFeedLabel extends ASlickLabel {
 
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public void setToolTip(String customToolTip) {
         this.customToolTip = customToolTip;
     }
 
-    public String getUrl() {
-
-        return url;
-    }
+  
 
     public void setStartPosition(int position) {
 
