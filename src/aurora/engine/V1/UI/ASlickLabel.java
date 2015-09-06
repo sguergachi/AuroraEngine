@@ -39,7 +39,7 @@ import org.apache.log4j.Logger;
  */
 public class ASlickLabel extends JLabel implements MouseListener {
 
-    private String url;
+    String url;
 
     private Color prevColor;
 
@@ -71,18 +71,28 @@ public class ASlickLabel extends JLabel implements MouseListener {
     }
 
     public void setLink(String URL) {
-        this.url = URL;
-        this.addMouseListener(this);
-        this.linkColor = Color.green;
-        setToolTipText(URL);
+        setLink(URL, true);
     }
 
-    public void setLink(String URL, Color linkColor) {
+    public void setLink(String URL, boolean showTooltip) {
+        this.url = URL;
+        this.linkColor = Color.green;
+        if (showTooltip) {
+            setToolTipText(URL);
+            this.addMouseListener(this);
+        }
+    }
+
+    public void setUrl(String URL, Color linkColor) {
         this.url = URL;
         this.addMouseListener(this);
         this.linkColor = linkColor;
         setToolTipText(URL);
 
+    }
+
+    public String getUrl() {
+        return url;
     }
 
     public void addLinkClickAction(APostHandler aPostHandler) {
@@ -110,6 +120,7 @@ public class ASlickLabel extends JLabel implements MouseListener {
         super.paintComponent(g2d);
     }
 
+    @Override
     public void mouseClicked(MouseEvent e) {
 
         if (url != null) {
@@ -126,15 +137,18 @@ public class ASlickLabel extends JLabel implements MouseListener {
         }
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("Mouse Clicked Link!");
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
         this.setForeground(prevColor);
 
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
 
         if (url != null) {
@@ -148,10 +162,12 @@ public class ASlickLabel extends JLabel implements MouseListener {
 
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
         if (url != null) {
             this.setForeground(prevColor);
             setCursor(prevCursor);
         }
     }
+
 }

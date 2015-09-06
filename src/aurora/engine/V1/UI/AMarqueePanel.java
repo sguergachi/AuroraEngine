@@ -45,50 +45,33 @@ import org.apache.log4j.Logger;
  * components are scrolled.
  */
 public final class AMarqueePanel extends JPanel implements ActionListener,
-                                                     AncestorListener, WindowListener, MouseListener, MouseMotionListener {
+                                                           AncestorListener, WindowListener, MouseListener, MouseMotionListener {
 
     private static final long serialVersionUID = 1L;
 
-    protected boolean paintChildren;
-
-    protected boolean scrollingPaused;
-
     protected int scrollOffset;
-
     protected int wrapOffset;
-
     private int preferredWidth = -1;
-
     private int frequency = 57;
-
     private int scrollAmount;
-
     private int scrollFrequency;
-
-    private boolean wrap = false;
-
     private int wrapAmount = 50;
-
     protected int strokeSize = 1;
-    protected Dimension arcs = new Dimension(15, 15);
-
-    private boolean scrollWhenFocused = true;
-
-    private Timer timer = new Timer(0, this);
-
-//    public static ArrayList<AInfoFeedLabel> infoFeedLabelList;
-    private ToolTipManager ttm;
-
     private int orgScrollAmount = 0;
 
+    protected boolean paintChildren;
+    protected boolean scrollingPaused;
+    private boolean wrap = false;
+    private boolean scrollWhenFocused = true;
     private boolean isHovering = false;
 
+    protected Dimension arcs = new Dimension(15, 15);
+    private Timer timer = new Timer(0, this);
+//    public static ArrayList<AInfoFeedLabel> infoFeedLabelList;
+    private ToolTipManager ttm;
     private ActionListener postCycleListener = null;
-
     static final Logger logger = Logger.getLogger(AMarqueePanel.class);
-
     private Cursor previousCursor;
-
     private APostHandler onReleaseAction;
     private Color BACKGROUND_BORDER;
 
@@ -171,7 +154,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
         // once
         // all the components are completely visible on the panel.
         // (Its like the components are in two places at the same time)
-
         if (isWrap()) {
             wrapOffset = scrollOffset - super.getPreferredSize().width
                          - wrapAmount;
@@ -187,6 +169,7 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
     /**
      * Adjust the offset of the components on the panel so it appears that they
      * are scrolling from right to left.
+     *
      * @param ae
      */
     @Override
@@ -241,8 +224,7 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
      * Specify the preferred width on the panel. A value of -1 will cause the
      * default preferred with size calculation to be used.
      * <p/>
-     * @param preferredWidth
-     *                       preferred width of the panel in pixels
+     * @param preferredWidth preferred width of the panel in pixels
      */
     public void setPreferredWidth(int preferredWidth) {
         this.preferredWidth = preferredWidth;
@@ -262,8 +244,7 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
      * Specify the scroll amount. The number of pixels to scroll every time
      * scrolling is done.
      * <p/>
-     * @param scrollAmount
-     *                     scroll amount in pixels
+     * @param scrollAmount scroll amount in pixels
      */
     public void setScrollAmount(int scrollAmount) {
         this.scrollAmount = scrollAmount;
@@ -282,8 +263,7 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
      * Specify the scroll frequency. That is the number of times scrolling
      * should be performed every second.
      * <p/>
-     * @param scrollFrequency
-     *                        scroll frequency
+     * @param scrollFrequency scroll frequency
      */
     public void setScrollFrequency(int scrollFrequency) {
         this.scrollFrequency = scrollFrequency;
@@ -304,10 +284,9 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
     /**
      * Specify the scrolling property for unfocused windows.
      * <p/>
-     * @param scrollWhenFocused
-     *                          when true scrolling pauses when the window loses focus.
-     *                          Scrolling will continue when the window regains focus. When
-     *                          false scrolling is continuous unless the window is iconified.
+     * @param scrollWhenFocused when true scrolling pauses when the window loses
+     * focus. Scrolling will continue when the window regains focus. When false
+     * scrolling is continuous unless the window is iconified.
      */
     public void setScrollWhenFocused(boolean scrollWhenFocused) {
         this.scrollWhenFocused = scrollWhenFocused;
@@ -331,11 +310,10 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
      * left edge the beginning of the text will scroll in from the right edge.
      * So the end and the start of the text is displayed at the same time.
      * <p/>
-     * @param wrap
-     *             when true the start of the text will scroll in from the right
-     *             edge while the end of the text is still scrolling off the left
-     *             edge. Otherwise the panel must be clear of text before will
-     *             begin again from the right edge.
+     * @param wrap when true the start of the text will scroll in from the right
+     * edge while the end of the text is still scrolling off the left edge.
+     * Otherwise the panel must be clear of text before will begin again from
+     * the right edge.
      */
     public void setWrap(boolean wrap) {
         this.wrap = wrap;
@@ -355,8 +333,7 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
      * the text on the left edge and the start of the text from the right edge
      * when wrapping is turned on.
      * <p/>
-     * @param wrapAmount
-     *                   the amount in pixels
+     * @param wrapAmount the amount in pixels
      */
     public void setWrapAmount(int wrapAmount) {
         this.wrapAmount = wrapAmount;
@@ -424,7 +401,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
     @Override
     public Point getToolTipLocation(MouseEvent e) {
 
-
         if (isHovering && e.getLocationOnScreen() != null) {
             return new Point(e.getX() + (this.getToolTipText().length()),
                              -16);
@@ -487,8 +463,9 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
     public void mouseEntered(MouseEvent arg0) {
         this.requestFocusInWindow();
         isHovering = true;
+        // reduce scroll amount
         if (orgScrollAmount == 0) {
-            orgScrollAmount = (int) getScrollAmount() / 2;
+            orgScrollAmount = (int) (getScrollAmount() / 2);
         }
         setScrollAmount(orgScrollAmount);
 
@@ -502,6 +479,7 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
 
         setCursor(previousCursor);
 
+        // revert to original scroll
         setScrollAmount(orgScrollAmount * 2);
 
         Component[] c = this.getComponents();
@@ -520,7 +498,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
 
     public void mouseReleased(MouseEvent arg0) {
 
-
         int x = arg0.getX();
         int offset = scrollOffset;
         int labelClicked = x + offset;
@@ -534,7 +511,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
             boolean componentFound = false;
 
             while (!componentFound && i < components.length) {
-
 
                 Component c = components[i];
 
@@ -572,7 +548,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
             }
         }
 
-
     }
 
     @Override
@@ -588,8 +563,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
 
         // get the component at the point the mouse is at
         Component[] components = this.getComponents();
-
-//        Component lastComponent = components[components.length - 1];
 
         if (labelClicked >= 0) {
 
@@ -658,7 +631,6 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
 
         //Sets strokes to default, is better.
         graphics.setStroke(new BasicStroke());
-
 
         super.paintComponent(g);
     }

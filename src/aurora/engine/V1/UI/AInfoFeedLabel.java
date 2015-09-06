@@ -50,23 +50,12 @@ public class AInfoFeedLabel extends ASlickLabel {
     static final Logger logger = Logger.getLogger(AInfoFeedLabel.class);
 
     public AInfoFeedLabel(String title, String url) {
-
         super(title);
-        this.url = url;
-
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+        setLink(url, false);
     }
 
     public void setToolTip(String customToolTip) {
         this.customToolTip = customToolTip;
-    }
-
-    public String getUrl() {
-
-        return url;
     }
 
     public void setStartPosition(int position) {
@@ -75,14 +64,11 @@ public class AInfoFeedLabel extends ASlickLabel {
     }
 
     public int getStartPosition() {
-
         return startPosition;
     }
 
     public void setEndPosition(int position) {
-
         this.endPosition = position;
-
     }
 
     public int getEndPosition() {
@@ -107,10 +93,7 @@ public class AInfoFeedLabel extends ASlickLabel {
 
     @Override
     public String toString() {
-
         return "Title:= " + this.getText();
     }
-
-
 
 }
