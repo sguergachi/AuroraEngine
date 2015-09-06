@@ -58,6 +58,7 @@ public class AInfoFeedLabel extends ASlickLabel {
         this.customToolTip = customToolTip;
     }
 
+
     public void setStartPosition(int position) {
 
         this.startPosition = position;

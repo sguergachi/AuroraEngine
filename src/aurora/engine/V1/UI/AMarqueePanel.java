@@ -174,8 +174,8 @@ public final class AMarqueePanel extends JPanel implements ActionListener,
      */
     @Override
     public void actionPerformed(ActionEvent ae) {
-        scrollOffset += scrollAmount;
-        int width = getPreferredSize().width * this.getComponentCount() / 2;
+        scrollOffset += scrollAmount * 5;
+        int width = getPreferredSize().width * this.getComponentCount() / 4;
 
         if (scrollOffset > width) {
             if (postCycleListener != null) {
